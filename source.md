@@ -167,3 +167,19 @@ PySINDy は SINDy / sparse system identification の実装候補。
 - scDiffEq は更新が続いているため、古い notebook と現行 package API が一致しない可能性がある。
 - URL / checkpoint path / dataset shape をコードにハードコードする前に現行 docs と runtime を確認する。
 - 論文の文章を大量に repository へ転載しない。要約と引用元リンクで管理する。
+
+## 9. Bootstrap source checks (2026-10-07)
+
+Title: scDiffEq 1.1.4 PyPI distribution metadata and source wheel
+Authors: scDiffEq maintainers
+Year: 2026 (access year; release date not asserted)
+URL: https://pypi.org/project/scdiffeq/1.1.4/
+Why relevant: Python >=3.11 requirement, official default LARRY loader and model API source inspection.
+Accessed: 2026-10-07. Wheel/module SHA256 recorded in outputs/logs/package_inspection.json.
+
+Title: scDiffEq dataset cache record metadata
+Authors: See Zenodo record metadata
+Year: 2026 (access year)
+URL: https://zenodo.org/records/21947161
+Why relevant: Default larry.h5ad download is 5,308,287,542 bytes; per-file checksum and URLs saved in preflight.json.
+Accessed: 2026-10-07. No dataset payload downloaded.

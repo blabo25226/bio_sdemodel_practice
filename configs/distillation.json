@@ -1,0 +1,14 @@
+{
+  "library": "polynomial_monomials",
+  "include_constant": true,
+  "include_cross_terms": true,
+  "allowed_functions": "products of x_i^n_i for nonnegative integers n_i, with total degree <= p; one constant",
+  "degree_candidates": [
+    1,
+    2
+  ],
+  "degree_3_policy": "only if held-out validation justifies it; never use test for selection",
+  "optimizer": "STLSQ",
+  "seed": 0,
+  "user_rationale": "Keep the symbolic functions easy to understand"
+}

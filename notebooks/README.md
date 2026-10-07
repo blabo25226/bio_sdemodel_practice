@@ -1,7 +1,10 @@
 # Execution status
 
-- `00_data_check.ipynb`: runnable data inventory after environment/storage setup; unexecuted.
-- `01_scdiffeq_baseline.ipynb`: baseline execution plan; runtime audit gate intentionally closed.
+All six notebooks (00–05) have been executed with the `bio-sde` kernel.
+00–02 inspect the real dataset and restored 50-PC baseline; 03–05 report the
+50-PC negative result and the separate exploratory 5-PC experiment. Training
+commands are documented below; notebooks restore artifacts rather than repeat
+1500-epoch training. See [final results](../docs/1007_results.md).
 
 Run notebooks from the repository or notebooks directory using the `bio-sde` kernel.
 Set `BIO_SDE_DATA_DIR` before launching Jupyter; default is project-relative `data/`.
@@ -32,7 +35,7 @@ The verified script path for automatic training is `python -m src.baseline`.
 It uses explicit `Time point`, GPU 0, fresh seed-0 models for the 2-epoch smoke
 and 1500-epoch official stages. The synthetic API probe passed GPU training,
 direct/public field correspondence, finite simulation and same-seed simulation.
-This does not establish success on real LARRY. Model-specific clone overlap is
+Real LARRY training and runtime checks subsequently passed; symbolic dynamics failed the final stability test. Model-specific clone overlap is
 reported before each real training stage; official cell-level validation is
 not presented as an independent clone-held-out evaluation.
 
@@ -48,7 +51,7 @@ python -m pip install --extra-index-url https://download.pytorch.org/whl/cu124 -
 ```
 
 The 50-PC drift trial failed its declared fidelity criterion and is retained under
-`outputs/sindy/`. The independent exploratory five-PC teacher run uses:
+`outputs/sindy/`. The separate exploratory five-PC teacher run uses:
 
 ```bash
 python -m src.baseline --latent-dim 5 --output-dir outputs/baseline_pc5

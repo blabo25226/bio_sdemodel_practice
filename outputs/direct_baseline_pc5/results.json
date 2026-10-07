@@ -1,0 +1,49 @@
+{
+  "selected": {
+    "degree": 2,
+    "threshold": 0.05,
+    "alpha": 1000.0,
+    "library_size": 21,
+    "active_terms": 13,
+    "validation_displacement_nrmse": 0.8517040390265659
+  },
+  "pair_counts": {
+    "train": 310,
+    "validation": 75,
+    "test": 90
+  },
+  "direct_stochastic_diffusion_baseline": "Not identifiable from clone-centroid pseudo-transitions; not fabricated.",
+  "assumptions": [
+    "Different cells share a clone barcode, not a continuous individual trajectory.",
+    "Centroid change reflects sampling, branching and growth as well as dynamics.",
+    "Raw proxy predicts a finite two-day displacement via Euler; SDE predictions use integrated sample means.",
+    "Teacher fit exposure and upstream PCA preclude fully independent biological inference.",
+    "This is a qualified drift proxy and not a fair stochastic-SINDy benchmark or evidence of superiority."
+  ],
+  "test_comparison": [
+    {
+      "source": "Raw clone-centroid polynomial proxy",
+      "mse": 13.401177582097315,
+      "nrmse": 0.8305651936321071,
+      "cosine_mean": 0.8554571465996281,
+      "error_norm_q95": 14.397420251865416,
+      "error_norm_max": 21.65471943012589
+    },
+    {
+      "source": "Neural SDE teacher",
+      "mse": 22.97907066345215,
+      "nrmse": 1.087598204612732,
+      "cosine_mean": 0.7247754335403442,
+      "error_norm_q95": 20.358489990234375,
+      "error_norm_max": 31.011621475219727
+    },
+    {
+      "source": "Symbolic SDE",
+      "mse": 27.833112716674805,
+      "nrmse": 1.1969696283340454,
+      "cosine_mean": 0.6084228157997131,
+      "error_norm_q95": 20.004369735717773,
+      "error_norm_max": 30.790996551513672
+    }
+  ]
+}

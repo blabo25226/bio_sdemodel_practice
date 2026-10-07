@@ -1,0 +1,32 @@
+[
+  {
+    "notebook": "notebooks/00_data_check.ipynb",
+    "executed_code_cells": 5,
+    "errors": 0
+  },
+  {
+    "notebook": "notebooks/01_scdiffeq_baseline.ipynb",
+    "executed_code_cells": 5,
+    "errors": 0
+  },
+  {
+    "notebook": "notebooks/02_inspect_sde.ipynb",
+    "executed_code_cells": 4,
+    "errors": 0
+  },
+  {
+    "notebook": "notebooks/03_sindy_drift.ipynb",
+    "executed_code_cells": 4,
+    "errors": 0
+  },
+  {
+    "notebook": "notebooks/04_sindy_diffusion.ipynb",
+    "executed_code_cells": 4,
+    "errors": 0
+  },
+  {
+    "notebook": "notebooks/05_validation.ipynb",
+    "executed_code_cells": 4,
+    "errors": 0
+  }
+]

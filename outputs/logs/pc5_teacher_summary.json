@@ -1,0 +1,12 @@
+{
+  "seed": 0,
+  "epochs": 1500,
+  "seconds": 1770.3397985590273,
+  "peak_cuda_bytes": 2389755904,
+  "same_seed_simulation_verified": true,
+  "git_commit": "5b4377427fe098835bf88cc320669e1b769354e2",
+  "final_train_loss": 19.30702018737793,
+  "final_validation_loss": 22.297605514526367,
+  "checkpoint_sha256": "59d751c5241c85adef62ccc96428bf6eb5d848b76d41326355c9c233f659b0ce",
+  "implementation_at_launch": "3623897 (baseline training source unchanged at launch); runtime git_commit records repository HEAD at artifact write"
+}

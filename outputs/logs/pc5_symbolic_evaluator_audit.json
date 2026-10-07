@@ -1,0 +1,11 @@
+{
+  "torch.float32_f_max_abs_error": 2.255959320240919e-06,
+  "torch.float32_G_max_abs_error": 8.24461977577684e-08,
+  "torch.float32_D_min_eigenvalue": -3.502533729715651e-08,
+  "torch.float64_f_max_abs_error": 3.552713678800501e-15,
+  "torch.float64_G_max_abs_error": 3.3306690738754696e-16,
+  "torch.float64_D_min_eigenvalue": -1.9534791178999954e-16,
+  "n_states": 1169,
+  "passed": true,
+  "interpretation": "Actual selected quadratic interaction models agree across NumPy/Torch; PSD within floating-point tolerance."
+}

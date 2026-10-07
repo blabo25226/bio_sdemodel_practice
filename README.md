@@ -1,5 +1,11 @@
 # bio_sdemodel_practice
 
+2026-10-07 の指示書に沿った取得・学習・蒸留・検証を実行済み。
+**5-PC の多項式 drift/G は局所近似できたが、symbolic SDE は4日間の積分で
+58.6%の軌道が数値的不安定となり、M3/M4 は未達。中心仮説は支持されなかった。**
+結果・制約・再現手順は [実験報告](docs/1007_results.md)、
+実行済みの説明用 Notebook は [notebooks](notebooks/README.md) にある。
+
 ## 目的
 
 実データ **LARRY in vitro hematopoietic differentiation** と **scDiffEq** を使って Neural SDE を再現し、学習済み SDE の drift / diffusion を **SINDy によって解釈可能な数式へ蒸留する**デモ研究を行う。

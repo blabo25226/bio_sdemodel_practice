@@ -1,0 +1,87 @@
+{
+  "selected": {
+    "degree": 2,
+    "alpha": 100.0,
+    "threshold": 0.1,
+    "library_size": 21,
+    "active_terms": 61,
+    "train_mse": 0.0011477809660304344,
+    "validation_mse": 0.0013103352858064902,
+    "train_nrmse": 0.28592417073738274,
+    "validation_nrmse": 0.32890524379371694
+  },
+  "train": {
+    "mse": 0.0011477809660304344,
+    "nrmse": 0.28592417073738274,
+    "cosine_mean": 0.8400910169869993,
+    "error_norm_q95": 0.133395928489152,
+    "error_norm_max": 0.4366432158465428
+  },
+  "validation": {
+    "mse": 0.0013103352858064902,
+    "nrmse": 0.32890524379371694,
+    "cosine_mean": 0.8094359280227287,
+    "error_norm_q95": 0.13291196351396029,
+    "error_norm_max": 0.7222542764639776
+  },
+  "validation_all_domain": {
+    "mse": 0.001335740404083261,
+    "nrmse": 0.3277572168205459,
+    "cosine_mean": 0.81034774281591,
+    "error_norm_q95": 0.1345989632365955,
+    "error_norm_max": 0.7222542764639776
+  },
+  "test": {
+    "mse": 0.0014832001867937114,
+    "nrmse": 0.3582867492718468,
+    "cosine_mean": 0.840795845536785,
+    "error_norm_q95": 0.1631656920262627,
+    "error_norm_max": 0.5028061732465129
+  },
+  "test_in_domain": {
+    "mse": 0.0014666195661253091,
+    "nrmse": 0.3574338718241379,
+    "cosine_mean": 0.8406841439510839,
+    "error_norm_q95": 0.16267851653562967,
+    "error_norm_max": 0.45129509113053995
+  },
+  "domain_radius": 25.46027946472168,
+  "domain_definition": "Euclidean PC state norm <= training-only quantile; no clipping in model",
+  "validation_domain_coverage": 0.9942091929062613,
+  "test_domain_coverage": 0.998373454782043,
+  "bootstrap_replicates": 5,
+  "bootstrap_jaccards": [
+    0.8529411764705882,
+    0.8787878787878788,
+    0.921875,
+    0.921875,
+    0.8636363636363636
+  ],
+  "threshold_jitter": [
+    {
+      "threshold": 0.09000000000000001,
+      "active_terms": 62,
+      "support_jaccard": 0.9838709677419355,
+      "validation_nrmse": 0.3274610210090806
+    },
+    {
+      "threshold": 0.11000000000000001,
+      "active_terms": 57,
+      "support_jaccard": 0.9032258064516129,
+      "validation_nrmse": 0.33400076783298843
+    }
+  ],
+  "mean_selected_frequency": 0.9540983606557376,
+  "sources": [
+    "observed states",
+    "teacher-simulated states"
+  ],
+  "sample_counts": {
+    "train": 7411,
+    "validation": 2763,
+    "test": 3074
+  },
+  "normalization": "RMSE / RMS teacher target",
+  "test_policy": "evaluated only after frozen validation selection; not used for tuning",
+  "function_success": true
+}

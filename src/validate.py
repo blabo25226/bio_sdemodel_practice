@@ -59,7 +59,7 @@ def main() -> None:
                 finite=bool(np.isfinite(trajectory).all())
                 maximum=float(np.max(np.linalg.norm(trajectory,axis=-1)))
                 stability.append({'source':name,'seed':seed,'finite':finite,'max_state_norm':maximum,
-                                  'outside_training_domain_fraction':float(np.mean(np.linalg.norm(trajectory,axis=-1)>drift.metadata['domain_radius']))})
+                                  'evaluated_time_outside_training_domain_fraction':float(np.mean(np.linalg.norm(trajectory,axis=-1)>drift.metadata['domain_radius']))})
                 if finite:runs.append(trajectory)
             except Exception as exc:
                 stability.append({'source':name,'seed':seed,'finite':False,'error':repr(exc)})

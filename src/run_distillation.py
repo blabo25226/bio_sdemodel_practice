@@ -14,7 +14,7 @@ def query_partition(partition: str, target: str, stride: int, state_root: Path =
     mask=obs.partition.eq(partition).to_numpy()
     x=np.load(root/'observed_states.npy')[mask]
     y=np.load(root/'observed_targets.npz')[target][mask].reshape(mask.sum(),-1)
-    groups=obs.loc[mask,'clone_idx'].astype(str).to_numpy()
+    groups=obs.loc[mask,'dependence_group' if 'dependence_group' in obs else 'clone_idx'].astype(str).to_numpy()
     simulated=np.load(root/f'simulated_{partition}.npz')
     sx=simulated['states'].reshape(-1,x.shape[1])[::stride]
     sy=simulated[target][::stride].reshape(len(sx),-1)
@@ -27,7 +27,7 @@ def export_equations(field: PolynomialField, root: Path) -> None:
     for powers in field.powers:
         factors=[f'z{i+1}'+(f'^{p}' if p>1 else '') for i,p in enumerate(powers) if p]
         names.append('*'.join(factors) or '1')
-    rows=[];equations=['# Polynomial field equations\n','All outputs are in original PC/time units.',
+    rows=[];equations=['# Polynomial field equations\n','Output units: '+field.metadata.get('output_units','original PC coordinate / day (finite-interval proxy if applicable)'),
         'Only powers and their monomial interactions are used. Coordinate definitions:\n']
     for i,(mean,scale) in enumerate(zip(field.mean,field.scale)):
         equations.append(f'z{i+1} = (PC{i+1} - ({mean:.9g})) / ({scale:.9g})')
@@ -78,6 +78,8 @@ def run_target(target: str, config: dict) -> dict:
     if passing:acceptable=passing
     selected=min(acceptable,key=lambda i:rows[i]['active_terms'])
     model=models[selected]
+    model.metadata['target']=target
+    model.metadata['output_units']='PC coordinate / day' if target=='drift' else 'PC coordinate / sqrt(day)'
     model.save(root/'model.npz');export_equations(model,root)
     support=model.coefficients!=0
     frequencies=np.zeros_like(model.coefficients)

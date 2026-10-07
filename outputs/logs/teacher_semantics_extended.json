@@ -49,5 +49,8 @@
   ],
   "drift_definition": "coef_drift * gradient_x potential(x)",
   "drift_parameters": 289280,
-  "diffusion_parameters": 4338
+  "diffusion_parameters": 4338,
+  "scalar_drift_obs": "L2 norm of f per cell",
+  "scalar_diffusion_obs": "L2 norm of squeezed G per cell for brownian_dim=1; not G or D",
+  "scalar_norms_verified": true
 }

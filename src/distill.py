@@ -76,7 +76,7 @@ def fit_field(x: np.ndarray, y: np.ndarray, degree: int, threshold: float,
     meta={'degree':degree,'threshold':threshold,'alpha':alpha,'library_size':len(feature_rms),
           'active_terms':int(np.count_nonzero(coefficients)),
           'threshold_units':'dimensionless coefficient after training RMS scaling of library and targets',
-          'coordinates':'z_i=(PC_i-training_mean_i)/training_std_i; output in original PC/time units',
+          'coordinates':'z_i=(PC_i-training_mean_i)/training_std_i; output in original teacher-field units (drift or Brownian coefficient)',
           'feature_rms':feature_rms.tolist(),'target_rms':target_rms.tolist(),
           'unbias':unbias,'optimizer':'pysindy.STLSQ','pysindy_version':ps.__version__}
     return PolynomialField(library.powers_,coefficients,scaler.mean_,scaler.scale_,meta)

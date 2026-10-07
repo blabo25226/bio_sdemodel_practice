@@ -49,6 +49,9 @@ def main() -> None:
     x = np.asarray(a.obsm['X_pca'][:,:args.components], dtype=np.float32)
     obs = a.obs.copy()
     obs['partition'] = clone_split(obs)
+    obs['dependence_group']=obs.clone_idx.astype(str)
+    missing=obs.clone_idx.isna()
+    obs.loc[missing,'dependence_group']=[f'missing_cell_{i}' for i in np.flatnonzero(missing)]
     exposure = pd.read_csv(args.checkpoint.parent/'split_membership.csv',index_col=0)
     exposure['source_cell_id'] = exposure.source_cell_id.astype(str)
     exposure = exposure.set_index('source_cell_id')
@@ -58,6 +61,7 @@ def main() -> None:
     np.save(out/'observed_states.npy',x)
     teacher = TeacherSDE(args.checkpoint,device='cuda:0')
     f,g = teacher.evaluate(x)
+    public_fields=teacher.verify_public_fields(x[:8])
     np.savez_compressed(out/'observed_targets.npz',drift=f,diffusion=g)
     rng = np.random.default_rng(0)
     sim = {}
@@ -70,7 +74,7 @@ def main() -> None:
         trajectories = simulate_sde(teacher,initial,times,seed=100+len(sim),dt=.05)
         assert np.isfinite(trajectories).all()
         sf,sg = teacher.evaluate(trajectories.reshape(-1,args.components))
-        groups = np.tile(np.repeat(obs.iloc[chosen].clone_idx.astype(str).to_numpy(),4),len(times))
+        groups = np.tile(np.repeat(obs.iloc[chosen].dependence_group.to_numpy(),4),len(times))
         np.savez_compressed(out/f'simulated_{partition}.npz',states=trajectories,
                             drift=sf,diffusion=sg,times=times,groups=groups.astype(str),initial_indices=chosen)
         sim[partition] = trajectories
@@ -103,6 +107,7 @@ def main() -> None:
     for ax in axes:ax.set(xlabel='PC1',ylabel='PC2')
     fig.tight_layout();fig.savefig(figures/f'{args.figure_prefix}teacher_baseline.png',dpi=160);plt.close(fig)
     audit={'checkpoint_sha256':sha256_file(args.checkpoint),
+           'public_fields':public_fields,
            'split_seed':0,'partition_counts':obs.partition.value_counts().to_dict(),
            'group_split':'clone-disjoint; missing IDs unique per cell',
            'teacher_exposure_by_partition':obs.groupby('partition')[['teacher_fit_train','teacher_fit_val']].sum().to_dict(),

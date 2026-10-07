@@ -48,6 +48,28 @@ class TeacherSDE(torch.nn.Module):
             g.append(self.g(t, states).cpu().numpy())
         return np.concatenate(f), np.concatenate(g)
 
+    def verify_public_fields(self, x: np.ndarray) -> dict[str, object]:
+        """Cross-check direct f/G and public AnnData values for states (n,d), m=1."""
+        if self.brownian_dim!=1:
+            raise ValueError('Re-audit public scalar characterization for m != 1')
+        from types import SimpleNamespace
+        import anndata as ad
+        import scdiffeq as sdq
+        a=ad.AnnData(x.copy());a.obsm['X_pca']=x.copy()
+        public_adapter=SimpleNamespace(DiffEq=self.lightning_model)
+        device=next(self.sde.parameters()).device
+        with torch.enable_grad():
+            sdq.tl.drift(a,model=public_adapter,device=device)
+            sdq.tl.diffusion(a,model=public_adapter,device=device)
+        f,g=self.evaluate(x)
+        np.testing.assert_allclose(a.obsm['X_drift'],f,rtol=1e-5,atol=1e-6)
+        np.testing.assert_allclose(a.obsm['X_diffusion'],g.squeeze(-1),rtol=1e-5,atol=1e-6)
+        np.testing.assert_allclose(a.obs['drift'],np.linalg.norm(f,axis=1),rtol=1e-6)
+        np.testing.assert_allclose(a.obs['diffusion'],np.linalg.norm(g.squeeze(-1),axis=1),rtol=1e-6)
+        return {'public_direct_fields_verified':True,'scalar_norms_verified':True,
+                'scalar_drift_obs':'L2 norm of f per cell',
+                'scalar_diffusion_obs':'L2 norm of squeezed G per cell for m=1; not G or D'}
+
 
 def simulate_sde(sde: torch.nn.Module, initial: np.ndarray, times: np.ndarray,
                  seed: int, dt: float = 0.05) -> np.ndarray:

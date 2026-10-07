@@ -82,7 +82,10 @@ def main() -> None:
             for fate in ('Monocyte','Neutrophil','Undifferentiated'):
                 fates.append({'time':t,'source':name,'fate':fate,'fraction':float(counts.get(fate,0))})
             moments.append({'time':t,'source':name,'mean_norm':float(np.linalg.norm(states.mean(0))),
-                            'covariance_trace':float(np.trace(np.cov(states,rowvar=False)))})
+                            'covariance_trace':float(np.trace(np.cov(states,rowvar=False))),
+                            'mean_error_to_observed_training_scaled':float(np.linalg.norm((states.mean(0)-observed.mean(0))/drift.scale)),
+                            'covariance_error_to_observed_training_scaled':float(np.linalg.norm(np.cov(states/drift.scale,rowvar=False)-np.cov(observed/drift.scale,rowvar=False))),
+                            'covariance_error_to_teacher_training_scaled':float(np.linalg.norm(np.cov(states/drift.scale,rowvar=False)-np.cov(teacher_state/drift.scale,rowvar=False)))})
     for name,rows in [('distribution_distances',distribution),('fate_composition',fates),('moments',moments)]:
         pd.DataFrame(rows).to_csv(root/f'{name}.csv',index=False)
     # Same initial distribution and explicit Brownian seeds for both models; coupling is not identifiability.
@@ -96,7 +99,12 @@ def main() -> None:
     for partition in ('train','validation','test'):
         ix=obs.partition.eq(partition).to_numpy()
         field_rows.append({'partition':partition,'target':'drift',**errors(target['drift'][ix],drift.predict(x[ix]))})
-        field_rows.append({'partition':partition,'target':'G',**errors(target['diffusion'][ix].reshape(ix.sum(),-1),diffusion.predict(x[ix]))})
+        predicted_g=diffusion.predict(x[ix]).reshape(ix.sum(),len(drift.mean),-1)
+        teacher_g=target['diffusion'][ix]
+        field_rows.append({'partition':partition,'target':'G',**errors(teacher_g.reshape(ix.sum(),-1),predicted_g.reshape(ix.sum(),-1))})
+        teacher_d=teacher_g@teacher_g.transpose(0,2,1)
+        predicted_d=predicted_g@predicted_g.transpose(0,2,1)
+        field_rows.append({'partition':partition,'target':'D=GG^T',**errors(teacher_d.reshape(ix.sum(),-1),predicted_d.reshape(ix.sum(),-1))})
     pd.DataFrame(field_rows).to_csv(root/'observed_function_fidelity.csv',index=False)
     fig,axes=plt.subplots(1,3,figsize=(15,4),sharex=True,sharey=True)
     for ax,name in zip(axes,('Observed data','Neural SDE teacher','Symbolic SDE')):

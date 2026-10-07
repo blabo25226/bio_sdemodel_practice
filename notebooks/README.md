@@ -40,3 +40,23 @@ not presented as an independent clone-held-out evaluation.
 process and checks its provenance/inventory before starting this script.
 Monitor `outputs/logs/training_status.json`, `data_run.txt` and `baseline_run.txt`.
 Large baseline artifacts stay local under `outputs/baseline/`.
+
+For an exact pip replay of the recorded CUDA wheel versions, use:
+
+```bash
+python -m pip install --extra-index-url https://download.pytorch.org/whl/cu124 -r requirements-lock.txt
+```
+
+The 50-PC drift trial failed its declared fidelity criterion and is retained under
+`outputs/sindy/`. The independent exploratory five-PC teacher run uses:
+
+```bash
+python -m src.baseline --latent-dim 5 --output-dir outputs/baseline_pc5
+python -m src.prepare --components 5 --state-dir outputs/distillation_pc5 --checkpoint outputs/baseline_pc5/official/teacher.ckpt --figure-prefix pc5_
+python -m src.run_distillation --config configs/experiment_pc5.json
+python -m src.validate --state-dir outputs/distillation_pc5 --sindy-dir outputs/sindy_pc5 --checkpoint outputs/baseline_pc5/official/teacher.ckpt --output-dir outputs/validation_pc5 --figure-prefix pc5_
+python -m src.direct_baseline --state-dir outputs/distillation_pc5 --sindy-dir outputs/sindy_pc5 --checkpoint outputs/baseline_pc5/official/teacher.ckpt --output-dir outputs/direct_baseline_pc5
+```
+
+Stop after a failed drift/diffusion gate. `src.campaign_pc5` queues these operations
+behind an existing teacher process and records failures rather than silently advancing.

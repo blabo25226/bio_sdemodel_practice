@@ -89,6 +89,10 @@ class SymbolicSDE(torch.nn.Module):
     def __init__(self, drift: PolynomialField, diffusion: PolynomialField,
                  device: str='cpu', dtype: torch.dtype=torch.float32) -> None:
         super().__init__()
+        if drift.coefficients.shape[0]!=len(drift.mean):
+            raise ValueError('Drift output dimension must equal state dimension')
+        if diffusion.coefficients.shape[0]%len(drift.mean) or len(diffusion.mean)!=len(drift.mean):
+            raise ValueError('Diffusion must have d*m outputs on the same state space')
         self.brownian_dim=diffusion.coefficients.shape[0]//len(drift.mean)
         self.dimension=len(drift.mean)
         for prefix,field in [('f',drift),('g',diffusion)]:

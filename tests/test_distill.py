@@ -39,3 +39,18 @@ def test_clone_disjoint_partition():
     labels=clone_split(obs)
     assert set(labels)=={'train','validation','test'}
     for clone in obs.clone_idx.unique():assert len(set(labels[obs.clone_idx==clone]))==1
+
+
+def test_teacher_potential_evaluation_inside_no_grad():
+    from pathlib import Path
+    import pytest
+    from src.teacher import TeacherSDE
+    checkpoint=Path('outputs/baseline/official/teacher.ckpt')
+    if not checkpoint.exists():pytest.skip('Local trained teacher is an external artifact')
+    teacher=TeacherSDE(checkpoint)
+    x=np.random.default_rng(2).normal(size=(5,teacher.dimension)).astype('float32')
+    with torch.no_grad():f,g=teacher.evaluate(x)
+    assert f.shape==(5,teacher.dimension)
+    assert g.shape==(5,teacher.dimension,teacher.brownian_dim)
+    assert np.isfinite(f).all() and np.isfinite(g).all()
+    assert f.dtype==x.dtype and g.dtype==x.dtype

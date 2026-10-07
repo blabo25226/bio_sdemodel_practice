@@ -1,0 +1,37 @@
+time,source,fate,fraction
+2.0,Observed data,Monocyte,0.0
+2.0,Observed data,Neutrophil,0.0
+2.0,Observed data,Undifferentiated,1.0
+2.0,Observed data,Numerical failure,0.0
+2.0,Neural SDE teacher,Monocyte,0.0
+2.0,Neural SDE teacher,Neutrophil,0.0
+2.0,Neural SDE teacher,Undifferentiated,1.0
+2.0,Neural SDE teacher,Numerical failure,0.0
+2.0,Symbolic SDE,Monocyte,0.0
+2.0,Symbolic SDE,Neutrophil,0.0
+2.0,Symbolic SDE,Undifferentiated,1.0
+2.0,Symbolic SDE,Numerical failure,0.0
+4.0,Observed data,Monocyte,0.17851239669421487
+4.0,Observed data,Neutrophil,0.21983471074380165
+4.0,Observed data,Undifferentiated,0.6016528925619835
+4.0,Observed data,Numerical failure,0.0
+4.0,Neural SDE teacher,Monocyte,0.3098958333333333
+4.0,Neural SDE teacher,Neutrophil,0.0625
+4.0,Neural SDE teacher,Undifferentiated,0.6276041666666666
+4.0,Neural SDE teacher,Numerical failure,0.0
+4.0,Symbolic SDE,Monocyte,0.59375
+4.0,Symbolic SDE,Neutrophil,0.09375
+4.0,Symbolic SDE,Undifferentiated,0.3125
+4.0,Symbolic SDE,Numerical failure,0.0
+6.0,Observed data,Monocyte,0.39107142857142857
+6.0,Observed data,Neutrophil,0.36160714285714285
+6.0,Observed data,Undifferentiated,0.24732142857142858
+6.0,Observed data,Numerical failure,0.0
+6.0,Neural SDE teacher,Monocyte,0.5182291666666666
+6.0,Neural SDE teacher,Neutrophil,0.4661458333333333
+6.0,Neural SDE teacher,Undifferentiated,0.015625
+6.0,Neural SDE teacher,Numerical failure,0.0
+6.0,Symbolic SDE,Monocyte,0.17708333333333334
+6.0,Symbolic SDE,Neutrophil,0.09375
+6.0,Symbolic SDE,Undifferentiated,0.14322916666666666
+6.0,Symbolic SDE,Numerical failure,0.5859375

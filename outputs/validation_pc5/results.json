@@ -1,0 +1,37 @@
+{
+  "simulation_success": false,
+  "seeds": [
+    202,
+    203,
+    204
+  ],
+  "initial_observed_cells": 32,
+  "replicates_per_initial": 4,
+  "dt": 0.05,
+  "dt_halving_endpoint_distance": {
+    "Neural SDE teacher": {
+      "endpoint_sliced_wasserstein": 0.03542323983534833,
+      "coarse_and_fine_finite": true
+    },
+    "Symbolic SDE": {
+      "endpoint_sliced_wasserstein": null,
+      "coarse_and_fine_finite": false
+    }
+  },
+  "teacher_symbolic_day6_total_variation_with_failure_mass": 0.7135416666666666,
+  "full_fate_distribution_preservation_evaluable": false,
+  "fate_classifier_test_accuracy": 0.945516458569807,
+  "fate_preservation_demo": false,
+  "symbolic_day6_numerical_failure_fraction": 0.5859375,
+  "interpretation": "Negative simulation results are retained. No model tuning was performed using these test results.",
+  "caveats": [
+    "Teacher exposure and upstream PCA prevent independent biological confirmation.",
+    "Only 32 initial cells and three Brownian seeds; simulated data are not new observations.",
+    "Missing full distribution distances/moments mean numerical failure, not zero error.",
+    "Survivor scatter is a biased diagnostic; failed paths retain probability mass in composition tables.",
+    "Numerical failure is not biological cell death or a fate class.",
+    "No state clipping; polynomial PSD does not guarantee nonexplosive dynamics.",
+    "Independent drift fits need not retain the teacher conservative potential structure.",
+    "dt-halving is distribution-level sensitivity; common entropy alone is not a strong pathwise convergence proof."
+  ]
+}

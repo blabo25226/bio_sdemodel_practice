@@ -54,3 +54,15 @@ def test_teacher_potential_evaluation_inside_no_grad():
     assert g.shape==(5,teacher.dimension,teacher.brownian_dim)
     assert np.isfinite(f).all() and np.isfinite(g).all()
     assert f.dtype==x.dtype and g.dtype==x.dtype
+
+
+def test_failure_accounting_keeps_invalid_and_past_exploded_paths():
+    from src.validate import failure_masks
+    trajectory=np.zeros((3,4,2),dtype='float32')
+    trajectory[1,1,0]=np.nan
+    trajectory[1,2,0]=100.
+    mask,norms=failure_masks(trajectory,radius=1.)
+    assert not mask[0].any()
+    assert mask[1].tolist()==[False,True,True,False]
+    assert mask[2].tolist()==[False,True,True,False]
+    assert norms.shape==(3,4)

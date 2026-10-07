@@ -1,0 +1,7 @@
+source,seed,finite,max_finite_state_norm,nonfinite_path_fraction,evaluated_time_explosion_or_nonfinite_path_fraction,explosion_threshold,evaluated_time_outside_training_domain_fraction,exception
+Neural SDE teacher,202,True,23.18444441512185,0.0,0.0,254.6027946472168,0.0,
+Neural SDE teacher,203,True,22.84189635254659,0.0,0.0,254.6027946472168,0.0,
+Neural SDE teacher,204,True,22.713191354908428,0.0,0.0,254.6027946472168,0.0,
+Symbolic SDE,202,False,1.0385477470920822e+34,0.2890625,0.578125,254.6027946472168,0.3072916666666667,
+Symbolic SDE,203,False,4.601567495973337e+36,0.265625,0.578125,254.6027946472168,0.3098958333333333,
+Symbolic SDE,204,False,1.4629528688890686e+37,0.265625,0.6015625,254.6027946472168,0.3072916666666667,

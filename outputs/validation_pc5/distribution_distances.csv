@@ -1,0 +1,10 @@
+time,source,n_cells_or_simulations,numerically_failed_fraction,full_distribution_available,sliced_wasserstein_to_observed,sliced_wasserstein_to_teacher
+2.0,Observed data,37,0.0,True,0.0,0.05376299869639362
+2.0,Neural SDE teacher,384,0.0,True,0.05376299869639362,0.0
+2.0,Symbolic SDE,384,0.0,True,0.05376299869639362,0.0
+4.0,Observed data,605,0.0,True,0.0,0.25265153824538167
+4.0,Neural SDE teacher,384,0.0,True,0.25265153824538167,0.0
+4.0,Symbolic SDE,384,0.0,True,1.0696294005393168,1.0679750286848622
+6.0,Observed data,1120,0.0,True,0.0,0.3765093024802424
+6.0,Neural SDE teacher,384,0.0,True,0.3765093024802424,0.0
+6.0,Symbolic SDE,384,0.5859375,False,,

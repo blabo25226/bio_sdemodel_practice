@@ -1,0 +1,16 @@
+name: bio-sde
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - torch==2.6.0
+      - scdiffeq==1.1.4
+      - nbformat==5.10.4
+      - nbclient==0.10.2
+      - ipykernel==7.1.0
+      - pytest==8.4.2
+# After installation save the resolved environment:
+# python -m pip freeze > requirements-lock.txt
+# This file specifies requested versions; it is not a resolved lock.

@@ -1,0 +1,63 @@
+{
+  "recorded_at": "2026-10-07T17:54:10.074407+09:00",
+  "python": "3.11.17",
+  "packages": {
+    "torch": "2.6.0+cu124",
+    "scdiffeq": "1.1.4",
+    "torchsde": "0.2.6",
+    "anndata": "0.12.19",
+    "scanpy": "1.11.5",
+    "numpy": "2.4.6"
+  },
+  "data_dir": "/home/blabo/bio_sdemodel_practice/data",
+  "free_bytes": 99405791232,
+  "git_commit": "6760499d0cfff3e115c3ad996bf8affb9c9f4729",
+  "cuda_runtime": "12.4",
+  "cuda_available": true,
+  "nvidia_smi": "Wed Oct  7 17:54:11 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.178.04             Driver Version: 580.178.04     CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA GeForce RTX 2070        Off |   00000000:01:00.0  On |                  N/A |\n|  0%   46C    P8              7W /  175W |     793MiB /   8192MiB |     21%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n|   1  NVIDIA GeForce GTX 1060 3GB    Off |   00000000:03:00.0 Off |                  N/A |\n| 52%   29C    P8              5W /  120W |       7MiB /   3072MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A            5379    C+G   ...c/gnome-remote-desktop-daemon         97MiB |\n|    0   N/A  N/A            5423      G   /usr/bin/gnome-shell                    298MiB |\n|    0   N/A  N/A            5646      G   /usr/bin/tokus                            1MiB |\n|    0   N/A  N/A            5920      G   /usr/bin/Xwayland                         6MiB |\n|    0   N/A  N/A            7085      G   .../8969/usr/lib/firefox/firefox         67MiB |\n|    0   N/A  N/A           56131      G   ...rack-uuid=3190708988185955192        229MiB |\n|    0   N/A  N/A           58908    C+G   /usr/bin/ptyxis                          28MiB |\n|    0   N/A  N/A          420630    C+G   /usr/bin/nautilus                        45MiB |\n|    1   N/A  N/A            5423      G   /usr/bin/gnome-shell                      1MiB |\n+-----------------------------------------------------------------------------------------+\n",
+  "source": "https://zenodo.org/api/records/21947161",
+  "files": [
+    {
+      "key": "larry.ct_var_df.csv",
+      "size": 82171,
+      "checksum": "md5:7859adc13f2fd87675f642b3986ab1e6",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947161/files/larry.ct_var_df.csv/content"
+      }
+    },
+    {
+      "key": "larry.ct_obs_df.csv",
+      "size": 6373034,
+      "checksum": "md5:ee3d533a40a99a9edac385c636ec5189",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947161/files/larry.ct_obs_df.csv/content"
+      }
+    },
+    {
+      "key": "larry.h5ad",
+      "size": 5308287542,
+      "checksum": "md5:0f54bee173c9b1f401da76c5299b9272",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947161/files/larry.h5ad/content"
+      }
+    },
+    {
+      "key": "larry_unprocessed.h5ad",
+      "size": 2161354001,
+      "checksum": "md5:ab6b245067fa0da092f4a3c92dc6f887",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947161/files/larry_unprocessed.h5ad/content"
+      }
+    },
+    {
+      "key": "larry_unprocessed.processed.h5ad",
+      "size": 2933315204,
+      "checksum": "md5:d9c5374b4b3b0dc3d001b662f25bbec1",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947161/files/larry_unprocessed.processed.h5ad/content"
+      }
+    }
+  ],
+  "minimum_download_bytes": 5308287542,
+  "ready": true
+}

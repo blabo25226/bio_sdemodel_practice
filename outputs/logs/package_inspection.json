@@ -1,0 +1,11 @@
+{
+  "package": "scdiffeq==1.1.4",
+  "wheel_sha256": "fe1ec8df8d4821925495b63c09e0e804aa3d3281da67eb551e98d3cc26fca1b5",
+  "inspected_module": "scdiffeq/datasets/_larry_in_vitro.py",
+  "module_sha256": "d2f788bd954f82a1cce673e7b0bf78448a4dcf2d5edfe2f8ff2fa31072643305",
+  "runtime_imported": false,
+  "notes": [
+    "Inspected PyPI wheel source only; no model tensor shapes measured.",
+    "Default biology-rich variant downloads larry.h5ad; preprocessing may write an additional processed cache."
+  ]
+}

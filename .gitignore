@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+.pytest_cache/
+data/
+outputs/**/*.h5ad
+outputs/**/*.ckpt
+outputs/**/*.pt
+outputs/**/*.npy
+outputs/**/*.npz
+.log_cache/
+scdiffeq.log
+outputs/logs/*_install.txt
+outputs/logs/environment_create.txt
+outputs/logs/data_run.txt

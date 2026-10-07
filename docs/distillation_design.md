@@ -32,3 +32,22 @@ If fitting G, compute D_hat = G_hat G_hat^T for covariance comparisons.
 This matrix multiplication is part of SDE semantics, not an added library family.
 If fitting D through a factor, explicitly document both factor and covariance
 formula; products can increase the resulting covariance polynomial degree.
+
+## Recorded experiment decisions
+
+The original 50-PC teacher was trained for the official baseline. Its degree<=2
+polynomial trial failed validation, including strong extrapolation sensitivity.
+The result is retained; it was not silently replaced with an easier problem.
+
+A separate five-PC teacher is trained from scratch to test a lower-dimensional
+proof-of-concept. It retains ~59.6% of empirical variance of the first50 PC states
+in the observed symbolic-training subset; this is not gene-space explained variance.
+The five-PC model is not the projected field of the 50-PC teacher.
+Degree3 (56 features at d=5) is attempted only after degree2 validation is insufficient.
+
+The local approximation domain is the 99.5th percentile of training-state Euclidean
+PC norms. Validation coverage must be >=95%. All-domain errors and test coverage
+are also reported. Neither the polynomial nor the simulator clips states to this
+domain. Simulation explosion is separately counted at evaluated times when a state
+exceeds ten times the training-defined domain radius, independently of NaN/Inf checks.
+No simulation-result-driven hyperparameter tuning on test origins is allowed.

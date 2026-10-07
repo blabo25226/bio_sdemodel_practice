@@ -58,7 +58,10 @@ def main() -> None:
                 trajectory=simulate_sde(sde,initial,times,seed,dt=.05)
                 finite=bool(np.isfinite(trajectory).all())
                 maximum=float(np.max(np.linalg.norm(trajectory,axis=-1)))
+                exploded=np.any(np.linalg.norm(trajectory,axis=-1)>10*drift.metadata['domain_radius'],axis=0)
                 stability.append({'source':name,'seed':seed,'finite':finite,'max_state_norm':maximum,
+                                  'evaluated_time_explosion_fraction':float(exploded.mean()),
+                                  'explosion_threshold':10*drift.metadata['domain_radius'],
                                   'evaluated_time_outside_training_domain_fraction':float(np.mean(np.linalg.norm(trajectory,axis=-1)>drift.metadata['domain_radius']))})
                 if finite:runs.append(trajectory)
             except Exception as exc:
@@ -118,7 +121,7 @@ def main() -> None:
     ax.set(ylabel='Fraction',title='Day 6 composition (training-only kNN for simulations)')
     ax.tick_params(axis='x',rotation=10);fig.tight_layout();fig.savefig(f'outputs/figures/{args.figure_prefix}fate_comparison.png',dpi=160);plt.close(fig)
     tv=float(.5*np.abs(endpoint.loc['Neural SDE teacher']-endpoint.loc['Symbolic SDE']).sum())
-    result={'simulation_success':all(r['finite'] for r in stability),
+    result={'simulation_success':all(r['finite'] and r.get('evaluated_time_explosion_fraction',0.)==0. for r in stability),
             'seeds':[202,203,204],'initial_observed_cells':len(initial_ix),'replicates_per_initial':4,
             'dt':.05,'dt_halving_endpoint_distance':dt_results,
             'teacher_symbolic_day6_fate_total_variation':tv,

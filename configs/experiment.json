@@ -1,0 +1,25 @@
+{
+  "seed": 0,
+  "degrees": [
+    1,
+    2
+  ],
+  "thresholds": [
+    0.01,
+    0.05,
+    0.1
+  ],
+  "alphas": [
+    100.0,
+    1000.0
+  ],
+  "bootstrap_replicates": 5,
+  "simulation_query_stride": 4,
+  "drift_validation_nrmse_max": 0.5,
+  "selection_relative_error_tolerance": 0.1,
+  "bootstrap_mean_selected_frequency_min": 0.5,
+  "interpretation": "NRMSE is RMSE divided by target RMS; thresholds are dimensionless training-RMS coefficient units. Test never influences selection.",
+  "unbias": false,
+  "domain_training_norm_quantile": 0.995,
+  "minimum_validation_domain_coverage": 0.95
+}

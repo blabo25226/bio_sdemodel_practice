@@ -18,6 +18,7 @@ comm==0.2.3
 contourpy==1.3.3
 cycler==0.12.1
 debugpy==1.8.22
+derivative==0.6.3
 donfig==0.8.1.post1
 executing==2.2.1
 fastjsonschema==2.22.2
@@ -30,6 +31,7 @@ geomloss==0.3.1
 google-crc32c==1.9.0
 h5py==3.16.0
 idna==3.20
+importlib_metadata==9.0.1
 iniconfig==2.3.1
 interface_meta==2.0.1
 ipykernel==7.1.0
@@ -97,6 +99,7 @@ Pygments==2.21.0
 pykeops==2.3
 pynndescent==0.6.0
 pyparsing==3.3.3
+pysindy==2.1.0
 pytest==8.4.2
 python-dateutil==2.9.0.post0
 pytorch-lightning==2.6.6
@@ -140,3 +143,4 @@ wget==3.2
 wrapt==2.5.0
 yarl==1.25.1
 zarr==3.1.6
+zipp==4.1.1

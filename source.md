@@ -183,3 +183,16 @@ Year: 2026 (access year)
 URL: https://zenodo.org/records/21947161
 Why relevant: Default larry.h5ad download is 5,308,287,542 bytes; per-file checksum and URLs saved in preflight.json.
 Accessed: 2026-10-07. No dataset payload downloaded.
+
+## 10. Polynomial STLSQ implementation check
+
+Title: PySINDy 2.1.0 documentation and installed STLSQ source
+Authors: PySINDy maintainers
+Year: 2026 (access year)
+URL: https://pysindy.readthedocs.io/en/stable/
+Why relevant: PolynomialLibrary contains monomial interaction terms; STLSQ supports
+thresholded ridge regression and an optional unregularized final refit. Installed
+source was inspected; initial unbias=True fit failed validation, so retained ridge
+regularization is evaluated explicitly. No trajectory derivative API is forced
+onto direct teacher-function regression.
+Accessed: 2026-10-07.

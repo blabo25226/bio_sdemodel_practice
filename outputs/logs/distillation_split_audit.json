@@ -1,0 +1,27 @@
+{
+  "checkpoint_sha256": "a487bcfa6e89c62ee2cb4a8bcd0af3a533b651b71efc095f1ea6d342df5658d2",
+  "split_seed": 0,
+  "partition_counts": {
+    "train": 6137,
+    "test": 1762,
+    "validation": 1451
+  },
+  "group_split": "clone-disjoint; missing IDs unique per cell",
+  "teacher_exposure_by_partition": {
+    "teacher_fit_train": {
+      "test": 1591,
+      "train": 5539,
+      "validation": 1285
+    },
+    "teacher_fit_val": {
+      "test": 167,
+      "train": 612,
+      "validation": 156
+    }
+  },
+  "state_dimension": 50,
+  "simulated_source": "teacher simulation, not additional observed data",
+  "qualitative_assessment": "PC-space field/trajectories and class composition available for visual inspection; official UMAP layout not identical.",
+  "independence_caveat": "Distillation test is held out from symbolic fit, not from original teacher/upstream PCA.",
+  "selection_policy": "Use validation for symbolic hyperparameters per explicit instruction Step4/skill; never test."
+}

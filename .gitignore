@@ -18,3 +18,7 @@ outputs/logs/baseline_api_probe.txt
 outputs/logs/baseline_run.txt
 outputs/logs/baseline_queue.txt
 outputs/baseline/
+outputs/distillation/
+outputs/logs/prepare_run.txt
+outputs/sindy/**/*.npz
+outputs/logs/distillation_run.txt

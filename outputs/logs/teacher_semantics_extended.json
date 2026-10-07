@@ -1,0 +1,53 @@
+{
+  "lightning_class": "<class 'scdiffeq.core.lightning_models._lightning_sde_fixed_potential_regularized_velocity_ratio.LightningSDE_FixedPotential_RegularizedVelocityRatio'>",
+  "sde_class": "<class 'neural_diffeqs._potential_sde.PotentialSDE'>",
+  "sde_type": "ito",
+  "noise_type": "general",
+  "brownian_dim": 1,
+  "state_shape": [
+    8,
+    50
+  ],
+  "drift_shape": [
+    8,
+    50
+  ],
+  "diffusion_shape": [
+    8,
+    50,
+    1
+  ],
+  "covariance_shape": [
+    8,
+    50,
+    50
+  ],
+  "dtype": "torch.float32",
+  "device": "cpu",
+  "f_source": "    def f(self, t: torch.Tensor, y: torch.Tensor) -> torch.Tensor:\n        \"\"\"Compute the drift term of the differential equation.\n        \n        This method provides a standardized interface for the drift term,\n        compatible with numerical solvers like those in torchdiffeq and torchsde.\n        \n        Args:\n            t (torch.Tensor): The current time point.\n            y (torch.Tensor): The current state of the system.\n            \n        Returns:\n            torch.Tensor: The drift term evaluated at the current state.\n        \"\"\"\n        return self.drift(y)\n",
+  "g_source": "    def g(self, t: torch.Tensor, y: torch.Tensor) -> torch.Tensor:\n        \"\"\"Compute the diffusion term of the differential equation.\n        \n        This method provides a standardized interface for the diffusion term,\n        compatible with numerical solvers like those in torchsde.\n        \n        Args:\n            t (torch.Tensor): The current time point.\n            y (torch.Tensor): The current state of the system.\n            \n        Returns:\n            torch.Tensor: The diffusion term evaluated at the current state.\n        \"\"\"\n        return self.diffusion(y)\n",
+  "time_probe_drift_max_abs_difference": 0.0,
+  "time_probe_diffusion_max_abs_difference": 0.0,
+  "public_field_shapes": {
+    "X_drift": [
+      9350,
+      50
+    ],
+    "X_diffusion": [
+      9350,
+      50
+    ]
+  },
+  "public_api_matches_direct": true,
+  "potential_network_output_shape": [
+    8,
+    1
+  ],
+  "diffusion_network_raw_output_shape": [
+    8,
+    50
+  ],
+  "drift_definition": "coef_drift * gradient_x potential(x)",
+  "drift_parameters": 289280,
+  "diffusion_parameters": 4338
+}

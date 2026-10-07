@@ -27,3 +27,16 @@ must be checked before training; the host driver listing alone does not establis
 
 After installation, save `conda list --explicit` under `outputs/logs/` in addition
 to the pip freeze. Verify actual CUDA runtime/device in the isolated environment.
+
+The verified script path for automatic training is `python -m src.baseline`.
+It uses explicit `Time point`, GPU 0, fresh seed-0 models for the 2-epoch smoke
+and 1500-epoch official stages. The synthetic API probe passed GPU training,
+direct/public field correspondence, finite simulation and same-seed simulation.
+This does not establish success on real LARRY. Model-specific clone overlap is
+reported before each real training stage; official cell-level validation is
+not presented as an independent clone-held-out evaluation.
+
+`python -m src.queue_baseline --download-pid PID` waits for an existing loader
+process and checks its provenance/inventory before starting this script.
+Monitor `outputs/logs/training_status.json`, `data_run.txt` and `baseline_run.txt`.
+Large baseline artifacts stay local under `outputs/baseline/`.

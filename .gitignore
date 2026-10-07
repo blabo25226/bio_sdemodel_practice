@@ -13,3 +13,8 @@ scdiffeq.log
 outputs/logs/*_install.txt
 outputs/logs/environment_create.txt
 outputs/logs/data_run.txt
+outputs/api_probe/
+outputs/logs/baseline_api_probe.txt
+outputs/logs/baseline_run.txt
+outputs/logs/baseline_queue.txt
+outputs/baseline/

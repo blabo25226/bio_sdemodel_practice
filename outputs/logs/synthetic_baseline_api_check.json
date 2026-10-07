@@ -1,0 +1,54 @@
+{
+  "seed": 0,
+  "epochs": 2,
+  "seconds": 1.4578540200018324,
+  "peak_cuda_bytes": 91475968,
+  "simulation_shape": [
+    1968,
+    3
+  ],
+  "same_seed_simulation_verified": true,
+  "semantics": {
+    "lightning_class": "<class 'scdiffeq.core.lightning_models._lightning_sde_fixed_potential_regularized_velocity_ratio.LightningSDE_FixedPotential_RegularizedVelocityRatio'>",
+    "sde_class": "<class 'neural_diffeqs._potential_sde.PotentialSDE'>",
+    "sde_type": "ito",
+    "noise_type": "general",
+    "brownian_dim": 1,
+    "state_shape": [
+      8,
+      3
+    ],
+    "drift_shape": [
+      8,
+      3
+    ],
+    "diffusion_shape": [
+      8,
+      3,
+      1
+    ],
+    "covariance_shape": [
+      8,
+      3,
+      3
+    ],
+    "dtype": "torch.float32",
+    "device": "cpu",
+    "f_source": "    def f(self, t: torch.Tensor, y: torch.Tensor) -> torch.Tensor:\n        \"\"\"Compute the drift term of the differential equation.\n        \n        This method provides a standardized interface for the drift term,\n        compatible with numerical solvers like those in torchdiffeq and torchsde.\n        \n        Args:\n            t (torch.Tensor): The current time point.\n            y (torch.Tensor): The current state of the system.\n            \n        Returns:\n            torch.Tensor: The drift term evaluated at the current state.\n        \"\"\"\n        return self.drift(y)\n",
+    "g_source": "    def g(self, t: torch.Tensor, y: torch.Tensor) -> torch.Tensor:\n        \"\"\"Compute the diffusion term of the differential equation.\n        \n        This method provides a standardized interface for the diffusion term,\n        compatible with numerical solvers like those in torchsde.\n        \n        Args:\n            t (torch.Tensor): The current time point.\n            y (torch.Tensor): The current state of the system.\n            \n        Returns:\n            torch.Tensor: The diffusion term evaluated at the current state.\n        \"\"\"\n        return self.diffusion(y)\n",
+    "time_probe_drift_max_abs_difference": 0.0,
+    "time_probe_diffusion_max_abs_difference": 0.0,
+    "public_field_shapes": {
+      "X_drift": [
+        300,
+        3
+      ],
+      "X_diffusion": [
+        300,
+        3
+      ]
+    },
+    "public_api_matches_direct": true
+  },
+  "git_commit": "9b84f8a290cf9ad1148da1632a4c2198ae9462b6"
+}

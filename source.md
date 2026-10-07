@@ -196,3 +196,17 @@ source was inspected; initial unbias=True fit failed validation, so retained rid
 regularization is evaluated explicitly. No trajectory derivative API is forced
 onto direct teacher-function regression.
 Accessed: 2026-10-07.
+
+## 11. Direct stochastic sparse identification assumptions
+
+Title: Sparse learning of stochastic dynamical equations
+Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi
+Year: 2018
+URL/DOI: https://doi.org/10.1063/1.5018409
+Preprint: https://arxiv.org/abs/1712.02432
+Author manuscript: https://fnueske.github.io/pdf/18_Boninsegna_SINDy.pdf
+Why relevant: Sparse stochastic identification uses dynamical transition/increment
+information for drift/diffusion estimation. LARRY clone-centroid pseudo-transitions
+cannot be silently treated as observed individual-cell SDE increments. This motivates
+reporting the available drift proxy and the diffusion identifiability limitation.
+Accessed: 2026-10-07.

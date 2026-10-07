@@ -22,3 +22,14 @@ outputs/distillation/
 outputs/logs/prepare_run.txt
 outputs/sindy/**/*.npz
 outputs/logs/distillation_run.txt
+outputs/logs/validation_run.txt
+outputs/direct_baseline/**/*.npz
+outputs/logs/direct_baseline_run.txt
+outputs/baseline_pc5/
+outputs/distillation_pc5/
+outputs/sindy_pc5/**/*.npz
+outputs/logs/baseline_pc5_run.txt
+outputs/logs/distillation_pc5_run.txt
+outputs/logs/prepare_pc5_run.txt
+outputs/logs/kernel_install.txt
+outputs/logs/notebook_initial_execution.txt

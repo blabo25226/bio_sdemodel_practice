@@ -31,25 +31,32 @@ def clone_split(obs: pd.DataFrame, seed: int = 0) -> np.ndarray:
 
 def main() -> None:
     """Generate query cache and baseline plots from the restored teacher, never tune on test."""
+    import argparse
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--state-dir",type=Path,default=Path("outputs/distillation"))
+    parser.add_argument("--components",type=int,default=50)
+    parser.add_argument("--checkpoint",type=Path,default=Path("outputs/baseline/official/teacher.ckpt"))
+    parser.add_argument("--figure-prefix",default="")
+    args=parser.parse_args()
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
-    out = Path('outputs/distillation'); out.mkdir(parents=True,exist_ok=True)
+    out = args.state_dir; out.mkdir(parents=True,exist_ok=True)
     figures = Path('outputs/figures'); figures.mkdir(parents=True,exist_ok=True)
     sdq_data = sdq.datasets.larry(data_dir='data', variant=None)
     a = quickstart_subset(sdq_data)
     del sdq_data
-    x = np.asarray(a.obsm['X_pca'], dtype=np.float32)
+    x = np.asarray(a.obsm['X_pca'][:,:args.components], dtype=np.float32)
     obs = a.obs.copy()
     obs['partition'] = clone_split(obs)
-    exposure = pd.read_csv('outputs/baseline/official/split_membership.csv',index_col=0)
+    exposure = pd.read_csv(args.checkpoint.parent/'split_membership.csv',index_col=0)
     exposure['source_cell_id'] = exposure.source_cell_id.astype(str)
     exposure = exposure.set_index('source_cell_id')
     for name in ('fit_train','fit_val','test'):
         obs[f'teacher_{name}'] = obs.source_cell_id.astype(str).map(exposure[name])
     obs.to_csv(out/'state_metadata.csv',index=False)
     np.save(out/'observed_states.npy',x)
-    teacher = TeacherSDE(Path('outputs/baseline/official/teacher.ckpt'),device='cuda:0')
+    teacher = TeacherSDE(args.checkpoint,device='cuda:0')
     f,g = teacher.evaluate(x)
     np.savez_compressed(out/'observed_targets.npz',drift=f,diffusion=g)
     rng = np.random.default_rng(0)
@@ -62,7 +69,7 @@ def main() -> None:
         print('simulate',partition,len(initial),flush=True)
         trajectories = simulate_sde(teacher,initial,times,seed=100+len(sim),dt=.05)
         assert np.isfinite(trajectories).all()
-        sf,sg = teacher.evaluate(trajectories.reshape(-1,50))
+        sf,sg = teacher.evaluate(trajectories.reshape(-1,args.components))
         groups = np.tile(np.repeat(obs.iloc[chosen].clone_idx.astype(str).to_numpy(),4),len(times))
         np.savez_compressed(out/f'simulated_{partition}.npz',states=trajectories,
                             drift=sf,diffusion=sg,times=times,groups=groups.astype(str),initial_indices=chosen)
@@ -80,7 +87,7 @@ def main() -> None:
             counts=pd.Series(labels).value_counts(normalize=True)
             for fate in ('Monocyte','Neutrophil','Undifferentiated'):
                 rows.append({'time':t,'source':source,'fate':fate,'fraction':float(counts.get(fate,0))})
-    pd.DataFrame(rows).to_csv('outputs/tables/teacher_observed_fates.csv',index=False)
+    pd.DataFrame(rows).to_csv(f'outputs/tables/{args.figure_prefix}teacher_observed_fates.csv',index=False)
     fig,axes=plt.subplots(1,3,figsize=(15,4))
     colors={'Monocyte':'tab:orange','Neutrophil':'tab:blue','Undifferentiated':'gray'}
     for name,color in colors.items():
@@ -94,16 +101,16 @@ def main() -> None:
         axes[2].plot(path[:,0],path[:,1],alpha=.3)
     axes[2].set_title('Teacher trajectories from test-origin states')
     for ax in axes:ax.set(xlabel='PC1',ylabel='PC2')
-    fig.tight_layout();fig.savefig(figures/'teacher_baseline.png',dpi=160);plt.close(fig)
-    audit={'checkpoint_sha256':sha256_file(Path('outputs/baseline/official/teacher.ckpt')),
+    fig.tight_layout();fig.savefig(figures/f'{args.figure_prefix}teacher_baseline.png',dpi=160);plt.close(fig)
+    audit={'checkpoint_sha256':sha256_file(args.checkpoint),
            'split_seed':0,'partition_counts':obs.partition.value_counts().to_dict(),
            'group_split':'clone-disjoint; missing IDs unique per cell',
            'teacher_exposure_by_partition':obs.groupby('partition')[['teacher_fit_train','teacher_fit_val']].sum().to_dict(),
-           'state_dimension':50,'simulated_source':'teacher simulation, not additional observed data',
+           'state_dimension':args.components,'simulated_source':'teacher simulation, not additional observed data',
            'qualitative_assessment':'PC-space field/trajectories and class composition available for visual inspection; official UMAP layout not identical.',
            'independence_caveat':'Distillation test is held out from symbolic fit, not from original teacher/upstream PCA.',
            'selection_policy':'Use validation for symbolic hyperparameters per explicit instruction Step4/skill; never test.'}
-    Path('outputs/logs/distillation_split_audit.json').write_text(json.dumps(audit,indent=2))
+    Path(f'outputs/logs/{args.figure_prefix}distillation_split_audit.json').write_text(json.dumps(audit,indent=2))
     print(json.dumps(audit,indent=2),flush=True)
 
 if __name__=='__main__':main()

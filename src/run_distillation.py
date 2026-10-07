@@ -7,16 +7,16 @@ import pandas as pd
 from .distill import PolynomialField,errors,fit_field
 
 
-def query_partition(partition: str, target: str, stride: int) -> tuple[np.ndarray,np.ndarray,np.ndarray]:
+def query_partition(partition: str, target: str, stride: int, state_root: Path = Path('outputs/distillation')) -> tuple[np.ndarray,np.ndarray,np.ndarray]:
     """Return states (n,d), teacher targets (n,k), dependence groups (n,)."""
-    root=Path('outputs/distillation')
+    root=state_root
     obs=pd.read_csv(root/'state_metadata.csv')
     mask=obs.partition.eq(partition).to_numpy()
     x=np.load(root/'observed_states.npy')[mask]
     y=np.load(root/'observed_targets.npz')[target][mask].reshape(mask.sum(),-1)
     groups=obs.loc[mask,'clone_idx'].astype(str).to_numpy()
     simulated=np.load(root/f'simulated_{partition}.npz')
-    sx=simulated['states'].reshape(-1,50)[::stride]
+    sx=simulated['states'].reshape(-1,x.shape[1])[::stride]
     sy=simulated[target][::stride].reshape(len(sx),-1)
     return np.vstack([x,sx]),np.vstack([y,sy]),np.concatenate([groups,simulated['groups'][::stride]])
 
@@ -43,10 +43,10 @@ def export_equations(field: PolynomialField, root: Path) -> None:
 
 def run_target(target: str, config: dict) -> dict:
     """Select on validation only, bootstrap training groups, then evaluate fixed model on test."""
-    root=Path('outputs/sindy')/target;root.mkdir(parents=True,exist_ok=True)
+    root=Path(config.get('sindy_root','outputs/sindy'))/target;root.mkdir(parents=True,exist_ok=True)
     stride=config['simulation_query_stride']
-    x,y,groups=query_partition('train',target,stride)
-    vx,vy,_=query_partition('validation',target,stride)
+    x,y,groups=query_partition('train',target,stride,Path(config.get('state_root','outputs/distillation')))
+    vx,vy,_=query_partition('validation',target,stride,Path(config.get('state_root','outputs/distillation')))
     domain_radius=float(np.quantile(np.linalg.norm(x,axis=1),config['domain_training_norm_quantile']))
     train_domain=np.linalg.norm(x,axis=1)<=domain_radius
     validation_domain=np.linalg.norm(vx,axis=1)<=domain_radius
@@ -55,7 +55,8 @@ def run_target(target: str, config: dict) -> dict:
     if validation_domain.mean()<config['minimum_validation_domain_coverage']:
         raise ValueError('Training-defined domain covers too little validation data')
     rows=[];models=[]
-    for degree in config['degrees']:
+    degrees=list(config['degrees'])
+    for degree in degrees:
         for alpha in config['alphas']:
             for threshold in config['thresholds']:
                 print('fit',target,degree,alpha,threshold,flush=True)
@@ -67,6 +68,10 @@ def run_target(target: str, config: dict) -> dict:
                 rows.append(row);models.append(model)
                 pd.DataFrame(rows).to_csv(root/'sweep.csv',index=False)
                 print(row,flush=True)
+        if degree==2 and config.get('degree_3_if_needed',False):
+            if min(r['validation_nrmse'] for r in rows)>config['drift_validation_nrmse_max']:
+                print('Degree2 insufficient on validation; degree3 justified',flush=True)
+                degrees.append(3)
     best_error=min(r['validation_nrmse'] for r in rows)
     acceptable=[i for i,r in enumerate(rows) if r['validation_nrmse']<=best_error*(1+config['selection_relative_error_tolerance'])]
     selected=min(acceptable,key=lambda i:rows[i]['active_terms'])
@@ -89,7 +94,7 @@ def run_target(target: str, config: dict) -> dict:
     np.save(root/'bootstrap_frequency.npy',frequencies)
     pd.DataFrame([{'output':int(k+1),'feature_index':int(j),'frequency':float(frequencies[k,j])}
                   for k,j in zip(*np.nonzero(support))]).to_csv(root/'bootstrap_selected_terms.csv',index=False)
-    tx,ty,_=query_partition('test',target,stride)
+    tx,ty,_=query_partition('test',target,stride,Path(config.get('state_root','outputs/distillation')))
     result={'selected':rows[selected],'train':errors(y,model.predict(x)),
             'validation':errors(vy[validation_domain],model.predict(vx[validation_domain])),
             'validation_all_domain':errors(vy,model.predict(vx)),
@@ -117,13 +122,17 @@ def run_target(target: str, config: dict) -> dict:
     for degree,subset in table.groupby('degree'):
         ax.plot(subset.active_terms,subset.validation_nrmse,'o-',label=f'degree {degree}')
     ax.set(xlabel='Active coefficients',ylabel='Validation NRMSE',title=target+' fidelity / sparsity')
-    ax.legend();fig.savefig(f'outputs/figures/{target}_sparsity.png',dpi=160,bbox_inches='tight');plt.close(fig)
+    ax.legend();fig.savefig(f"outputs/figures/{config.get('figure_prefix','')}{target}_sparsity.png",dpi=160,bbox_inches='tight');plt.close(fig)
     return result
 
 
 def main() -> None:
     """Drift gate is applied before diffusion; preserve any negative result."""
-    config=json.loads(Path('configs/experiment.json').read_text())
+    import argparse
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--config',type=Path,default=Path('configs/experiment.json'))
+    args=parser.parse_args()
+    config=json.loads(args.config.read_text())
     drift=run_target('drift',config)
     print('DRIFT',json.dumps(drift),flush=True)
     if not drift['function_success']:

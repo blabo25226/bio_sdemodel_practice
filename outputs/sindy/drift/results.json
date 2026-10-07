@@ -1,0 +1,73 @@
+{
+  "selected": {
+    "degree": 2,
+    "alpha": 100.0,
+    "threshold": 0.05,
+    "library_size": 1326,
+    "active_terms": 2815,
+    "train_mse": 4.1537940099066075,
+    "validation_mse": 5.363304887562283,
+    "train_nrmse": 0.5588290405032676,
+    "validation_nrmse": 0.5543739085341338
+  },
+  "train": {
+    "mse": 4.1537940099066075,
+    "nrmse": 0.5588290405032676,
+    "cosine_mean": 0.7895587193071653,
+    "error_norm_q95": 26.85318025398682,
+    "error_norm_max": 97.85992061899765
+  },
+  "validation": {
+    "mse": 5.363304887562283,
+    "nrmse": 0.5543739085341338,
+    "cosine_mean": 0.7773524990075698,
+    "error_norm_q95": 28.024634521933212,
+    "error_norm_max": 111.55603533017033
+  },
+  "validation_all_domain": {
+    "mse": 1428.080001905648,
+    "nrmse": 9.065470723506133,
+    "cosine_mean": 0.7751805194400347,
+    "error_norm_q95": 28.3762253764754,
+    "error_norm_max": 14017.921708941101
+  },
+  "test": {
+    "mse": 6.953521285005209,
+    "nrmse": 0.6585393932059862,
+    "cosine_mean": 0.7613926145120815,
+    "error_norm_q95": 29.807723971221872,
+    "error_norm_max": 162.46024864471323
+  },
+  "test_in_domain": {
+    "mse": 6.3431696186097355,
+    "nrmse": 0.6283626187764202,
+    "cosine_mean": 0.7621838282438006,
+    "error_norm_q95": 29.561281282056996,
+    "error_norm_max": 102.38178832992043
+  },
+  "domain_radius": 32.322166442871094,
+  "domain_definition": "Euclidean PC state norm <= training-only quantile; no clipping in model",
+  "validation_domain_coverage": 0.9931234165761853,
+  "test_domain_coverage": 0.996096291476903,
+  "bootstrap_replicates": 5,
+  "bootstrap_jaccards": [
+    0.5437516724645437,
+    0.49545136459062283,
+    0.5164775796866559,
+    0.5537364668603116,
+    0.5249505928853755
+  ],
+  "mean_selected_frequency": 0.7310834813499112,
+  "sources": [
+    "observed states",
+    "teacher-simulated states"
+  ],
+  "sample_counts": {
+    "train": 7411,
+    "validation": 2763,
+    "test": 3074
+  },
+  "normalization": "RMSE / RMS teacher target",
+  "test_policy": "evaluated only after frozen validation selection; not used for tuning",
+  "function_success": false
+}

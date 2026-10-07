@@ -133,19 +133,22 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-dir', type=Path, default=Path('data'))
     parser.add_argument('--epochs', type=int, default=1500)
+    parser.add_argument('--latent-dim', type=int, default=50)
+    parser.add_argument('--output-dir', type=Path, default=Path('outputs/baseline'))
     args = parser.parse_args()
-    status = Path('outputs/logs/training_status.json')
+    status = Path('outputs/logs') / ('training_status.json' if args.latent_dim==50 else f'training_status_pc{args.latent_dim}.json')
     try:
         write_status(status, stage='loading_data')
         pl.seed_everything(0, workers=True)
         full = sdq.datasets.larry(data_dir=str(args.data_dir), variant=None)
         adata = quickstart_subset(full)
         del full
+        adata.obsm['X_pca']=np.asarray(adata.obsm['X_pca'])[:,:args.latent_dim].copy()
         write_status(status, stage='smoke_training', n_cells=adata.n_obs)
-        run_stage(adata, 2, 0, Path('outputs/baseline/smoke'), 'larry_smoke')
+        run_stage(adata, 2, 0, args.output_dir/'smoke', 'larry_smoke')
         write_status(status, stage='full_training', epochs=args.epochs, n_cells=adata.n_obs)
-        run_stage(adata, args.epochs, 0, Path('outputs/baseline/official'), 'larry_baseline')
-        measured = Path('outputs/baseline/official/semantics.json').read_text()
+        run_stage(adata, args.epochs, 0, args.output_dir/'official', 'larry_baseline')
+        measured = (args.output_dir/'official/semantics.json').read_text()
         Path('outputs/logs/model_semantics.md').write_text(
             '# Measured trained LARRY teacher semantics\n\n'
             'Runtime measurements from scdiffeq==1.1.4 / neural-diffeqs==0.4.1.\n\n'

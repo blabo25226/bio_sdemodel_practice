@@ -74,6 +74,8 @@ def run_target(target: str, config: dict) -> dict:
                 degrees.append(3)
     best_error=min(r['validation_nrmse'] for r in rows)
     acceptable=[i for i,r in enumerate(rows) if r['validation_nrmse']<=best_error*(1+config['selection_relative_error_tolerance'])]
+    passing=[i for i in acceptable if rows[i]['validation_nrmse']<=config['drift_validation_nrmse_max']]
+    if passing:acceptable=passing
     selected=min(acceptable,key=lambda i:rows[i]['active_terms'])
     model=models[selected]
     model.save(root/'model.npz');export_equations(model,root)
@@ -94,6 +96,15 @@ def run_target(target: str, config: dict) -> dict:
     np.save(root/'bootstrap_frequency.npy',frequencies)
     pd.DataFrame([{'output':int(k+1),'feature_index':int(j),'frequency':float(frequencies[k,j])}
                   for k,j in zip(*np.nonzero(support))]).to_csv(root/'bootstrap_selected_terms.csv',index=False)
+    jitter=[]
+    for factor in (.9,1.1):
+        neighbor=fit_field(x,y,model.metadata['degree'],model.metadata['threshold']*factor,
+                           model.metadata['alpha'],reference=model,unbias=config['unbias'])
+        neighbor_support=neighbor.coefficients!=0
+        jitter.append({'threshold':model.metadata['threshold']*factor,
+                       'active_terms':int(neighbor_support.sum()),
+                       'support_jaccard':float(np.count_nonzero(support&neighbor_support)/max(np.count_nonzero(support|neighbor_support),1)),
+                       'validation_nrmse':errors(vy[validation_domain],neighbor.predict(vx[validation_domain]))['nrmse']})
     tx,ty,_=query_partition('test',target,stride,Path(config.get('state_root','outputs/distillation')))
     result={'selected':rows[selected],'train':errors(y,model.predict(x)),
             'validation':errors(vy[validation_domain],model.predict(vx[validation_domain])),
@@ -104,7 +115,7 @@ def run_target(target: str, config: dict) -> dict:
             'validation_domain_coverage':float(validation_domain.mean()),
             'test_domain_coverage':float(np.mean(np.linalg.norm(tx,axis=1)<=domain_radius)),
             'bootstrap_replicates':config['bootstrap_replicates'],
-            'bootstrap_jaccards':jaccards,
+            'bootstrap_jaccards':jaccards,'threshold_jitter':jitter,
             'mean_selected_frequency':float(frequencies[support].mean()) if support.any() else 0.,
             'sources':['observed states','teacher-simulated states'],
             'sample_counts':{'train':len(x),'validation':len(vx),'test':len(tx)},

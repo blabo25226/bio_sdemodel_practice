@@ -33,3 +33,7 @@ outputs/logs/distillation_pc5_run.txt
 outputs/logs/prepare_pc5_run.txt
 outputs/logs/kernel_install.txt
 outputs/logs/notebook_initial_execution.txt
+outputs/logs/campaign_pc5_run.txt
+outputs/logs/validation_pc5_run.txt
+outputs/logs/direct_baseline_pc5_run.txt
+outputs/direct_baseline_pc5/**/*.npz

@@ -19,25 +19,33 @@ def sliced_wasserstein(a: np.ndarray,b: np.ndarray,scale: np.ndarray,
 
 def main() -> None:
     """Frozen-model test evaluation across seeds; retain simulation failures as results."""
+    import argparse
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--state-dir',type=Path,default=Path('outputs/distillation'))
+    parser.add_argument('--sindy-dir',type=Path,default=Path('outputs/sindy'))
+    parser.add_argument('--checkpoint',type=Path,default=Path('outputs/baseline/official/teacher.ckpt'))
+    parser.add_argument('--output-dir',type=Path,default=Path('outputs/validation'))
+    parser.add_argument('--figure-prefix',default='')
+    args=parser.parse_args()
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
-    root=Path('outputs/validation');root.mkdir(parents=True,exist_ok=True)
+    root=args.output_dir;root.mkdir(parents=True,exist_ok=True)
     for target in ('drift','diffusion'):
-        result=json.loads(Path(f'outputs/sindy/{target}/results.json').read_text())
+        result=json.loads((args.sindy_dir/target/'results.json').read_text())
         if not result['function_success']:raise RuntimeError(f'{target} failed the validation gate')
-    drift=PolynomialField.load(Path('outputs/sindy/drift/model.npz'))
-    diffusion=PolynomialField.load(Path('outputs/sindy/diffusion/model.npz'))
-    teacher=TeacherSDE(Path('outputs/baseline/official/teacher.ckpt'),device='cuda:0')
+    drift=PolynomialField.load(args.sindy_dir/'drift/model.npz')
+    diffusion=PolynomialField.load(args.sindy_dir/'diffusion/model.npz')
+    teacher=TeacherSDE(args.checkpoint,device='cuda:0')
     symbolic=SymbolicSDE(drift,diffusion,device='cuda:0')
-    obs=pd.read_csv('outputs/distillation/state_metadata.csv')
-    x=np.load('outputs/distillation/observed_states.npy')
-    initial_ix=np.load('outputs/distillation/simulated_test.npz')['initial_indices']
+    obs=pd.read_csv(args.state_dir/'state_metadata.csv')
+    x=np.load(args.state_dir/'observed_states.npy')
+    initial_ix=np.load(args.state_dir/'simulated_test.npz')['initial_indices']
     initial=np.repeat(x[initial_ix],4,axis=0)
     times=np.array([2.,4.,6.])
     rng=np.random.default_rng(42)
-    projections=rng.normal(size=(50,64));projections/=np.linalg.norm(projections,axis=0)
-    classifier=joblib.load('outputs/distillation/fate_classifier.joblib')
+    projections=rng.normal(size=(len(drift.mean),64));projections/=np.linalg.norm(projections,axis=0)
+    classifier=joblib.load(args.state_dir/'fate_classifier.joblib')
     from sklearn.metrics import accuracy_score
     test=obs.partition.eq('test').to_numpy()
     classifier_accuracy=float(accuracy_score(obs.loc[test,'Cell type annotation'],classifier.predict(x[test])))
@@ -83,7 +91,7 @@ def main() -> None:
         coarse=simulate_sde(sde,initial[:32],times,202,dt=.05)
         fine=simulate_sde(sde,initial[:32],times,202,dt=.025)
         dt_results[name]=sliced_wasserstein(coarse[-1],fine[-1],drift.scale,projections)
-    target=np.load('outputs/distillation/observed_targets.npz')
+    target=np.load(args.state_dir/'observed_targets.npz')
     field_rows=[]
     for partition in ('train','validation','test'):
         ix=obs.partition.eq(partition).to_numpy()
@@ -94,13 +102,13 @@ def main() -> None:
     for ax,name in zip(axes,('Observed data','Neural SDE teacher','Symbolic SDE')):
         states=x[test & obs['Time point'].eq(6).to_numpy()] if name=='Observed data' else trajectories[name][-1]
         ax.scatter(states[:,0],states[:,1],s=4,alpha=.5);ax.set(title=name,xlabel='PC1',ylabel='PC2')
-    fig.tight_layout();fig.savefig('outputs/figures/endpoint_comparison.png',dpi=160);plt.close(fig)
+    fig.tight_layout();fig.savefig(f'outputs/figures/{args.figure_prefix}endpoint_comparison.png',dpi=160);plt.close(fig)
     fate_table=pd.DataFrame(fates)
     fig,ax=plt.subplots(figsize=(8,4))
     endpoint=fate_table[fate_table.time==6].pivot(index='source',columns='fate',values='fraction')
     endpoint.loc[['Observed data','Neural SDE teacher','Symbolic SDE']].plot.bar(stacked=True,ax=ax)
     ax.set(ylabel='Fraction',title='Day 6 composition (training-only kNN for simulations)')
-    ax.tick_params(axis='x',rotation=10);fig.tight_layout();fig.savefig('outputs/figures/fate_comparison.png',dpi=160);plt.close(fig)
+    ax.tick_params(axis='x',rotation=10);fig.tight_layout();fig.savefig(f'outputs/figures/{args.figure_prefix}fate_comparison.png',dpi=160);plt.close(fig)
     tv=float(.5*np.abs(endpoint.loc['Neural SDE teacher']-endpoint.loc['Symbolic SDE']).sum())
     result={'simulation_success':all(r['finite'] for r in stability),
             'seeds':[202,203,204],'initial_observed_cells':len(initial_ix),'replicates_per_initial':4,

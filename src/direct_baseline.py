@@ -29,9 +29,16 @@ def centroid_pairs(x: np.ndarray,obs: pd.DataFrame) -> dict[str,tuple[np.ndarray
 
 def main() -> None:
     """Fit/validate on clone-disjoint proxy targets and compare frozen models on test pairs."""
-    root=Path('outputs/direct_baseline');root.mkdir(parents=True,exist_ok=True)
-    x=np.load('outputs/distillation/observed_states.npy')
-    obs=pd.read_csv('outputs/distillation/state_metadata.csv')
+    import argparse
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--state-dir',type=Path,default=Path('outputs/distillation'))
+    parser.add_argument('--sindy-dir',type=Path,default=Path('outputs/sindy'))
+    parser.add_argument('--checkpoint',type=Path,default=Path('outputs/baseline/official/teacher.ckpt'))
+    parser.add_argument('--output-dir',type=Path,default=Path('outputs/direct_baseline'))
+    args=parser.parse_args()
+    root=args.output_dir;root.mkdir(parents=True,exist_ok=True)
+    x=np.load(args.state_dir/'observed_states.npy')
+    obs=pd.read_csv(args.state_dir/'state_metadata.csv')
     pairs=centroid_pairs(x,obs)
     train,next_train,_=pairs['train'];validation,next_validation,_=pairs['validation']
     models=[];rows=[]
@@ -51,11 +58,11 @@ def main() -> None:
     test,later,ids=pairs['test']
     proxy_prediction=test+2*model.predict(test)
     comparison=[{'source':'Raw clone-centroid polynomial proxy',**errors(later-test,proxy_prediction-test)}]
-    teacher=TeacherSDE(Path('outputs/baseline/official/teacher.ckpt'),device='cuda:0')
+    teacher=TeacherSDE(args.checkpoint,device='cuda:0')
     methods=[('Neural SDE teacher',teacher)]
-    if Path('outputs/sindy/diffusion/model.npz').exists():
-        methods.append(('Symbolic SDE',SymbolicSDE(PolynomialField.load(Path('outputs/sindy/drift/model.npz')),
-                      PolynomialField.load(Path('outputs/sindy/diffusion/model.npz')),device='cuda:0')))
+    if (args.sindy_dir/'diffusion/model.npz').exists():
+        methods.append(('Symbolic SDE',SymbolicSDE(PolynomialField.load((args.sindy_dir/'drift/model.npz')),
+                      PolynomialField.load((args.sindy_dir/'diffusion/model.npz')),device='cuda:0')))
     for name,sde in methods:
         predictions=np.zeros_like(test)
         for t in (2.,4.):
@@ -63,7 +70,7 @@ def main() -> None:
             if not len(ix):continue
             initial=np.repeat(test[ix],16,axis=0)
             simulation=simulate_sde(sde,initial,np.array([t,t+2]),seed=305,dt=.05)
-            predictions[ix]=simulation[-1].reshape(len(ix),16,50).mean(1)
+            predictions[ix]=simulation[-1].reshape(len(ix),16,x.shape[1]).mean(1)
         comparison.append({'source':name,**errors(later-test,predictions-test)})
     pd.DataFrame(comparison).to_csv(root/'test_displacement_comparison.csv',index=False)
     result={'selected':rows[selected],'pair_counts':{k:len(v[0]) for k,v in pairs.items()},

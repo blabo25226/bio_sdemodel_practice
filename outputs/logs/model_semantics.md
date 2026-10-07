@@ -1,27 +1,53 @@
-# Model semantics — not yet measured
+# Measured trained LARRY teacher semantics
 
-Date: 2026-10-07 (Asia/Tokyo)
-Status: No model instance has been constructed or trained; M1 not achieved.
+Runtime measurements from scdiffeq==1.1.4 / neural-diffeqs==0.4.1.
 
-The inspected distribution is the official PyPI wheel scdiffeq==1.1.4.
-Its source provenance is recorded in `package_inspection.json`.
-This is source inspection, not runtime verification.
+```json
+{
+  "lightning_class": "<class 'scdiffeq.core.lightning_models._lightning_sde_fixed_potential_regularized_velocity_ratio.LightningSDE_FixedPotential_RegularizedVelocityRatio'>",
+  "sde_class": "<class 'neural_diffeqs._potential_sde.PotentialSDE'>",
+  "sde_type": "ito",
+  "noise_type": "general",
+  "brownian_dim": 1,
+  "state_shape": [
+    8,
+    50
+  ],
+  "drift_shape": [
+    8,
+    50
+  ],
+  "diffusion_shape": [
+    8,
+    50,
+    1
+  ],
+  "covariance_shape": [
+    8,
+    50,
+    50
+  ],
+  "dtype": "torch.float32",
+  "device": "cpu",
+  "f_source": "    def f(self, t: torch.Tensor, y: torch.Tensor) -> torch.Tensor:\n        \"\"\"Compute the drift term of the differential equation.\n        \n        This method provides a standardized interface for the drift term,\n        compatible with numerical solvers like those in torchdiffeq and torchsde.\n        \n        Args:\n            t (torch.Tensor): The current time point.\n            y (torch.Tensor): The current state of the system.\n            \n        Returns:\n            torch.Tensor: The drift term evaluated at the current state.\n        \"\"\"\n        return self.drift(y)\n",
+  "g_source": "    def g(self, t: torch.Tensor, y: torch.Tensor) -> torch.Tensor:\n        \"\"\"Compute the diffusion term of the differential equation.\n        \n        This method provides a standardized interface for the diffusion term,\n        compatible with numerical solvers like those in torchsde.\n        \n        Args:\n            t (torch.Tensor): The current time point.\n            y (torch.Tensor): The current state of the system.\n            \n        Returns:\n            torch.Tensor: The diffusion term evaluated at the current state.\n        \"\"\"\n        return self.diffusion(y)\n",
+  "time_probe_drift_max_abs_difference": 0.0,
+  "time_probe_diffusion_max_abs_difference": 0.0,
+  "public_field_shapes": {
+    "X_drift": [
+      9350,
+      50
+    ],
+    "X_diffusion": [
+      9350,
+      50
+    ]
+  },
+  "public_api_matches_direct": true
+}
+```
 
-Pending runtime observations:
-- type(model.DiffEq) and nested SDE class
-- latent dimension / input state shape
-- sde_type / noise_type / brownian_dim
-- actual f(t, X) and g(t, X) shapes, dtype, device and finite checks
-- implementation of time input handling; probe at multiple times
-- correspondence of model.drift()/diffusion() AnnData fields to direct outputs
-- interpretation and construction of D = GG^T appropriate to actual noise_type
-
-No diagonal, scalar, independent-coordinate, or rank-one noise assumption is made.
-For a general-noise tensor G shaped (batch, d, m), D is (batch, d, d)
-with D[b] = G[b] @ G[b].T. This is conditional mathematical notation,
-not an observation of this project's model. For diagonal noise, first interpret
-its vector representation through the installed torchsde contract.
-
-SINDy implementation is deferred until baseline execution and this audit succeed,
-as required by `.agents/skills/01_reproduce_scdiffeq_larry.md`:
-「baseline が動かなければ SINDy に進まない。」
+G is the stochastic coefficient; D = GG^T is the infinitesimal covariance.
+General-noise G is not a diagonal diffusion vector.
+Time probes supplement the inspected f/g source; they alone do not prove time independence.
+This is teacher approximation semantics, not identified biological noise.

@@ -1,0 +1,86 @@
+{
+  "full": {
+    "n_cells": 130887,
+    "n_genes": 2492,
+    "pca_shape": [
+      130887,
+      50
+    ],
+    "keys": {
+      "obs": [
+        "Library",
+        "Cell barcode",
+        "Time point",
+        "Starting population",
+        "Cell type annotation",
+        "Well",
+        "SPRING-x",
+        "SPRING-y",
+        "clone_idx",
+        "fate_observed",
+        "t0_fated",
+        "train",
+        "ct_score",
+        "ct_pseudotime",
+        "ct_num_exp_genes"
+      ],
+      "obsm": [
+        "X_clone",
+        "X_pca",
+        "X_scaled",
+        "X_umap",
+        "cell_fate_df"
+      ],
+      "layers": [
+        "X_scaled"
+      ],
+      "uns": [
+        "fate_counts",
+        "h5ad_path",
+        "time_occupance"
+      ]
+    }
+  },
+  "quickstart_subset": {
+    "n_cells": 9350,
+    "n_genes": 2492,
+    "pca_shape": [
+      9350,
+      50
+    ],
+    "keys": {
+      "obs": [
+        "Library",
+        "Cell barcode",
+        "Time point",
+        "Starting population",
+        "Cell type annotation",
+        "Well",
+        "SPRING-x",
+        "SPRING-y",
+        "clone_idx",
+        "fate_observed",
+        "t0_fated",
+        "train",
+        "ct_score",
+        "ct_pseudotime",
+        "ct_num_exp_genes",
+        "source_cell_id",
+        "nm_clones"
+      ],
+      "obsm": [
+        "X_pca",
+        "X_scaled",
+        "X_umap"
+      ],
+      "layers": [
+        "X_scaled"
+      ],
+      "uns": [
+        "fate_counts",
+        "h5ad_path",
+        "time_occupance"
+      ]
+    }
+  }
+}

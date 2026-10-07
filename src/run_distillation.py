@@ -132,9 +132,9 @@ def run_target(target: str, config: dict) -> dict:
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     table=pd.DataFrame(rows);fig,ax=plt.subplots()
-    for degree,subset in table.groupby('degree'):
-        ax.plot(subset.active_terms,subset.validation_nrmse,'o-',label=f'degree {degree}')
-    ax.set(xlabel='Active coefficients',ylabel='Validation NRMSE',title=target+' fidelity / sparsity')
+    for (degree,alpha),subset in table.groupby(['degree','alpha']):
+        ax.scatter(subset.active_terms,subset.validation_nrmse,label=f'degree {degree}, alpha={alpha:g}')
+    ax.set(xlabel='Active coefficients',ylabel='In-domain validation NRMSE',title=target+' fidelity / sparsity')
     ax.legend();fig.savefig(f"outputs/figures/{config.get('figure_prefix','')}{target}_sparsity.png",dpi=160,bbox_inches='tight');plt.close(fig)
     return result
 

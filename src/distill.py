@@ -46,10 +46,17 @@ class PolynomialField:
         """Save transform, polynomial powers and coefficients without pickle."""
         np.savez_compressed(path,powers=self.powers,coefficients=self.coefficients,
                             mean=self.mean,scale=self.scale,metadata=json.dumps(self.metadata))
+        path.with_suffix('.json').write_text(json.dumps({'powers':self.powers.tolist(),
+            'coefficients':self.coefficients.tolist(),'mean':self.mean.tolist(),
+            'scale':self.scale.tolist(),'metadata':self.metadata},indent=2))
 
     @classmethod
     def load(cls, path: Path) -> 'PolynomialField':
         """Restore a function without touching validation/test data."""
+        if not path.exists() and path.with_suffix('.json').exists():
+            a=json.loads(path.with_suffix('.json').read_text())
+            return cls(np.asarray(a['powers'],dtype=int),np.asarray(a['coefficients']),
+                       np.asarray(a['mean']),np.asarray(a['scale']),a['metadata'])
         a=np.load(path,allow_pickle=False)
         return cls(a['powers'],a['coefficients'],a['mean'],a['scale'],json.loads(str(a['metadata'])))
 

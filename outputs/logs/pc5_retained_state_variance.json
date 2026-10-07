@@ -1,0 +1,4 @@
+{
+  "training_observed_variance_ratio_first5_to_first50": 0.5957484886200713,
+  "interpretation": "Empirical retained PC-state variance in the selected training subset; not explained variance of all genes."
+}

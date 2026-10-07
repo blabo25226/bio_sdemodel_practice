@@ -1,0 +1,5 @@
+/home/blabo/bio_sdemodel_practice/.venv/lib/python3.11/site-packages/torch/_subclasses/functional_tensor.py:275: UserWarning: Failed to initialize NumPy: No module named 'numpy' (Triggered internally at /pytorch/torch/csrc/utils/tensor_numpy.cpp:81.)
+  cpu = _conversion_method_template(device=torch.device("cpu"))
+2.6.0+cu124 12.4 True
+NVIDIA GeForce RTX 2070
+tensor([2., 2.])

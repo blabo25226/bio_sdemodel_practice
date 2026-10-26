@@ -1,0 +1,23 @@
+{
+  "n_points": 8192,
+  "shell_fractions_of_R": [
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "definition": "||J - J^T||_F / ||J||_F per state; 0 = exact gradient field",
+  "jacobian_pc_coordinates": {
+    "median": 0.897159261680051,
+    "q95": 1.1652121934341522,
+    "max": 1.4784351381681646,
+    "fraction_below_0.05": 0.0
+  },
+  "jacobian_standardized_coordinates": {
+    "median": 0.9957697972818964,
+    "q95": 1.214935356825185,
+    "max": 1.4808592693699136,
+    "fraction_below_0.05": 0.0
+  },
+  "note": "Symmetry is expected in PC coordinates because the teacher drift is grad_x mu. In z coordinates the per-axis scales break symmetry even for an exact distillation, so J_z asymmetry alone must not be quoted as structure loss."
+}

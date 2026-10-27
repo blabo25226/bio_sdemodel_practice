@@ -58,3 +58,4 @@
 | Day | Date | Paper | System | Report |
 |---|---|---|---|---|
 | 1 | 2026-10-26 | Li et al. 2020, Scalable Gradients for SDEs (AISTATS) | stochastic Lorenz attractor (3D) | `day01_li2020_lorenz/report.md` |
+| 2 | 2026-10-27 | Kidger et al. 2021, Neural SDEs as Infinite-Dimensional GANs (ICML) | time-dependent Ornstein–Uhlenbeck process (1D, time-dependent) | `day02_kidger2021_ou/report.md` |

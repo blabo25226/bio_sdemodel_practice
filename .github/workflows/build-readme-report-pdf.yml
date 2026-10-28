@@ -21,7 +21,7 @@ jobs:
       - name: Install Pandoc XeLaTeX and Japanese fonts
         run: |
           sudo apt-get update -qq
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pandoc texlive-xetex texlive-latex-recommended texlive-latex-extra texlive-lang-japanese fonts-noto-cjk poppler-utils
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pandoc texlive-xetex texlive-latex-recommended texlive-latex-extra texlive-lang-japanese fonts-noto-cjk lmodern poppler-utils
       - name: Render markdown (including equations, tables, and local figures)
         run: |
           cat > /tmp/pdf-links.lua <<'LUA'

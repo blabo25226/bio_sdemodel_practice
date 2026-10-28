@@ -251,6 +251,7 @@ day 6 の fate は、symbolic training の観測細胞だけで fit した KNN �
   support Jaccard は drift 0.944 / 0.789、$G$ 0.984 / 0.903 だった。ただし bootstrap は 5 回だけなので、厳密な信頼区間ではない。
 
 ![5-PC drift sparsity](outputs/figures/pc5_drift_sparsity.png)
+
 ![5-PC diffusion sparsity](outputs/figures/pc5_diffusion_sparsity.png)
 
 ### 4.2 得られた式 (5-PC teacher の蒸留)
@@ -337,6 +338,7 @@ $\hat f$ は個別の多項式として fit したもので、teacher のよう�
   検証結果を見たあとに次数・閾値を再調整することはしていない。
 
 ![endpoint](outputs/figures/pc5_endpoint_comparison.png)
+
 ![fate](outputs/figures/pc5_fate_comparison.png)
 
 ### 4.4 マイルストーン判定

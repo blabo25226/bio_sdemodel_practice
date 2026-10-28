@@ -186,9 +186,9 @@ $$
 |\Theta_p|=\binom{d+p}{p}
 $$
 
-定数項は 1 つだけで、$z_iz_j$ や $z_i^2z_j$ のような交差項を含む。三角関数・指数・対数は含めない。
+定数項は 1 つだけで、2 次には $z_iz_j$、3 次に拡張すると $z_i^2z_j$ のような交差項も含まれる。三角関数・指数・対数は含めない。
 library の大きさは $d=5$ で 6 / 21 項 ($p=1,2$)、$d=50$ で 51 / 1,326 項になる。
-次数は degree 1 → 2 の順に試し、degree 3 は「必要な場合のみ」とした (今回は不要)。
+次数は degree 1 → 2 の順に試した。degree 2 で事前の局所近似基準を満たしたため、当初の実験では degree 3 は未実施とした。
 
 ### 3.4 STLSQ とモデル選択
 
@@ -221,8 +221,11 @@ $$
 ### 3.5 symbolic SDE の simulation と検証
 
 $$
-dX_t=\hat f(X_t)\,dt+\hat G(X_t)\,dW_t,\qquad W_t\in\mathbb{R}^1
+dX_t=\hat f(z(X_t))\,dt+\hat G(z(X_t))\,dW_t,\qquad
+z(x)=S^{-1}(x-m),\quad S=\operatorname{diag}(s_1,\ldots,s_d),\quad W_t\in\mathbb{R}^1
 $$
+
+ここで $X_t$ は元の PC 座標、$z(X_t)$ は training の平均 $m$ と標準偏差 $s$ により標準化した多項式への入力である。$\hat f$ の出力は PC/day、$\hat G$ の出力は PC/$\sqrt{\mathrm{day}}$ であり、標準化座標 $Z_t=z(X_t)$ 自身のドリフト・拡散係数ではない。
 
 この symbolic SDE を Itô Euler 法 ($\Delta t=0.05$ day) で積分した。初期状態は固定した day 2 観測細胞 32 個で、
 4 replicate × seed 3 つ (202 / 203 / 204) の計 384 軌道を、teacher と同じ条件で day 2 → 4 → 6 まで計算した。
@@ -301,12 +304,13 @@ $$
 ここから得られる symbolic SDE は
 
 $$
-dZ_t=\hat f(Z_t)\,dt+\hat G(Z_t)\,dW_t,\qquad \hat D(Z_t)=\hat G(Z_t)\hat G(Z_t)^\top
+dX_t=\hat f(z(X_t))\,dt+\hat G(z(X_t))\,dW_t,\qquad
+\hat D_X(x)=\hat G(z(x))\hat G(z(x))^\top
 $$
 
-である。成分ごとに書けば $\hat D_{kl}=\hat G_k\hat G_l$ で、$z$ について最大 4 次の多項式になる。
+である。成分ごとに書けば $\hat D_{X,kl}(x)=\hat G_k(z(x))\hat G_l(z(x))$ で、標準化入力 $z$ について最大 4 次の多項式になる。
 $\hat f$ は個別の多項式として fit したもので、teacher のような勾配構造 $f=\nabla\mu$ を**強制していない**
-(勾配場なら PC 座標でヤコビアンが対称になるはずだが、例えば $\partial\hat f_1/\partial\mathrm{PC}_2=-1.28/3.337\approx-0.38$ に対して $\partial\hat f_2/\partial\mathrm{PC}_1=-0.506/7.282\approx-0.07$ であり、対称になっていない)。
+(勾配場なら元の PC 座標でヤコビアンが対称になるはずだが、標準化の中心 $z=0$ において、例えば $\partial\hat f_1/\partial\mathrm{PC}_2=-1.28/3.337\approx-0.38$ に対して $\partial\hat f_2/\partial\mathrm{PC}_1=-0.506/7.282\approx-0.07$ であり、対称になっていない)。
 これらは PCA latent 座標上の teacher 近似式であり、**遺伝子制御の機構式ではない**。
 
 ### 4.3 symbolic SDE の simulation: 負の結果

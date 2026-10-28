@@ -60,16 +60,16 @@ jobs:
             while i <= #doc.blocks do
               if imagepath(doc.blocks[i]) == drift and imagepath(doc.blocks[i+1]) == diffusion then
                 table.insert(blocks, pandoc.RawBlock("latex", [[
-\par\smallskip\noindent
-\begin{minipage}[t]{0.48\linewidth}
-  \vspace{0pt}\centering
-  \includegraphics[width=\linewidth]{outputs/figures/pc5_drift_sparsity.png}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.48\linewidth}
-  \vspace{0pt}\centering
-  \includegraphics[width=\linewidth]{outputs/figures/pc5_diffusion_sparsity.png}
-\end{minipage}
-\par\smallskip
+          \par\smallskip\noindent
+          \begin{minipage}[t]{0.48\linewidth}
+            \vspace{0pt}\centering
+            \includegraphics[width=\linewidth]{outputs/figures/pc5_drift_sparsity.png}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.48\linewidth}
+            \vspace{0pt}\centering
+            \includegraphics[width=\linewidth]{outputs/figures/pc5_diffusion_sparsity.png}
+          \end{minipage}
+          \par\smallskip
 ]]))
                 replaced = replaced + 1
                 i = i + 2

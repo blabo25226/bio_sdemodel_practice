@@ -1,0 +1,12 @@
+{
+  "seed": 0,
+  "scope": "synthetic gradient field only; not the LARRY teacher",
+  "train_states": 6000,
+  "test_states": 2000,
+  "potential_terms": 55,
+  "active_terms": 10,
+  "true_active_terms": 10,
+  "drift_test_nrmse": 0.008655592435778387,
+  "jacobian_asymmetry_median": 0.0,
+  "support_recovered": true
+}

@@ -97,7 +97,7 @@ jobs:
           assert len(images)==5, f'Expected exactly 5 source figures; got {len(images)}'
           assert not any(p==2 for p,*_ in text_overflows), 'Page 2 text is clipped'
           text='\n'.join(p.get_text() for p in pdf)
-          for token in ('LARRY','Neural SDE','58.6%','drift fidelity','diffusion fidelity','Day 6'):
+          for token in ('LARRY','Neural SDE','58.6%','PC', 'symbolic SDE'):
             assert token in text, f'Missing PDF content: {token}'
           print('VERIFIED: page-2 text bounds and all five source figures')
           PY

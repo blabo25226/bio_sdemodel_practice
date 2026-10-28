@@ -1,0 +1,70 @@
+name: Build README research report PDF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - README.md
+      - .github/workflows/build-readme-report-pdf.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install Pandoc XeLaTeX and Japanese fonts
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pandoc texlive-xetex texlive-latex-recommended texlive-latex-extra texlive-lang-japanese fonts-noto-cjk poppler-utils
+      - name: Render markdown (including equations, tables, and local figures)
+        run: |
+          cat > /tmp/pdf-links.lua <<'LUA'
+          function Link(el)
+            local target = el.target
+            if not target:match("^[a-zA-Z][a-zA-Z0-9+.-]*:") and not target:match("^#") then
+              local kind = target:match("/$") and "tree" or "blob"
+              el.target = "https://github.com/blabo25226/bio_sdemodel_practice/" .. kind .. "/main/" .. target
+            end
+            return el
+          end
+          LUA
+          pandoc README.md \
+            --from=gfm+tex_math_dollars \
+            --standalone \
+            --pdf-engine=xelatex \
+            --resource-path=. \
+            --lua-filter=/tmp/pdf-links.lua \
+            -V papersize=a4 \
+            -V fontsize=10pt \
+            -V geometry:margin=18mm \
+            -V mainfont='DejaVu Sans' \
+            -V CJKmainfont='Noto Sans CJK JP' \
+            -V colorlinks=true \
+            -V linkcolor=blue \
+            -o '1028研究報告_README.pdf'
+      - name: Verify PDF output and embedded report content
+        run: |
+          set -euo pipefail
+          test -s '1028研究報告_README.pdf'
+          pdfinfo '1028研究報告_README.pdf' | grep -E '^(Pages:|Page size:|File size:)'
+          pdftotext -layout '1028研究報告_README.pdf' /tmp/readme-extracted.txt
+          grep -q 'Neural SDE' /tmp/readme-extracted.txt
+          grep -q 'LARRY' /tmp/readme-extracted.txt
+          grep -q '58.6%' /tmp/readme-extracted.txt
+          test "$(pdfimages -list '1028研究報告_README.pdf' | wc -l)" -ge 7
+          echo 'PDF text and embedded figures verified'
+      - name: Commit PDF to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add '1028研究報告_README.pdf'
+          if ! git diff --cached --quiet; then
+            git commit -m 'docs: export reviewed README as 1028 research report PDF'
+            git push origin main
+          fi

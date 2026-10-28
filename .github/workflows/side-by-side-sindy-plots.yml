@@ -70,7 +70,7 @@ jobs:
             \includegraphics[width=\linewidth]{outputs/figures/pc5_diffusion_sparsity.png}
           \end{minipage}
           \par\smallskip
-]]))
+                ]]))
                 replaced = replaced + 1
                 i = i + 2
               else

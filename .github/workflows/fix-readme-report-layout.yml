@@ -1,0 +1,112 @@
+name: Fix README report tables and verify all figures
+
+on:
+  push:
+    paths: [.github/workflows/fix-readme-report-layout.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PDF toolchain and inspection utilities
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pandoc texlive-xetex texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-lang-japanese texlive-lang-chinese fonts-noto-cjk lmodern poppler-utils
+          python -m pip install -q pymupdf
+      - name: Diagnose previous PDF page 2
+        run: |
+          pdftoppm -f 2 -l 2 -scale-to 1100 -png -singlefile 'SINDy_1028研究報告_README.pdf' /tmp/page2_before
+          python - <<'PY'
+          import fitz
+          pdf=fitz.open('SINDy_1028研究報告_README.pdf')
+          p=pdf[1]
+          print('PAGE 2 prior layout: width',p.rect.width)
+          for b in p.get_text('dict')['blocks']:
+            if b['type']==0:
+              for ln in b['lines']:
+                for s in ln['spans']:
+                  if s['bbox'][2]>545:
+                    print('OVERFLOW:', tuple(round(v,1) for v in s['bbox']), s['text'][:130])
+          PY
+      - name: Rebuild with explicit table column widths and constrained figures
+        run: |
+          cat > /tmp/report-layout.lua <<'LUA'
+          function Table(tbl)
+            if #tbl.colspecs == 2 then
+              tbl.colspecs = {
+                {pandoc.AlignLeft, 0.225},
+                {pandoc.AlignLeft, 0.755}
+              }
+            end
+            return tbl
+          end
+
+          function Image(el)
+            el.attributes.width = "92%"
+            return el
+          end
+
+          function Link(el)
+            local target = el.target
+            if not target:match("^[a-zA-Z][a-zA-Z0-9+.-]*:") and not target:match("^#") then
+              local kind = target:match("/$") and "tree" or "blob"
+              el.target = "https://github.com/blabo25226/bio_sdemodel_practice/" .. kind .. "/main/" .. target
+            end
+            return el
+          end
+          LUA
+          pandoc README.md \
+            --from=gfm+tex_math_dollars \
+            --standalone \
+            --pdf-engine=xelatex \
+            --resource-path=. \
+            --lua-filter=/tmp/report-layout.lua \
+            -V papersize=a4 \
+            -V fontsize=10pt \
+            -V geometry:margin=18mm \
+            -V mainfont='DejaVu Sans' \
+            -V CJKmainfont='Noto Sans CJK JP' \
+            -V colorlinks=true \
+            -V linkcolor=blue \
+            -o 'SINDy_1028研究報告_README.pdf'
+      - name: Audit page 2 table and all 5 images
+        run: |
+          python - <<'PY'
+          import fitz
+          pdf = fitz.open('SINDy_1028研究報告_README.pdf')
+          images=[]
+          text_overflows=[]
+          for pi,p in enumerate(pdf):
+            for block in p.get_text('dict')['blocks']:
+              if block['type']==1:
+                box=fitz.Rect(block['bbox'])
+                if not p.rect.contains(box): raise RuntimeError(f'Clipped image page {pi+1}: {box}')
+                images.append((pi+1,tuple(round(t,1) for t in box)))
+              if block['type']==0:
+                for ln in block['lines']:
+                  for s in ln['spans']:
+                    if s['bbox'][2] > p.rect.width-5:
+                      text_overflows.append((pi+1, s['bbox'], s['text']))
+          print('PDF:',len(pdf),'pages, image boxes:',images)
+          print('TEXT beyond near-right edge:',text_overflows[:30])
+          assert len(images)==5, f'Expected exactly 5 source figures; got {len(images)}'
+          assert not any(p==2 for p,*_ in text_overflows), 'Page 2 text is clipped'
+          text='\n'.join(p.get_text() for p in pdf)
+          for token in ('LARRY','Neural SDE','58.6%','drift fidelity','diffusion fidelity','Day 6'):
+            assert token in text, f'Missing PDF content: {token}'
+          print('VERIFIED: page-2 text bounds and all five source figures')
+          PY
+          pdfinfo 'SINDy_1028研究報告_README.pdf' | grep -E '^(Pages:|Page size:|File size:)'
+          pdftoppm -f 2 -l 2 -scale-to 1200 -png -singlefile 'SINDy_1028研究報告_README.pdf' page2_layout_verified
+      - name: Commit corrected PDF and page 2 layout evidence
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'SINDy_1028研究報告_README.pdf' page2_layout_verified.png
+          git commit -m 'docs: fix clipped data and Neural SDE table in SINDy report'
+          git push origin main

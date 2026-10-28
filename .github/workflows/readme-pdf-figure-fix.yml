@@ -1,0 +1,28 @@
+name: Diagnose and fix README PDF figures
+on:
+  push:
+    paths: [.github/workflows/readme-pdf-figure-fix.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  preview-before:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect page 5 of existing PDF
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends poppler-utils
+          echo "--- PAGE 5 TEXT ---"
+          pdftotext -f 5 -l 5 -layout '1028研究報告_README.pdf' -
+          echo "--- PAGE 5 IMAGES ---"
+          pdfimages -f 5 -l 5 -list '1028研究報告_README.pdf'
+          pdftoppm -f 5 -l 5 -scale-to 1200 -png -singlefile '1028研究報告_README.pdf' page5_before
+      - name: Save page 5 preview
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add page5_before.png
+          git commit -m 'chore: diagnostic screenshot of clipped PDF page 5'
+          git push origin main

@@ -1,0 +1,153 @@
+name: Place drift and diffusion plots side by side
+on:
+  push:
+    paths:
+      - .github/workflows/side-by-side-sindy-plots.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Japanese XeLaTeX and PDF inspection
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pandoc texlive-xetex texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-lang-japanese texlive-lang-chinese fonts-noto-cjk lmodern poppler-utils
+          python -m pip install -q pymupdf
+      - name: Build PDF from latest README with two side-by-side plots
+        run: |
+          cat > /tmp/sindy-figures.lua <<'LUA'
+          function Table(tbl)
+            if #tbl.colspecs == 2 then
+              tbl.colspecs = {
+                {pandoc.AlignLeft, 0.225},
+                {pandoc.AlignLeft, 0.755}
+              }
+            end
+            return tbl
+          end
+
+          function Image(el)
+            el.attributes.width = "92%"
+            return el
+          end
+
+          function Link(el)
+            local target = el.target
+            if not target:match("^[a-zA-Z][a-zA-Z0-9+.-]*:") and not target:match("^#") then
+              local kind = target:match("/$") and "tree" or "blob"
+              el.target = "https://github.com/blabo25226/bio_sdemodel_practice/" .. kind .. "/main/" .. target
+            end
+            return el
+          end
+
+          function Pandoc(doc)
+            local blocks = {}
+            local replaced = 0
+            local function imagepath(blk)
+              if blk and blk.t == "Para" and #blk.content == 1 and blk.content[1].t == "Image" then
+                return blk.content[1].src
+              end
+              return nil
+            end
+            local drift = "outputs/figures/pc5_drift_sparsity.png"
+            local diffusion = "outputs/figures/pc5_diffusion_sparsity.png"
+            local i = 1
+            while i <= #doc.blocks do
+              if imagepath(doc.blocks[i]) == drift and imagepath(doc.blocks[i+1]) == diffusion then
+                table.insert(blocks, pandoc.RawBlock("latex", [[
+\par\smallskip\noindent
+\begin{minipage}[t]{0.48\linewidth}
+  \vspace{0pt}\centering
+  \includegraphics[width=\linewidth]{outputs/figures/pc5_drift_sparsity.png}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+  \vspace{0pt}\centering
+  \includegraphics[width=\linewidth]{outputs/figures/pc5_diffusion_sparsity.png}
+\end{minipage}
+\par\smallskip
+]]))
+                replaced = replaced + 1
+                i = i + 2
+              else
+                table.insert(blocks, doc.blocks[i])
+                i = i + 1
+              end
+            end
+            assert(replaced == 1, "Expected exactly one adjacent drift/diffusion image pair, found " .. replaced)
+            doc.blocks = blocks
+            return doc
+          end
+          LUA
+          pandoc README.md \
+            --from=gfm+tex_math_dollars \
+            --standalone \
+            --pdf-engine=xelatex \
+            --resource-path=. \
+            --lua-filter=/tmp/sindy-figures.lua \
+            -V papersize=a4 \
+            -V fontsize=10pt \
+            -V geometry:margin=18mm \
+            -V mainfont='DejaVu Sans' \
+            -V CJKmainfont='Noto Sans CJK JP' \
+            -V colorlinks=true \
+            -V linkcolor=blue \
+            -o 'SINDy_1028研究報告_README.pdf'
+      - name: Validate PDF page bounds and side-by-side layout
+        run: |
+          python - <<'PY'
+          import fitz
+          f = 'SINDy_1028研究報告_README.pdf'
+          d = fitz.open(f)
+          found=[]
+          sparsity=[]
+          overflows=[]
+          for page_index,p in enumerate(d):
+              for b in p.get_text("dict")["blocks"]:
+                  if b["type"] == 1:
+                      rect = fitz.Rect(b["bbox"])
+                      if not p.rect.contains(rect):
+                          raise RuntimeError(f"Image outside page {page_index+1}: {rect}")
+                      found.append((page_index+1,rect))
+                      if 1.14 < rect.width/rect.height < 1.4:
+                          sparsity.append((page_index+1,rect))
+                  elif b["type"] == 0:
+                      for l in b["lines"]:
+                          for s in l["spans"]:
+                              if s["bbox"][2] > p.rect.width - 5:
+                                  overflows.append((page_index+1,s["text"][:90],s["bbox"]))
+          assert len(found) == 5, f"Expected 5 embedded images, got {len(found)}"
+          assert len(sparsity) == 2, f"Expected 2 sparsity graphs, got {len(sparsity)}"
+          (p1,b1),(p2,b2)=sparsity
+          assert p1 == p2, f"Graphs appear on different pages: {p1}, {p2}"
+          assert b1.x1 < b2.x0 and abs(b1.y0-b2.y0)<6, f"Graphs not aligned side-by-side: {b1}, {b2}"
+          assert not overflows, f"Text overflow: {overflows[:8]}"
+          print(f"PASS: {len(d)} pages, {len(found)} complete images; sparsity pair page {p1}")
+          print("Sparsity plot boxes",b1,b2)
+          PY
+          pdfinfo 'SINDy_1028研究報告_README.pdf' | grep -E '^(Pages:|Page size:|File size:)'
+          pdftoppm -f 5 -l 5 -scale-to 1100 -png -singlefile 'SINDy_1028研究報告_README.pdf' /tmp/five
+          python - <<'PY'
+          import fitz
+          p=fitz.open('SINDy_1028研究報告_README.pdf')
+          for i,page in enumerate(p):
+              blocks=[b for b in page.get_text('dict')['blocks'] if b['type']==1 and 1.14 < (b['bbox'][2]-b['bbox'][0])/(b['bbox'][3]-b['bbox'][1]) < 1.4]
+              if len(blocks)==2:
+                  pix=page.get_pixmap(matrix=fitz.Matrix(1.5,1.5),alpha=False)
+                  pix.save('sindy_side_by_side_verified.png')
+                  print(f'Saved comparison preview from page {i+1}')
+                  break
+          else:
+              raise RuntimeError('No page contains two sparsity graphs')
+          PY
+      - name: Commit verified report and temporary visual proof
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'SINDy_1028研究報告_README.pdf' 'sindy_side_by_side_verified.png'
+          git commit -m 'docs: show SINDy drift and diffusion plots side by side'
+          git push origin main

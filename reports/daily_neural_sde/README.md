@@ -61,3 +61,4 @@
 | 2 | 2026-10-27 | Kidger et al. 2021, Neural SDEs as Infinite-Dimensional GANs (ICML) | time-dependent Ornstein–Uhlenbeck process (1D, time-dependent) | `day02_kidger2021_ou/report.md` |
 | 3 | 2026-10-28 | Tzen & Raginsky 2019, Neural SDEs: Deep Latent Gaussian Models in the Diffusion Limit (arXiv:1905.09883) | sigmoid-drift synthetic SDE (2D, time-homogeneous) | `day03_tzen2019_sigmoid/report.md` |
 | 4 | 2026-10-29 | Gierjatowicz et al. 2020, Robust pricing and hedging via neural SDEs (arXiv:2007.04154) | Heston-type local stochastic volatility SDE (2D, log-price + variance, correlated Brownian, state-dependent diffusion) | `day04_gierjatowicz_lsv/report.md` |
+| 5 | 2026-10-30 | Zhang et al. 2025, END-nSDE (PLOS Comput Biol) | circadian clock (2D, linear drift + constant diffusion, W2-trained teacher) | `day05_zhang_circadian/report.md` |

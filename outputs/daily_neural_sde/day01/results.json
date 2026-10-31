@@ -1,0 +1,629 @@
+{
+  "day": 1,
+  "date": "2026-10-26",
+  "paper": {
+    "arxiv": "2001.01328",
+    "authors": "Xuechen Li, Ting-Kam Leonard Wong, Ricky T. Q. Chen, David Duvenaud",
+    "code": "https://github.com/google-research/torchsde (examples/latent_sde.py)",
+    "experiment": "Section 7.2 / Appendix 9.10.2: latent SDE fit to a 3D stochastic Lorenz attractor process",
+    "title": "Scalable Gradients for Stochastic Differential Equations",
+    "url": "https://arxiv.org/abs/2001.01328",
+    "venue": "AISTATS 2020 (PMLR 108)"
+  },
+  "config_path": "configs/daily_neural_sde_day01.json",
+  "data": {
+    "shape": [
+      1024,
+      41,
+      3
+    ],
+    "state_mean": [
+      -0.05589153851439323,
+      -0.005644351497325254,
+      20.84597518394789
+    ],
+    "state_std": [
+      8.893841962701558,
+      11.552439650469331,
+      15.311555321163137
+    ],
+    "max_state_norm": 54.92479627569797,
+    "split_sizes": {
+      "train": 640,
+      "validation": 192,
+      "test": 192
+    },
+    "note": "Paper Appendix 9.10.2: 1024 series observed at intervals of 0.025 from time 0 to 1, normalized per dimension, corrupted by Gaussian noise std 0.01. Data are regenerated here from the ground-truth SDE with Euler-Maruyama at dt_sim (the paper does not publish the generated dataset itself)."
+  },
+  "estimator_comparison": {
+    "em": {
+      "training": {
+        "estimator": "em",
+        "best_epoch": 599,
+        "best_validation_nll": -1.4755465984344482,
+        "final_train_nll": -1.4591695070266724,
+        "test_nll_at_best_checkpoint": -1.4478124380111694,
+        "epochs": 600,
+        "n_train_transitions": 25600,
+        "torch_version": "2.14.1+cpu"
+      },
+      "vs_truth_test": {
+        "drift": 0.21467099071872683,
+        "diffusion": 2.058631453906626
+      },
+      "diffusion_mean_on_validation_states": [
+        0.15544775453687393,
+        0.5439849384815933,
+        0.5071095170050707
+      ],
+      "diffusion_std_on_validation_states": [
+        0.023137692672430304,
+        0.059521172385328454,
+        0.022053463156184387
+      ]
+    },
+    "local_linearization": {
+      "training": {
+        "estimator": "local_linearization",
+        "best_epoch": 598,
+        "best_validation_nll": -1.6914868354797363,
+        "final_train_nll": -1.6694554090499878,
+        "test_nll_at_best_checkpoint": -1.6707193851470947,
+        "epochs": 600,
+        "n_train_transitions": 25600,
+        "torch_version": "2.14.1+cpu"
+      },
+      "vs_truth_test": {
+        "drift": 0.04379190826133247,
+        "diffusion": 1.1428335858267993
+      },
+      "diffusion_mean_on_validation_states": [
+        0.15205592027540377,
+        0.38844228328292235,
+        0.3229586183181641
+      ],
+      "diffusion_std_on_validation_states": [
+        0.008926717115040048,
+        0.013875832489878817,
+        0.024366632064447637
+      ]
+    },
+    "local_linearization_exp": {
+      "training": {
+        "estimator": "local_linearization_exp",
+        "best_epoch": 599,
+        "best_validation_nll": -1.612994909286499,
+        "final_train_nll": -1.5941369533538818,
+        "test_nll_at_best_checkpoint": -1.5867141485214233,
+        "epochs": 600,
+        "n_train_transitions": 25600,
+        "torch_version": "2.14.1+cpu"
+      },
+      "vs_truth_test": {
+        "drift": 0.02826253621734109,
+        "diffusion": 1.5439206216998542
+      },
+      "diffusion_mean_on_validation_states": [
+        0.1657807955470705,
+        0.49927309404505654,
+        0.33635810836151575
+      ],
+      "diffusion_std_on_validation_states": [
+        0.021866172985188264,
+        0.04608341113451043,
+        0.017009292614840084
+      ]
+    }
+  },
+  "teacher_training": {
+    "estimator": "local_linearization_exp",
+    "best_epoch": 599,
+    "best_validation_nll": -1.612994909286499,
+    "final_train_nll": -1.5941369533538818,
+    "test_nll_at_best_checkpoint": -1.5867141485214233,
+    "epochs": 600,
+    "n_train_transitions": 25600,
+    "torch_version": "2.14.1+cpu"
+  },
+  "teacher_deviation": "The paper fits a latent SDE (4-dim latent, GRU encoder, linear decoder, ELBO, stochastic adjoint). Its latent coordinates are not identifiable, so a symbolic equation in latent coordinates could not be compared with the Lorenz SDE. This study therefore estimates a neural SDE directly in the observed 3D state coordinates: drift and diffusion are separate MLPs trained by the Gaussian Euler-Maruyama transition likelihood of the observed trajectories. This is a declared scope cut, not the paper's model.",
+  "teacher_vs_truth_test": {
+    "drift": 0.02826253621734109,
+    "diffusion": 1.5439206216998542
+  },
+  "candidates": {
+    "drift": [
+      {
+        "degree": 2,
+        "threshold": 0.02,
+        "active_terms": 11,
+        "library_size": 10,
+        "validation_nrmse": 0.024223249580621744,
+        "train_nrmse": 0.024008983642741108
+      },
+      {
+        "degree": 2,
+        "threshold": 0.05,
+        "active_terms": 8,
+        "library_size": 10,
+        "validation_nrmse": 0.027127280603172706,
+        "train_nrmse": 0.02697157861844107
+      },
+      {
+        "degree": 2,
+        "threshold": 0.1,
+        "active_terms": 7,
+        "library_size": 10,
+        "validation_nrmse": 0.033463256110866285,
+        "train_nrmse": 0.03345873079352533
+      },
+      {
+        "degree": 2,
+        "threshold": 0.2,
+        "active_terms": 7,
+        "library_size": 10,
+        "validation_nrmse": 0.033463256110866285,
+        "train_nrmse": 0.03345873079352533
+      },
+      {
+        "degree": 2,
+        "threshold": 0.35,
+        "active_terms": 6,
+        "library_size": 10,
+        "validation_nrmse": 0.21026006268031,
+        "train_nrmse": 0.20983619588388924
+      },
+      {
+        "degree": 3,
+        "threshold": 0.02,
+        "active_terms": 29,
+        "library_size": 20,
+        "validation_nrmse": 0.017019458562284834,
+        "train_nrmse": 0.017125445933575994
+      },
+      {
+        "degree": 3,
+        "threshold": 0.05,
+        "active_terms": 20,
+        "library_size": 20,
+        "validation_nrmse": 0.021434707736896274,
+        "train_nrmse": 0.021559726115224623
+      },
+      {
+        "degree": 3,
+        "threshold": 0.1,
+        "active_terms": 13,
+        "library_size": 20,
+        "validation_nrmse": 0.022095880476150912,
+        "train_nrmse": 0.022192101359994755
+      },
+      {
+        "degree": 3,
+        "threshold": 0.2,
+        "active_terms": 7,
+        "library_size": 20,
+        "validation_nrmse": 0.033463256110866285,
+        "train_nrmse": 0.03345873079352533
+      },
+      {
+        "degree": 3,
+        "threshold": 0.35,
+        "active_terms": 5,
+        "library_size": 20,
+        "validation_nrmse": 0.28149426633839053,
+        "train_nrmse": 0.2815009412446483
+      }
+    ],
+    "diffusion": [
+      {
+        "degree": 0,
+        "threshold": 0.02,
+        "active_terms": 3,
+        "library_size": 1,
+        "validation_nrmse": 0.08579739781433524,
+        "train_nrmse": 0.08580118626043104
+      },
+      {
+        "degree": 0,
+        "threshold": 0.05,
+        "active_terms": 3,
+        "library_size": 1,
+        "validation_nrmse": 0.08579739781433524,
+        "train_nrmse": 0.08580118626043104
+      },
+      {
+        "degree": 0,
+        "threshold": 0.1,
+        "active_terms": 3,
+        "library_size": 1,
+        "validation_nrmse": 0.08579739781433524,
+        "train_nrmse": 0.08580118626043104
+      },
+      {
+        "degree": 0,
+        "threshold": 0.2,
+        "active_terms": 3,
+        "library_size": 1,
+        "validation_nrmse": 0.08579739781433524,
+        "train_nrmse": 0.08580118626043104
+      },
+      {
+        "degree": 0,
+        "threshold": 0.35,
+        "active_terms": 3,
+        "library_size": 1,
+        "validation_nrmse": 0.08579739781433524,
+        "train_nrmse": 0.08580118626043104
+      },
+      {
+        "degree": 1,
+        "threshold": 0.02,
+        "active_terms": 8,
+        "library_size": 4,
+        "validation_nrmse": 0.024540698084400524,
+        "train_nrmse": 0.024475275948073697
+      },
+      {
+        "degree": 1,
+        "threshold": 0.05,
+        "active_terms": 6,
+        "library_size": 4,
+        "validation_nrmse": 0.03568239832636563,
+        "train_nrmse": 0.03575256591778259
+      },
+      {
+        "degree": 1,
+        "threshold": 0.1,
+        "active_terms": 3,
+        "library_size": 4,
+        "validation_nrmse": 0.08579739781433524,
+        "train_nrmse": 0.08580118626043104
+      },
+      {
+        "degree": 1,
+        "threshold": 0.2,
+        "active_terms": 3,
+        "library_size": 4,
+        "validation_nrmse": 0.08579739781433524,
+        "train_nrmse": 0.08580118626043104
+      },
+      {
+        "degree": 1,
+        "threshold": 0.35,
+        "active_terms": 3,
+        "library_size": 4,
+        "validation_nrmse": 0.08579739781433524,
+        "train_nrmse": 0.08580118626043104
+      },
+      {
+        "degree": 2,
+        "threshold": 0.02,
+        "active_terms": 11,
+        "library_size": 10,
+        "validation_nrmse": 0.021082266141405234,
+        "train_nrmse": 0.02100328135083667
+      },
+      {
+        "degree": 2,
+        "threshold": 0.05,
+        "active_terms": 6,
+        "library_size": 10,
+        "validation_nrmse": 0.0338296166078149,
+        "train_nrmse": 0.03390061243098646
+      },
+      {
+        "degree": 2,
+        "threshold": 0.1,
+        "active_terms": 4,
+        "library_size": 10,
+        "validation_nrmse": 0.08107322145541124,
+        "train_nrmse": 0.08103922592416252
+      },
+      {
+        "degree": 2,
+        "threshold": 0.2,
+        "active_terms": 3,
+        "library_size": 10,
+        "validation_nrmse": 0.08579739781433524,
+        "train_nrmse": 0.08580118626043104
+      },
+      {
+        "degree": 2,
+        "threshold": 0.35,
+        "active_terms": 3,
+        "library_size": 10,
+        "validation_nrmse": 0.08579739781433524,
+        "train_nrmse": 0.08580118626043104
+      }
+    ]
+  },
+  "per_degree_test_vs_teacher": {
+    "drift": {
+      "2": 0.024352275475640218,
+      "3": 0.017410067942095327
+    },
+    "diffusion": {
+      "0": 0.08555273531498045,
+      "1": 0.025172418235355154,
+      "2": 0.021674857433509845
+    }
+  },
+  "symbolic_vs_teacher_test": {
+    "drift": 0.017410067942095327,
+    "diffusion": 0.021674857433509845
+  },
+  "symbolic_vs_truth_test": {
+    "drift": 0.027604567492351673,
+    "diffusion": 1.5438897374650142
+  },
+  "oracle_sindy": {
+    "drift": {
+      "selection": {
+        "degree": 3,
+        "threshold": 0.02,
+        "active_terms": 21,
+        "library_size": 20,
+        "validation_nrmse": 0.01260524202169341,
+        "train_nrmse": 0.012558559567125241
+      },
+      "test_nrmse_vs_truth": 0.012648449696530926
+    },
+    "diffusion": {
+      "selection": {
+        "degree": 0,
+        "threshold": 0.02,
+        "active_terms": 3,
+        "library_size": 1,
+        "validation_nrmse": 9.52941429469926e-14,
+        "train_nrmse": 9.529414294699261e-14
+      },
+      "test_nrmse_vs_truth": 9.52941429469926e-14
+    }
+  },
+  "recovery": {
+    "monomials": [
+      {
+        "output": 0,
+        "power": [
+          1,
+          0,
+          0
+        ],
+        "truth": -10.0,
+        "fitted": -7.612374031569866,
+        "relative_error": 0.23876259684301343,
+        "sign_match": true
+      },
+      {
+        "output": 0,
+        "power": [
+          0,
+          1,
+          0
+        ],
+        "truth": 10.0,
+        "fitted": 8.879848690476377,
+        "relative_error": 0.11201513095236226,
+        "sign_match": true
+      },
+      {
+        "output": 1,
+        "power": [
+          1,
+          0,
+          0
+        ],
+        "truth": 28.0,
+        "fitted": 16.573066203938613,
+        "relative_error": 0.4081047784307638,
+        "sign_match": true
+      },
+      {
+        "output": 1,
+        "power": [
+          0,
+          1,
+          0
+        ],
+        "truth": -1.0,
+        "fitted": 4.217771520681793,
+        "relative_error": 5.217771520681793,
+        "sign_match": false
+      },
+      {
+        "output": 1,
+        "power": [
+          1,
+          0,
+          1
+        ],
+        "truth": -1.0,
+        "fitted": -0.5564860285806158,
+        "relative_error": 0.4435139714193842,
+        "sign_match": true
+      },
+      {
+        "output": 2,
+        "power": [
+          1,
+          1,
+          0
+        ],
+        "truth": 1.0,
+        "fitted": 1.0134020964803947,
+        "relative_error": 0.013402096480394698,
+        "sign_match": true
+      },
+      {
+        "output": 2,
+        "power": [
+          0,
+          0,
+          1
+        ],
+        "truth": -2.6666666666666665,
+        "fitted": -2.6287252669016388,
+        "relative_error": 0.014228024911885406,
+        "sign_match": true
+      }
+    ],
+    "feature_correlation_x_xz_test": 0.93142446429325,
+    "test_state_mean": [
+      0.25593761665787507,
+      0.20402878849848252,
+      20.783527216890256
+    ],
+    "test_state_std": [
+      8.88036350136621,
+      11.540811864014474,
+      15.344105366068227
+    ],
+    "spurious_rms_fraction_test": 0.4515991297442378,
+    "diffusion_nonconstant_rms_fraction_test": 0.08373860320091532,
+    "drift_expanded": [
+      {
+        "(1, 0, 0)": -7.612374031569866,
+        "(0, 0, 0)": -0.5454646145060821,
+        "(0, 1, 0)": 8.879848690476377,
+        "(1, 0, 1)": -0.15484702564459035,
+        "(0, 0, 1)": -0.013690670868345236,
+        "(0, 1, 1)": 0.08777070519085482,
+        "(3, 0, 0)": 0.001779206317503696,
+        "(2, 0, 0)": 0.0004945128503461782,
+        "(2, 1, 0)": -0.0022171194627387393,
+        "(1, 1, 0)": -0.000252996403328561,
+        "(1, 2, 0)": 0.0037444621102135137,
+        "(0, 2, 0)": 0.00023354484335915698,
+        "(1, 0, 2)": 0.0020435002411446496,
+        "(0, 0, 2)": 0.00017304894540946138,
+        "(0, 3, 0)": -0.0018705954630001706,
+        "(0, 1, 2)": -0.0014311485325388751
+      },
+      {
+        "(1, 0, 0)": 16.573066203938613,
+        "(0, 0, 0)": 1.8456762607987782,
+        "(0, 1, 0)": 4.217771520681793,
+        "(1, 0, 1)": -0.5564860285806158,
+        "(0, 0, 1)": -0.05741060915707,
+        "(0, 1, 1)": 0.021687089510124574,
+        "(3, 0, 0)": 0.011090253213376922,
+        "(2, 0, 0)": 0.003880208198585372,
+        "(2, 1, 0)": 0.0147257740392807,
+        "(1, 1, 0)": 0.0027652523159910495,
+        "(1, 2, 0)": -0.00546080675670464,
+        "(0, 2, 0)": -0.0010081885208157561,
+        "(1, 0, 2)": -0.005432920622035322,
+        "(0, 0, 2)": -0.0007048121056902166,
+        "(0, 3, 0)": -0.005234438859458457,
+        "(0, 1, 2)": -0.0049521451353009
+      },
+      {
+        "(0, 0, 0)": 0.04695223831884121,
+        "(0, 0, 1)": -2.6287252669016388,
+        "(2, 0, 0)": 0.11475847415634345,
+        "(1, 0, 0)": 0.05225052416983343,
+        "(1, 1, 0)": 1.0134020964803947,
+        "(0, 1, 0)": 0.10448712845483106,
+        "(0, 2, 0)": -0.02085297652693872,
+        "(0, 0, 2)": -0.018910109888311315,
+        "(2, 0, 1)": -0.0034709479997386394,
+        "(1, 0, 1)": -0.0007237306074720843,
+        "(0, 2, 1)": 6.90287022328784e-05,
+        "(0, 1, 1)": 3.858369189165464e-06,
+        "(0, 0, 3)": 0.000597828226317729
+      }
+    ],
+    "diffusion_expanded": [
+      {
+        "(0, 0, 0)": 0.17615069692791682,
+        "(1, 0, 0)": 0.002506356681425208,
+        "(0, 1, 0)": 0.00033428435315732864,
+        "(2, 0, 0)": -0.00013871147378954194,
+        "(1, 1, 0)": 8.134931737989576e-05,
+        "(1, 0, 1)": -2.9053085609050154e-05,
+        "(0, 0, 1)": -3.0289430003502825e-06,
+        "(0, 2, 0)": -4.2484510845458716e-05
+      },
+      {
+        "(0, 0, 0)": 0.4997597001511357,
+        "(0, 1, 0)": 0.0038758767225052435
+      },
+      {
+        "(0, 0, 0)": 0.3367735500940464,
+        "(1, 0, 0)": 0.0017537071831265777
+      }
+    ]
+  },
+  "simulation": {
+    "neural": {
+      "failure_rate": 0.0,
+      "failure_classes": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "endpoint_mean_finishers": [
+        -0.07333454405589003,
+        -0.284869456079258,
+        26.75000314895234
+      ],
+      "endpoint_std_finishers": [
+        8.600504543875783,
+        9.130638377578393,
+        1.1449954071046398
+      ],
+      "n_finishers": 192
+    },
+    "symbolic": {
+      "failure_rate": 0.0,
+      "failure_classes": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "endpoint_mean_finishers": [
+        -0.8755821985612711,
+        -0.8547669012692376,
+        26.34933167995654
+      ],
+      "endpoint_std_finishers": [
+        8.362615975458443,
+        8.874998955304694,
+        0.637757036907722
+      ],
+      "n_finishers": 192
+    },
+    "truth": {
+      "failure_rate": 0.0,
+      "failure_classes": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "endpoint_mean_finishers": [
+        -0.5735975795303546,
+        -0.6082194865064785,
+        26.81521450491356
+      ],
+      "endpoint_std_finishers": [
+        8.311906509540547,
+        8.59044569084137,
+        0.6021450141705584
+      ],
+      "n_finishers": 192
+    },
+    "paired_rmse_median": {
+      "symbolic_vs_neural": 1.4954918964555783,
+      "symbolic_vs_truth": 2.9727261523258885,
+      "neural_vs_truth": 2.2477035161558874,
+      "n_pairs_symbolic_neural": 192
+    }
+  },
+  "hypothesis_verdicts": {
+    "H1_drift_distillation": false,
+    "H2_diffusion_distillation": true,
+    "H3_truth_recovery": false,
+    "H4_simulation": true
+  },
+  "best_validation_nrmse_by_drift_degree": {
+    "2": 0.024223249580621744,
+    "3": 0.017019458562284834
+  },
+  "symbolic_sde_tex": "%% Symbolic SDE distilled on Day 1 (Li et al. 2020 Lorenz teacher)\n%% drift\n\\begin{aligned}\n\\hat f_1 &= - 0.5455 - 0.01369\\,z + 8.88\\,y - 7.612\\,x + 0.000173\\,z^{2} + 0.08777\\,y z + 0.0002335\\,y^{2} - 0.1548\\,x z - 0.000253\\,x y + 0.0004945\\,x^{2} - 0.001431\\,y z^{2} - 0.001871\\,y^{3} + 0.002044\\,x z^{2} + 0.003744\\,x y^{2} - 0.002217\\,x^{2} y + 0.001779\\,x^{3} \\\\\n\\hat f_2 &= 1.846 - 0.05741\\,z + 4.218\\,y + 16.57\\,x - 0.0007048\\,z^{2} + 0.02169\\,y z - 0.001008\\,y^{2} - 0.5565\\,x z + 0.002765\\,x y + 0.00388\\,x^{2} - 0.004952\\,y z^{2} - 0.005234\\,y^{3} - 0.005433\\,x z^{2} - 0.005461\\,x y^{2} + 0.01473\\,x^{2} y + 0.01109\\,x^{3} \\\\\n\\hat f_3 &= 0.04695 - 2.629\\,z + 0.1045\\,y + 0.05225\\,x - 0.01891\\,z^{2} + 3.858e-06\\,y z - 0.02085\\,y^{2} - 0.0007237\\,x z + 1.013\\,x y + 0.1148\\,x^{2} + 0.0005978\\,z^{3} + 6.903e-05\\,y^{2} z - 0.003471\\,x^{2} z \\\\\n\\end{aligned}\n%% diagonal diffusion\n\\begin{aligned}\n\\hat g_1 &= 0.1762 - 3.029e-06\\,z + 0.0003343\\,y + 0.002506\\,x - 4.248e-05\\,y^{2} - 2.905e-05\\,x z + 8.135e-05\\,x y - 0.0001387\\,x^{2} \\\\\n\\hat g_2 &= 0.4998 + 0.003876\\,y \\\\\n\\hat g_3 &= 0.3368 + 0.001754\\,x \\\\\n\\end{aligned}\n"
+}

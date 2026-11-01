@@ -63,3 +63,4 @@
 | 4 | 2026-10-29 | Gierjatowicz et al. 2020, Robust pricing and hedging via neural SDEs (arXiv:2007.04154) | Heston-type local stochastic volatility SDE (2D, log-price + variance, correlated Brownian, state-dependent diffusion) | `day04_gierjatowicz_lsv/report.md` |
 | 5 | 2026-10-30 | Zhang et al. 2025, END-nSDE (PLOS Comput Biol) | circadian clock (2D, linear drift + constant diffusion, W2-trained teacher) | `day05_zhang_circadian/report.md` |
 | 6 | 2026-10-31 | Eggen & Midtfjord 2023, Delay-SDE-Net (arXiv:2303.08587) | stochastic delay equation (2D + 4 lags, tanh drift, near-constant diffusion) | `day06_eggen_delay/report.md` |
+| 7 | 2026-11-01 | Oh, Lim & Kim 2024, Stable Neural SDEs (ICLR, arXiv:2402.14989) | Geometric SDE (2D positive domain, linear gamma, multiplicative diffusion) | `day07_oh_stable_gsde/report.md` |

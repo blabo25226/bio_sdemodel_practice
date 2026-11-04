@@ -64,3 +64,6 @@
 | 5 | 2026-10-30 | Zhang et al. 2025, END-nSDE (PLOS Comput Biol) | circadian clock (2D, linear drift + constant diffusion, W2-trained teacher) | `day05_zhang_circadian/report.md` |
 | 6 | 2026-10-31 | Eggen & Midtfjord 2023, Delay-SDE-Net (arXiv:2303.08587) | stochastic delay equation (2D + 4 lags, tanh drift, near-constant diffusion) | `day06_eggen_delay/report.md` |
 | 7 | 2026-11-01 | Oh, Lim & Kim 2024, Stable Neural SDEs (ICLR, arXiv:2402.14989) | Geometric SDE (2D positive domain, linear gamma, multiplicative diffusion) | `day07_oh_stable_gsde/report.md` |
+| 8 | 2026-11-02 | Jia & Benson 2019, Neural Jump SDEs (NeurIPS, arXiv:1905.10403) | jump-diffusion (1D, state-dependent intensity, jump-size distribution) | `day08_jia_jump/report.md` |
+| 9 | 2026-11-03 | Yang et al. 2024, Neural McKean-Vlasov Processes (AISTATS, arXiv:2404.09402) | mean-field SDE (1D + ensemble mean, double-well + attraction, phase persistence) | `day09_yang_mv/report.md` |
+| 10 | 2026-11-04 | Song et al. 2021, Score-Based Generative Modeling through SDEs (ICLR, arXiv:2011.13456) | reverse-time SDE (1D bimodal mixture, VP-SDE, score drift, tau-only diffusion) | `day10_song_score/report.md` |

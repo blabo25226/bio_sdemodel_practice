@@ -5,6 +5,21 @@
 (main へはマージしない。マージはユーザーの別途指示がある場合のみ)。
 既存の issues #1–#4 対応 PR (branch `muse/followup-issues-1-4`) とは独立のシリーズである。
 
+## 担当
+
+- **Day 1〜10**（2026-10-26 〜 2026-11-04）: Muse。
+- **Day 11 以降**（2026-11-04 の担当交代から）: NeuralSDEのSINDy蒸留bot。
+  毎日、朝 10 時ごろ（JST）にこのブランチを更新する。
+  Day 10 と Day 11 は担当交代日に並ぶ。
+
+## 蒸留の方針
+
+ドリフト項・拡散項のうち、ニューラルネットワークで表された部分を teacher とする。
+その teacher を、状態引数の冪乗だけ（定数・単項式・交差項）をライブラリとする SINDy で
+シンボリック回帰する。ニューラル場の引数に時刻や初期状態など明示的なスカラーが入る場合、
+その引数は同じ冪乗ライブラリの座標であり、三角関数・指数・有理式などの非多項式基底は使わない。
+各日のレポートには、推定した symbolic SDE（drift と diffusion の推定式、係数つき）を必ず TeX で載せる。
+
 ## 毎日の手順 (Day N = 新しい論文 1 本)
 
 1. **論文選定**: Neural SDE (ニューラル確率微分方程式) の研究論文を web 検索で 1 本選ぶ。
@@ -67,3 +82,4 @@
 | 8 | 2026-11-02 | Jia & Benson 2019, Neural Jump SDEs (NeurIPS, arXiv:1905.10403) | jump-diffusion (1D, state-dependent intensity, jump-size distribution) | `day08_jia_jump/report.md` |
 | 9 | 2026-11-03 | Yang et al. 2024, Neural McKean-Vlasov Processes (AISTATS, arXiv:2404.09402) | mean-field SDE (1D + ensemble mean, double-well + attraction, phase persistence) | `day09_yang_mv/report.md` |
 | 10 | 2026-11-04 | Song et al. 2021, Score-Based Generative Modeling through SDEs (ICLR, arXiv:2011.13456) | reverse-time SDE (1D bimodal mixture, VP-SDE, score drift, tau-only diffusion) | `day10_song_score/report.md` |
+| 11 | 2026-11-04 | Kong, Sun & Zhang 2020, SDE-Net (ICML, PMLR 119) | epistemic-uncertainty SDE (2D XOR blobs, neural drift + neural diffusion of the initial state) | `day11_kong_sdenet/report.md` |

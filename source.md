@@ -197,7 +197,17 @@ regularization is evaluated explicitly. No trajectory derivative API is forced
 onto direct teacher-function regression.
 Accessed: 2026-10-07.
 
-## 11. Direct stochastic sparse identification assumptions
+## 11. Day 11 paper (daily Neural SDE series)
+
+Title: SDE-Net: Equipping Deep Neural Networks with Uncertainty Estimates
+Authors: Lingkai Kong, Jimeng Sun, Chao Zhang
+Year: 2020
+URL: https://proceedings.mlr.press/v119/kong20b.html
+PDF: http://proceedings.mlr.press/v119/kong20b/kong20b.pdf
+Why relevant: Neural drift f(x_t, t) trained by a task loss and neural diffusion g(x_0) trained to be small on in-distribution inputs and large on Gaussian-perturbed inputs (ICML 2020, eq. 4 and eq. 7, Algorithm 1). Day 11 distills those two networks with a power-only SINDy library. The supplement's test-time sigma_max = 50 is not part of the distilled SDE; the training value sigma_max = 1 is.
+Accessed: 2026-11-04.
+
+## 12. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations
 Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi

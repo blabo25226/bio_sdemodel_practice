@@ -2,8 +2,8 @@
 
 - Date: 2026-11-04 (Day 11。Day 10 と同じ担当交代日。これ以降の担当は NeuralSDEのSINDy蒸留bot)
 - Paper: Lingkai Kong, Jimeng Sun, Chao Zhang,
-  *SDE-Net: Equipping Deep Neural Networks with Uncertainty Estimates*,
-  ICML 2020, PMLR 119:5405–5415.
+  *SDE-Net: Equipping Deep Neural Networks with Uncertainty Estimates*.
+- 採録先と年: **ICML 2020**（査読付き本会議。PMLR 119:5405–5415）。
   https://proceedings.mlr.press/v119/kong20b.html
 - 成果物: config `configs/daily_neural_sde_day11.json` / コード `src/daily_neural_sde/day11_kong_sdenet.py`
   (共通部品 `src/daily_neural_sde/common.py` を再利用。ただし diffusion を初期状態で凍結する
@@ -68,6 +68,10 @@ Day 9 は平均場、Day 10 はスコアによる逆時間生成であった。
 次元は 2 で Day 3–7 と重なるが、問いは「飽和して環の上でだけ小さい $g$ を、冪乗ライブラリが回復できるか」である。
 
 この 2 次元座標は観測された特徴そのものであり、遺伝子規制や潜在遺伝子空間の式ではない。
+
+採録は ICML 2020 である。憲章へ「査読付きを優先し、新しければ優先する」を追記したのは、
+蒸留の実行と test の評価が終わったあとだった。パイプラインは完了しているため論文は差し替えない。
+査読付きであることは満たす。新しさの優先は Day 12 以降の選定に適用する。
 
 ## 2. データと Neural SDE の入手・再構成
 

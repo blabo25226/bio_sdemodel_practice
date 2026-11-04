@@ -207,7 +207,19 @@ PDF: http://proceedings.mlr.press/v119/kong20b/kong20b.pdf
 Why relevant: Neural drift f(x_t, t) trained by a task loss and neural diffusion g(x_0) trained to be small on in-distribution inputs and large on Gaussian-perturbed inputs (ICML 2020, eq. 4 and eq. 7, Algorithm 1). Day 11 distills those two networks with a power-only SINDy library. The supplement's test-time sigma_max = 50 is not part of the distilled SDE; the training value sigma_max = 1 is.
 Accessed: 2026-11-04.
 
-## 12. Direct stochastic sparse identification assumptions
+## 12. Day 12 paper (daily Neural SDE series)
+
+Title: Efficient Training of Neural Stochastic Differential Equations by Matching Finite Dimensional Distributions
+Authors: Jianxin Zhang, Josh Viktorov, Doosan Jung, Emily Pitler
+Year: 2025
+URL: https://proceedings.iclr.cc/paper_files/paper/2025/hash/5acf5a0ee5c17d372bfe7fdaeffd6e33-Abstract-Conference.html
+PDF: https://proceedings.iclr.cc/paper_files/paper/2025/file/5acf5a0ee5c17d372bfe7fdaeffd6e33-Paper-Conference.pdf
+arXiv: https://arxiv.org/abs/2410.03973
+Code: https://github.com/Z-Jianxin/FDM
+Why relevant: ICLR 2025. Neural drift and neural diffusion are trained by a kernel scoring rule on two-time joints (Finite Dimensional Matching, Theorem 2, Algorithm 1). The released FDDiscriminator minimizes E[k(X,X')] - 2 E[k(X,Y)] on consecutive grid times with a Gaussian RBF of bandwidth 1. Day 12 distills that teacher on an observable 2D Markov diffusion. The paper's Dukascopy KS tables and the rough Bergomi experiment are outside the cut.
+Accessed: 2026-11-04.
+
+## 13. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations
 Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi

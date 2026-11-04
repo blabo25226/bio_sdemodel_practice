@@ -87,3 +87,4 @@
 | 9 | 2026-11-03 | Yang et al. 2024, Neural McKean-Vlasov Processes (AISTATS, arXiv:2404.09402) | mean-field SDE (1D + ensemble mean, double-well + attraction, phase persistence) | `day09_yang_mv/report.md` |
 | 10 | 2026-11-04 | Song et al. 2021, Score-Based Generative Modeling through SDEs (ICLR, arXiv:2011.13456) | reverse-time SDE (1D bimodal mixture, VP-SDE, score drift, tau-only diffusion) | `day10_song_score/report.md` |
 | 11 | 2026-11-04 | Kong, Sun & Zhang 2020, SDE-Net (ICML, PMLR 119) | epistemic-uncertainty SDE (2D XOR blobs, neural drift + neural diffusion of the initial state) | `day11_kong_sdenet/report.md` |
+| 12 | 2026-11-04 | Zhang, Viktorov, Jung & Pitler 2025, Finite Dimensional Matching (ICLR) | noisy van der Pol (2D, neural drift and neural diffusion trained by a two-time kernel score) | `day12_zhang_fdm/report.md` |

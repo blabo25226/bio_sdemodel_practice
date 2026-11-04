@@ -1,0 +1,604 @@
+{
+  "day": 12,
+  "paper": "Efficient Training of Neural Stochastic Differential Equations by Matching Finite Dimensional Distributions",
+  "venue": "ICLR 2025",
+  "seed": 12,
+  "git_head": "9fd08538fc73db0444729c6daf4482ee78f2a752",
+  "python": "3.12.3",
+  "numpy": "1.26.4",
+  "torch": "2.15.0+cpu",
+  "cuda": false,
+  "normalization_mean": [
+    0.02370400082595999,
+    0.021181409608414456
+  ],
+  "normalization_std": [
+    1.1039746475658603,
+    1.1897004158900353
+  ],
+  "probe": {
+    "z": [
+      8,
+      2
+    ],
+    "t_norm": [
+      8,
+      1
+    ],
+    "drift": [
+      8,
+      2
+    ],
+    "diffusion": [
+      8,
+      2
+    ],
+    "numpy_torch_max_abs": 4.440892098500626e-16
+  },
+  "fdm_training": {
+    "loss_trace": [
+      {
+        "step": 0,
+        "loss": -0.18098999493839127
+      },
+      {
+        "step": 200,
+        "loss": -0.21101671503165503
+      },
+      {
+        "step": 400,
+        "loss": -0.24181958402100842
+      },
+      {
+        "step": 600,
+        "loss": -0.20865580763944644
+      },
+      {
+        "step": 800,
+        "loss": -0.21262151069861288
+      },
+      {
+        "step": 1000,
+        "loss": -0.1987610513056225
+      },
+      {
+        "step": 1199,
+        "loss": -0.2027276702905002
+      }
+    ],
+    "skipped_steps": 0,
+    "kind": "fdm"
+  },
+  "marginal_training": {
+    "loss_trace": [
+      {
+        "step": 0,
+        "loss": -0.3112486518783851
+      },
+      {
+        "step": 200,
+        "loss": -0.34830737471992473
+      },
+      {
+        "step": 400,
+        "loss": -0.37920254925659924
+      },
+      {
+        "step": 600,
+        "loss": -0.33475769547866024
+      },
+      {
+        "step": 800,
+        "loss": -0.33429414097775767
+      },
+      {
+        "step": 1000,
+        "loss": -0.316536575615176
+      },
+      {
+        "step": 1199,
+        "loss": -0.3295421379810869
+      }
+    ],
+    "skipped_steps": 0,
+    "kind": "marginal"
+  },
+  "selection": {
+    "drift": {
+      "degree": 3,
+      "threshold": 0.05,
+      "validation_nrmse": 0.15126641919886155,
+      "active_terms": 10,
+      "library_size": 20
+    },
+    "diffusion": {
+      "degree": 3,
+      "threshold": 0.02,
+      "validation_nrmse": 0.027534118638189702,
+      "active_terms": 22,
+      "library_size": 20
+    }
+  },
+  "heldout": {
+    "validation": {
+      "drift_symbolic_vs_teacher": {
+        "nrmse": 0.15126641919886155,
+        "residual_rms": 0.16282251273661313,
+        "truth_rms": 1.076395630959965,
+        "nrmse_components": [
+          0.08025686465261407,
+          0.1948426366560045
+        ]
+      },
+      "drift_teacher_vs_truth": {
+        "nrmse": 0.4864280161409424,
+        "residual_rms": 0.7191482826163014,
+        "truth_rms": 1.4784269383199515,
+        "nrmse_components": [
+          0.23557566437733055,
+          0.5759207820735947
+        ]
+      },
+      "drift_symbolic_vs_truth": {
+        "nrmse": 0.48574926171647365,
+        "residual_rms": 0.718144793790663,
+        "truth_rms": 1.4784269383199515,
+        "nrmse_components": [
+          0.2126321371310768,
+          0.5797210945276612
+        ]
+      },
+      "diffusion_symbolic_vs_teacher": {
+        "nrmse": 0.027534118638189702,
+        "residual_rms": 0.00047922950246713654,
+        "truth_rms": 0.017404933448730307,
+        "nrmse_components": [
+          0.027762223663243348,
+          0.02734560468367941
+        ]
+      },
+      "diffusion_teacher_vs_truth": {
+        "nrmse": 0.9481192223501712,
+        "residual_rms": 0.29691564902767575,
+        "truth_rms": 0.31316277745291315,
+        "nrmse_components": [
+          0.9532823374312428,
+          0.9419937153412149
+        ]
+      },
+      "diffusion_symbolic_vs_truth": {
+        "nrmse": 0.9479523098509496,
+        "residual_rms": 0.29686337824582787,
+        "truth_rms": 0.31316277745291315,
+        "nrmse_components": [
+          0.9531430877079825,
+          0.9417937801066326
+        ]
+      },
+      "sigma_symbolic_vs_teacher": {
+        "nrmse": 0.06575772056504196,
+        "residual_rms": 2.4135187461072583e-05,
+        "truth_rms": 0.00036703199645127753,
+        "nrmse_components": [
+          0.06633878011314304,
+          0.06536109802356058
+        ]
+      },
+      "marginal_drift_vs_truth": {
+        "nrmse": 0.5359977223796092,
+        "residual_rms": 0.792433471644153,
+        "truth_rms": 1.4784269383199515,
+        "nrmse_components": [
+          0.24691555583556257,
+          0.6372581370053638
+        ]
+      },
+      "marginal_diffusion_vs_truth": {
+        "nrmse": 0.937419199400162,
+        "residual_rms": 0.29356480012184094,
+        "truth_rms": 0.31316277745291315,
+        "nrmse_components": [
+          0.9429579695642781,
+          0.9308446765065426
+        ]
+      },
+      "fraction_symbolic_g_nonpositive": 0.0
+    },
+    "test": {
+      "drift_symbolic_vs_teacher": {
+        "nrmse": 0.20213701090787586,
+        "residual_rms": 0.2161022829280025,
+        "truth_rms": 1.0690881494556743,
+        "nrmse_components": [
+          0.08316002712456483,
+          0.2701182558628913
+        ]
+      },
+      "drift_teacher_vs_truth": {
+        "nrmse": 0.4978291719797684,
+        "residual_rms": 0.7446383905475792,
+        "truth_rms": 1.4957709038751168,
+        "nrmse_components": [
+          0.23341880360822256,
+          0.5868056090422246
+        ]
+      },
+      "drift_symbolic_vs_truth": {
+        "nrmse": 0.48767372983061313,
+        "residual_rms": 0.7294481756648857,
+        "truth_rms": 1.4957709038751168,
+        "nrmse_components": [
+          0.20906637457347063,
+          0.5785461300404371
+        ]
+      },
+      "diffusion_symbolic_vs_teacher": {
+        "nrmse": 0.031193021406746006,
+        "residual_rms": 0.0005415035641005264,
+        "truth_rms": 0.01735976637336636,
+        "nrmse_components": [
+          0.0315572367408935,
+          0.03089150517657424
+        ]
+      },
+      "diffusion_teacher_vs_truth": {
+        "nrmse": 0.9491809543153357,
+        "residual_rms": 0.30044453679961397,
+        "truth_rms": 0.3165303048208874,
+        "nrmse_components": [
+          0.9548494806273291,
+          0.9421820779779512
+        ]
+      },
+      "diffusion_symbolic_vs_truth": {
+        "nrmse": 0.9491310672369517,
+        "residual_rms": 0.3004287460274865,
+        "truth_rms": 0.3165303048208874,
+        "nrmse_components": [
+          0.9548165504019424,
+          0.9421111112048736
+        ]
+      },
+      "sigma_symbolic_vs_teacher": {
+        "nrmse": 0.09581606193484711,
+        "residual_rms": 3.5454496131258306e-05,
+        "truth_rms": 0.0003700266470497046,
+        "nrmse_components": [
+          0.09642482947218761,
+          0.09540200355058151
+        ]
+      },
+      "marginal_drift_vs_truth": {
+        "nrmse": 0.5425399336787754,
+        "residual_rms": 0.8115154469870478,
+        "truth_rms": 1.4957709038751168,
+        "nrmse_components": [
+          0.24309784431420817,
+          0.6416945376723643
+        ]
+      },
+      "marginal_diffusion_vs_truth": {
+        "nrmse": 0.9386686193648808,
+        "residual_rms": 0.2971170642133672,
+        "truth_rms": 0.3165303048208874,
+        "nrmse_components": [
+          0.9449233875303451,
+          0.9309399178183644
+        ]
+      },
+      "fraction_symbolic_g_nonpositive": 0.0
+    }
+  },
+  "ceilings": {
+    "drift_ols_vs_teacher": 0.21099596978566526,
+    "diffusion_ols_vs_teacher": 0.012631136798561732,
+    "drift_oracle_vs_truth": 5.3112550113230345e-15,
+    "diffusion_oracle_vs_truth": 4.105895729643337e-14
+  },
+  "vif": {
+    "drift_library_degree_3": 7.968962587655269,
+    "note": "One library in (x, y, t). The same value gates both fields.",
+    "diffusion_library_degree_3": 7.968962587655269
+  },
+  "snr": {
+    "mean_abs_f_dt": 0.07184662590420998,
+    "mean_g_sqrt_dt": 0.005243703607114022,
+    "ratio_of_means": 13.70150399170868
+  },
+  "paired_simulation": {
+    "truth_resimulation_max_abs": 0.0,
+    "teacher_vs_truth": {
+      "counts": {
+        "failure_rate": 0.0,
+        "excursion_rate": 0.03125,
+        "n": 256,
+        "n_non_finite": 0,
+        "n_outside_radius": 0
+      },
+      "mean_rmse": 0.11747131891347266,
+      "terminal_cov_rel_frob": 0.21590812156390532,
+      "terminal_finite_n": [
+        256,
+        256
+      ]
+    },
+    "symbolic_vs_teacher": {
+      "counts": {
+        "failure_rate": 0.0,
+        "excursion_rate": 0.0390625,
+        "n": 256,
+        "n_non_finite": 0,
+        "n_outside_radius": 0
+      },
+      "mean_rmse": 0.02258556274702238,
+      "terminal_cov_rel_frob": 0.04150206855964979,
+      "terminal_finite_n": [
+        256,
+        256
+      ]
+    },
+    "symbolic_vs_truth": {
+      "counts": {
+        "failure_rate": 0.0,
+        "excursion_rate": 0.0390625,
+        "n": 256,
+        "n_non_finite": 0,
+        "n_outside_radius": 0
+      },
+      "mean_rmse": 0.11918537511570566,
+      "terminal_cov_rel_frob": 0.23418835553982043,
+      "terminal_finite_n": [
+        256,
+        256
+      ]
+    },
+    "truth_counts": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.04296875,
+      "n": 256,
+      "n_non_finite": 0,
+      "n_outside_radius": 0
+    }
+  },
+  "discretization": {
+    "terminal_rmse": 0.05798224912467306,
+    "retained_fraction": 1.0,
+    "fine_failure_rate": 0.0,
+    "coarse_failure_rate": 0.0
+  },
+  "law": {
+    "truth_counts": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.02734375,
+      "n": 256,
+      "n_non_finite": 0,
+      "n_outside_radius": 0
+    },
+    "teacher_counts": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.01953125,
+      "n": 256,
+      "n_non_finite": 0,
+      "n_outside_radius": 0
+    },
+    "symbolic_counts": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.01953125,
+      "n": 256,
+      "n_non_finite": 0,
+      "n_outside_radius": 0
+    },
+    "mmd2_truth_vs_observed": 0.0021595625412888717,
+    "mmd2_teacher_vs_observed": 0.007885064264677583,
+    "mmd2_symbolic_vs_observed": 0.00820640628684402,
+    "mean_rmse_teacher_vs_observed": 0.21784182844392938,
+    "mean_rmse_symbolic_vs_observed": 0.20318279341357243,
+    "mean_rmse_truth_vs_observed": 0.16374758297016614
+  },
+  "grid": [
+    {
+      "t": 0.0,
+      "drift_symbolic_vs_teacher_nrmse": 1.5899661946733008,
+      "drift_symbolic_vs_teacher_rms": 2.334194386381206,
+      "drift_teacher_vs_truth_nrmse": 0.9611921573293757,
+      "drift_teacher_vs_truth_rms": 11.191762974460554,
+      "drift_symbolic_vs_truth_nrmse": 0.795158741701963,
+      "drift_symbolic_vs_truth_rms": 9.258531810043824,
+      "diffusion_symbolic_vs_teacher_nrmse": 0.23194537533761042,
+      "diffusion_symbolic_vs_teacher_rms": 0.00857341325751559,
+      "diffusion_teacher_vs_truth_nrmse": 0.9337713939929322,
+      "diffusion_teacher_vs_truth_rms": 0.4187082410617096,
+      "diffusion_symbolic_vs_truth_nrmse": 0.9422636379742209,
+      "diffusion_symbolic_vs_truth_rms": 0.4225162100816935
+    },
+    {
+      "t": 0.75,
+      "drift_symbolic_vs_teacher_nrmse": 1.5917371786990453,
+      "drift_symbolic_vs_teacher_rms": 2.3347855924361474,
+      "drift_teacher_vs_truth_nrmse": 0.9612519454479767,
+      "drift_teacher_vs_truth_rms": 11.192459125013768,
+      "drift_symbolic_vs_truth_nrmse": 0.795158741701963,
+      "drift_symbolic_vs_truth_rms": 9.258531810043824,
+      "diffusion_symbolic_vs_teacher_nrmse": 0.09061737333342654,
+      "diffusion_symbolic_vs_teacher_rms": 0.0016574158875661748,
+      "diffusion_teacher_vs_truth_nrmse": 0.9648404005243149,
+      "diffusion_teacher_vs_truth_rms": 0.4326397548775938,
+      "diffusion_symbolic_vs_truth_nrmse": 0.9641310086880958,
+      "diffusion_symbolic_vs_truth_rms": 0.4323216596672697
+    },
+    {
+      "t": 1.5,
+      "drift_symbolic_vs_teacher_nrmse": 1.597567387984359,
+      "drift_symbolic_vs_teacher_rms": 2.33707699799142,
+      "drift_teacher_vs_truth_nrmse": 0.9614768818283604,
+      "drift_teacher_vs_truth_rms": 11.19507820033018,
+      "drift_symbolic_vs_truth_nrmse": 0.795158741701963,
+      "drift_symbolic_vs_truth_rms": 9.258531810043824,
+      "diffusion_symbolic_vs_teacher_nrmse": 0.1636189194046903,
+      "diffusion_symbolic_vs_teacher_rms": 0.0020402379550679864,
+      "diffusion_teacher_vs_truth_nrmse": 0.9754391307164327,
+      "diffusion_teacher_vs_truth_rms": 0.43739228392782825,
+      "diffusion_symbolic_vs_truth_nrmse": 0.9724999866703752,
+      "diffusion_symbolic_vs_truth_rms": 0.43607435553371743
+    }
+  ],
+  "point_probes": [
+    {
+      "x": [
+        0.0,
+        0.0
+      ],
+      "t": 0.0,
+      "truth_f": [
+        0.0,
+        0.0
+      ],
+      "teacher_f": [
+        -0.049943138160140024,
+        0.12196442209839807
+      ],
+      "symbolic_f": [
+        -0.02583013335021594,
+        0.016202964829819807
+      ],
+      "truth_g": [
+        0.25,
+        0.3
+      ],
+      "teacher_g": [
+        0.023993171756320725,
+        0.026497529747595838
+      ],
+      "symbolic_g": [
+        0.024455095114981305,
+        0.027014049629957567
+      ]
+    },
+    {
+      "x": [
+        1.0,
+        0.0
+      ],
+      "t": 0.0,
+      "truth_f": [
+        0.0,
+        -1.0
+      ],
+      "teacher_f": [
+        0.15992284572046453,
+        -1.0061696743479864
+      ],
+      "symbolic_f": [
+        0.08499389616953806,
+        -0.9694324660811144
+      ],
+      "truth_g": [
+        0.3,
+        0.3
+      ],
+      "teacher_g": [
+        0.02170088828898708,
+        0.02433634906908908
+      ],
+      "symbolic_g": [
+        0.022289581003613945,
+        0.024974421935509104
+      ]
+    },
+    {
+      "x": [
+        0.0,
+        1.0
+      ],
+      "t": 0.0,
+      "truth_f": [
+        1.0,
+        1.0
+      ],
+      "teacher_f": [
+        1.1701780314977612,
+        0.8946648961752609
+      ],
+      "symbolic_f": [
+        1.0223103614502904,
+        0.4883423755086401
+      ],
+      "truth_g": [
+        0.25,
+        0.3
+      ],
+      "teacher_g": [
+        0.021589667714079403,
+        0.023633676014549534
+      ],
+      "symbolic_g": [
+        0.021685630730640608,
+        0.023717083526580873
+      ]
+    },
+    {
+      "x": [
+        1.0,
+        1.0
+      ],
+      "t": 0.0,
+      "truth_f": [
+        1.0,
+        -1.0
+      ],
+      "teacher_f": [
+        1.0897268548408088,
+        -1.0384777841276678
+      ],
+      "symbolic_f": [
+        1.0560121415308161,
+        -0.7188698974322388
+      ],
+      "truth_g": [
+        0.3,
+        0.3
+      ],
+      "teacher_g": [
+        0.019626614670157874,
+        0.021814701347085633
+      ],
+      "symbolic_g": [
+        0.019520116619273248,
+        0.021677455832132413
+      ]
+    }
+  ],
+  "query_dropped": {
+    "train": 0,
+    "validation": 0,
+    "test": 0
+  },
+  "h6_diffusion_nrmse": {
+    "fdm": 0.9491809543153357,
+    "marginal": 0.9386686193648808,
+    "improvement": -0.010512334950454894
+  },
+  "h6_drift_nrmse": {
+    "fdm": 0.4978291719797684,
+    "marginal": 0.5425399336787754
+  },
+  "excursion_absolute": {
+    "truth": 0.04296875,
+    "teacher": 0.03125,
+    "symbolic": 0.0390625,
+    "gap_symbolic_minus_teacher": 0.0078125
+  },
+  "verdicts": {
+    "H1": "fail",
+    "H2": "fail",
+    "H2c": "pass",
+    "H3": "pass",
+    "H4_failure": "pass",
+    "H4_excursion_gap": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H6": "fail",
+    "H7": "pass"
+  },
+  "elapsed_seconds": 23.29686212539673
+}

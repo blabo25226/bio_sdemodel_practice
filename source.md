@@ -219,7 +219,19 @@ Code: https://github.com/Z-Jianxin/FDM
 Why relevant: ICLR 2025. Neural drift and neural diffusion are trained by a kernel scoring rule on two-time joints (Finite Dimensional Matching, Theorem 2, Algorithm 1). The released FDDiscriminator minimizes E[k(X,X')] - 2 E[k(X,Y)] on consecutive grid times with a Gaussian RBF of bandwidth 1. Day 12 distills that teacher on an observable 2D Markov diffusion. The paper's Dukascopy KS tables and the rough Bergomi experiment are outside the cut.
 Accessed: 2026-11-04.
 
-## 13. Direct stochastic sparse identification assumptions
+## 13. Day 13 paper (daily Neural SDE series)
+
+Title: SDE Matching: Scalable and Simulation-Free Training of Latent Stochastic Differential Equations
+Authors: Grigory Bartosh, Dmitry Vetrov, Christian A. Naesseth
+Year: 2025
+URL: https://proceedings.mlr.press/v267/bartosh25a.html
+PDF: https://raw.githubusercontent.com/mlresearch/v267/main/assets/bartosh25a/bartosh25a.pdf
+arXiv: https://arxiv.org/abs/2502.02472
+Code: https://github.com/GrigoryBartosh/sde_matching
+Why relevant: ICML 2025, PMLR 267:3054-3070. The prior Neural SDE has neural drift h_theta and neural diffusion g_theta (eq. 15). Training minimizes the latent-SDE variational bound without integrating the posterior SDE, by sampling z_t = mu_phi(X, t) + sigma_phi(X, t) epsilon (eq. 37) and converting that flow to a posterior drift with the probability-flow identity (eq. 19-20). Day 13 distills the state-dependent prior on an observable 2D stochastic Lotka-Volterra system (Appendix C.3, sigma = 0.15; drift coefficients from Course and Nair, NeurIPS 2023, Appendix G.1). Motion capture, pendulum video, and the 3D Lorenz experiment are outside the cut.
+Accessed: 2026-11-06.
+
+## 14. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations
 Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi

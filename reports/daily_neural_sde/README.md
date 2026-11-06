@@ -89,3 +89,4 @@
 | 11 | 2026-11-04 | Kong, Sun & Zhang 2020, SDE-Net (ICML, PMLR 119) | epistemic-uncertainty SDE (2D XOR blobs, neural drift + neural diffusion of the initial state) | `day11_kong_sdenet/report.md` |
 | 12 | 2026-11-04 | Zhang, Viktorov, Jung & Pitler 2025, Finite Dimensional Matching (ICLR) | noisy van der Pol (2D, neural drift and neural diffusion trained by a two-time kernel score) | `day12_zhang_fdm/report.md` |
 | 13 | 2026-11-06 | Bartosh, Vetrov & Naesseth 2025, SDE Matching (ICML) | stochastic Lotka–Volterra (2D, multiplicative diffusion, simulation-free variational bound) | `day13_bartosh_sde_matching/report.md` |
+| 14 | 2026-11-07 | Koprulu, Djeumou & Topcu 2025, NUNO (ICLR) | controlled point mass with cubic drag (2D state + scalar action, physics-structured drift, distance-aware diffusion) | `day14_koprulu_nuno/report.md` |

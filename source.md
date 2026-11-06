@@ -231,7 +231,18 @@ Code: https://github.com/GrigoryBartosh/sde_matching
 Why relevant: ICML 2025, PMLR 267:3054-3070. The prior Neural SDE has neural drift h_theta and neural diffusion g_theta (eq. 15). Training minimizes the latent-SDE variational bound without integrating the posterior SDE, by sampling z_t = mu_phi(X, t) + sigma_phi(X, t) epsilon (eq. 37) and converting that flow to a posterior drift with the probability-flow identity (eq. 19-20). Day 13 distills the state-dependent prior on an observable 2D stochastic Lotka-Volterra system (Appendix C.3, sigma = 0.15; drift coefficients from Course and Nair, NeurIPS 2023, Appendix G.1). Motion capture, pendulum video, and the 3D Lorenz experiment are outside the cut.
 Accessed: 2026-11-06.
 
-## 14. Direct stochastic sparse identification assumptions
+## 14. Day 14 paper (daily Neural SDE series)
+
+Title: Neural Stochastic Differential Equations for Uncertainty-Aware Offline RL
+Authors: Cevahir Koprulu, Franck Djeumou, Ufuk Topcu
+Year: 2025
+URL: https://proceedings.iclr.cc/paper_files/paper/2025/hash/0f25eb6e9dc26c933a5d7516abf1eb8c-Abstract-Conference.html
+PDF: https://proceedings.iclr.cc/paper_files/paper/2025/file/0f25eb6e9dc26c933a5d7516abf1eb8c-Paper-Conference.pdf
+Partial reimplementation: https://github.com/matthew-lowery/NSDE_ORL
+Why relevant: ICLR 2025. The dynamics model is a neural SDE (eq. 5) whose drift can use rigid-body structure (eq. 8: position rate equals velocity, velocity rate is G(v)a + H(s)v plus a penalized residual) and whose diagonal diffusion is aleatoric sigma_phi plus a bounded monotone function of a distance-aware eta (eq. 3-4, Appendix C.4). Day 14 distills that teacher on an observable controlled point mass with cubic drag. D4RL, NeoRL, MuJoCo, reward learning, and SAC policy optimization are outside the cut. Appendix D's aleatoric-only ablation (NUNO-al) is the H6 baseline.
+Accessed: 2026-11-07.
+
+## 15. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations
 Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi

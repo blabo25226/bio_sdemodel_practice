@@ -1,0 +1,17 @@
+%% Day 8 symbolic jump-diffusion (Jia & Benson 2019 Neural Jump SDEs; distilled jump teacher; x = X)
+\begin{aligned}
+\hat f &= - 0.07828 - 0.618\,x + 0.02609\,x^{2} + 0.01079\,x^{3} \\
+\end{aligned}
+\begin{aligned}
+\hat g &= 0.3464 \\
+\end{aligned}
+\begin{aligned}
+\hat \lambda &= 0.2337 - 0.01084\,x + 0.1017\,x^{2} + 0.01331\,x^{3} \\
+\end{aligned}
+\begin{aligned}
+\hat \mu_J &= - 0.8086 \\
+\end{aligned}
+\begin{aligned}
+\hat \sigma_J &= 0.4977 \\
+\end{aligned}
+%% Jump term: dX = f dt + g dW + J dN(lambda), J ~ N(mu_J, sigma_J^2).

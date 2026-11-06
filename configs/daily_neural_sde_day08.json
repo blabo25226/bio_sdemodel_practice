@@ -1,0 +1,204 @@
+{
+  "data": {
+    "dt_fine": 0.01,
+    "dt_obs": 0.05,
+    "generation": "Euler-Maruyama at dt_fine = 0.01 for the Day 8 ground-truth jump-diffusion (see ground_truth_sde). Within each fine step a jump occurs with probability lambda(x) * dt_fine and size drawn from N(mu_J, sigma_J^2). Observations every 0.05 on [0, 10] (201 points per trajectory).",
+    "initial_law": "X(0) ~ Normal(0, 1), independent per trajectory",
+    "n_trajectories": 768,
+    "t_end": 10.0
+  },
+  "date": "2026-11-02",
+  "day": 8,
+  "distillation": {
+    "degrees": {
+      "diffusion": [
+        0,
+        1,
+        2
+      ],
+      "drift_free": [
+        1,
+        2,
+        3
+      ],
+      "drift_no_intercept": [
+        1,
+        2,
+        3
+      ],
+      "jump_mean": [
+        0,
+        1
+      ],
+      "jump_size_sd": [
+        0,
+        1
+      ],
+      "lambda": [
+        1,
+        2,
+        3
+      ]
+    },
+    "lambda_fit": "lambda is fitted directly (not log lambda) so that negativity of the symbolic lambda on the grid is visible as a domain failure; a log-lambda degree-2 fit is reported as a diagnostic only, never selected.",
+    "library_variables": "All libraries are polynomials in the single state x only (the truth is time-homogeneous and one-dimensional). Drift candidates include both free libraries and no-intercept libraries (Day 7 structural-constraint reflection: a no-intercept library is the structural constraint for a drift that vanishes at the origin).",
+    "oracle_diagnostic": "the same SINDy procedure fitted to ground-truth field values at the same query states (diagnostic ceiling only, not a candidate)",
+    "query_states": "observed states of each split (trajectory-disjoint train/validation/test), teacher evaluated directly (no finite differences)",
+    "ridge": 0.0001,
+    "selection": "per field, minimize validation NRMSE against the teacher; test evaluated once after selection",
+    "thresholds": [
+      0.02,
+      0.05,
+      0.1,
+      0.2,
+      0.35
+    ]
+  },
+  "ground_truth_sde": {
+    "diffusion": "g = 0.35 constant (diagonal 1D).",
+    "drift": "f(x) = -0.60 * x (linear mean reversion toward 0).",
+    "form": "dX = f(X) dt + g dW + J dN(lambda(X)), where N is a Poisson process with state-dependent intensity lambda(X) and J ~ N(mu_J, sigma_J^2) independent of W and N. This is the paper's jump form dz = f dt + w dN (state-dependent intensity lambda(z), jump function w) with the continuous part extended by a Brownian diffusion term (declared deviation: the paper's continuous part is a deterministic ODE, so a diffusion term is added to make diffusion/jump disentangling testable in observed increments).",
+    "jump_mean": "mu_J = -0.80 constant.",
+    "jump_size_sd": "sigma_J = 0.50 constant.",
+    "lambda": "lambda(x) = 0.25 + 0.08 * x^2 (state-dependent intensity, polynomial of degree 2, bounded below by 0.25)."
+  },
+  "hypotheses": {
+    "H1_drift_distillation": {
+      "symbolic_drift_test_nrmse_vs_teacher_max": 0.3
+    },
+    "H2_diffusion_distillation": {
+      "note": "Headline is the g NRMSE; the Sigma clause is the identified-object clause (Sigma = g^2 in 1D). Both must hold.",
+      "symbolic_diffusion_test_nrmse_vs_teacher_max": 0.3,
+      "symbolic_sigma_test_nrmse_vs_teacher_max": 0.3
+    },
+    "H2j_jump_distillation": {
+      "lambda_test_nrmse_vs_teacher_max": 0.3,
+      "mu_abs_error_vs_teacher_max": 0.2,
+      "note": "mu_J and sigma_J are compared as train-query means of the teacher nets versus the symbolic (degree 0/1) fits evaluated at the same states; both must hold together with the lambda clause.",
+      "sigma_abs_error_vs_teacher_max": 0.2
+    },
+    "H3_truth_recovery": {
+      "field_symbolic_drift_test_nrmse_vs_truth_max": 0.6,
+      "field_symbolic_lambda_test_nrmse_vs_truth_max": 0.6,
+      "note": "Field-level clauses only; the coefficient clause H3c is separate (Day 1 lesson)."
+    },
+    "H3c_linear_coefficient": {
+      "linear_coefficient_max_abs_error": 0.2,
+      "note": "Pre-frozen diagnostic fit, NOT the selected model: an origin-pinned degree-2 drift fit at threshold 0.05 (mean-0 standardization, no constant term, so the expanded original-coordinate polynomial genuinely vanishes at x = 0), fitted on train queries and evaluated on test queries. The degree-3 library VIF (maximum selectable degree, intercept column excluded) is 1.46-3.72, i.e. low, so the gate does not forbid a coefficient verdict; the frozen-degree diagnostic is kept as the verdict vehicle to satisfy the Day 7 lesson. Compared quantity: the expanded linear coefficient of f (truth -0.60). Lambda coefficients from a fixed degree-2 fit are tabulated without a verdict."
+    },
+    "H4_simulation": {
+      "domain_excursion_definition": "fraction of simulated trajectories whose |X| ever exceeds 8.0 at any simulated step; a domain-validity measure separate from failure (Day 4 reflection).",
+      "domain_excursion_symbolic_minus_teacher_max": 0.1,
+      "failure_radius": 30.0,
+      "lambda_clip_rate_symbolic_max": 0.05,
+      "median_paired_rmse_vs_teacher_max": 1.0,
+      "note": "Paired RMSE is the per-step absolute distance between symbolic and teacher simulated states, median over test trajectories and steps; the threshold is loose (1.0) because jump-timing differences dominate it, so it is NOT the main simulation clause -- failure, excursion and lambda-clip rates carry the verdict. Failure is non-finite state or |X| > 30. Symbolic lambda is clipped at 0 in simulation and sigma_J at 0.01; clipped-step fractions are counted as domain measures.",
+      "symbolic_failure_rate_max": 0.05,
+      "symbolic_failure_rate_minus_teacher_max": 0.02
+    },
+    "H5_paper_axis_jump_vs_diffusion": {
+      "large_increment_clause": {
+        "note": "MAIN clause is the pair of absolute levels, pre-decided (Day 7 reflection): the simulated large-increment rate of the symbolic model must be within 0.01 of the observed test-transition large-increment rate, and the jump teacher's simulated rate must also be within 0.01 of it, while the diffusion-only teacher's simulated rate must miss by more than 0.01. Large increment = |Delta X| > 0.5 over one dt_obs step (diffusion-only step sd is 0.35*sqrt(0.05) = 0.078, so 0.5 is ~6.4 diffusion sigmas; observed large increments are jump-dominated).",
+        "observed_vs_symbolic_abs_diff_max": 0.01,
+        "observed_vs_teacher_abs_diff_max": 0.01
+      },
+      "nll_clause": {
+        "diffusion_only_minus_jump_min": 0.02,
+        "note": "Test-transition predictive NLL per transition: jump teacher (2-component Gaussian mixture density) versus diffusion-only teacher (Gaussian density). Clause: NLL(diffusion-only) - NLL(jump) > 0.02 nats and > 2 x paired SE of per-transition NLL differences. Absolute NLL levels for both teachers are reported alongside (Day 7 reflection: absolute levels, not only a difference).",
+        "paired_se_rule": "difference > 0 and > 2 x paired SE"
+      }
+    },
+    "H6_discretization_bias_em_coarsening": {
+      "coarsening": "Jump-mixture EM teacher retrained on observations subsampled to Delta t = 0.5 (every 10th observation) vs jump-mixture EM teacher trained on the same number of transitions subsampled from Delta t = 0.05 data (transition-count-matched, Day 6 lesson). Coarse mixture uses jump probability 1 - exp(-lambda * dt) and a single-jump Gaussian component (multiple jumps within dt = 0.5 have probability ~1% at lambda ~ 0.3 and are neglected; declared approximation).",
+      "drift_nrmse_degradation_min": 0.03,
+      "note": "Day 1 reflection adapted to jump-diffusions, with Day 6/7 regime lessons: the hypothesis is regime-split by |x| (small |x| < 0.5 vs large |x| > 1.5), and per-transition SNR is quantified (drift signal |f| dt against diffusion sd g sqrt(dt), by regime) alongside transition-count matching. Drift and diffusion coarse-vs-fine comparisons are interpreted separately (Day 7: diffusion estimation is dominated by sample size, not step size). A jump-contamination diagnostic is reported separately: the diffusion-only teacher's g versus truth (jumps absorbed into g) and a jump-screened two-stage g estimate (|Delta| > 0.4 screened out) versus truth.",
+      "regime_gap_min": 0.02,
+      "regime_gap_note": "large-|x| degradation minus small-|x| degradation >= 0.02"
+    },
+    "H7_downstream_one_step": {
+      "mse_abs_diff_max": 0.002,
+      "note": "|MSE_symbolic - MSE_teacher| for one-step-ahead mean predictions on test transitions, where the predicted mean is x + f dt + mu_J * lambda * dt (expected increment including jumps) and the target is the realized next state. Paired SE reported; if paired SE >= 0.001 (half the threshold) the clause is reported as 'not statistically established' even if the point estimate passes (Day 4 reflection).",
+      "paired_se_indeterminate_threshold": 0.001
+    }
+  },
+  "paper": {
+    "authors": "Junteng Jia, Austin R. Benson",
+    "experiment": "Sections 3-4: Neural Jump SDEs extend Neural ODEs with a stochastic jump term dz = f(z) dt + w(z) dN(t), where events occur with state-dependent conditional intensity lambda(z); gradients through discontinuities via a lifted adjoint. Demonstrated on synthetic and real marked point-process data (classical point processes such as Hawkes, Stack Overflow awards, medical records, earthquake monitoring) for prediction of future events.",
+    "journal": "NeurIPS 2019, arXiv:1905.10403",
+    "title": "Neural Jump Stochastic Differential Equations",
+    "url": "https://arxiv.org/abs/1905.10403"
+  },
+  "reflections_applied": {
+    "day1_collinearity_gate_at_max_degree": "VIF is computed on train queries for the degree-3 library (the maximum degree the selection procedure can choose), with the constant column excluded (its VIF is meaningless). The resulting VIFs are 1.46-3.72 (low), so the gate passes; H3c still uses a pre-frozen origin-pinned degree-2 diagnostic fit as the verdict vehicle (Day 7 lesson).",
+    "day1_discretization_bias": "H6 is the adapted discretization-bias diagnostic: jump-mixture EM at Delta t = 0.5 vs transition-count-matched Delta t = 0.05, regime-split by |x|, with per-transition SNR quantified by regime and drift/diffusion interpreted separately. A jump-contamination diagnostic for g (diffusion-only teacher vs jump-screened two-stage estimate) is the Day 1 linear/nonlinear g-comparison analogue: jumps contaminate g in the unscreened estimator.",
+    "day2_off_manifold": "Off-manifold diagnostic is standard: a fixed grid x in [-4, 4] (81 points, extending well beyond the data range) for f, g and lambda, reported on field / off-manifold axes separately and used for reporting only, never for selection (Day 5). Grid points outside the data range carry no strong extrapolation claim (Day 3).",
+    "day4_domain_validity": "H4 carries domain clauses separate from failure: |X| excursion (> 8) and symbolic lambda clip rate (negative lambda clipped at 0 in simulation), the jump-specific domain measure.",
+    "day4_downstream_paired_se": "H5 NLL clause and H7 report paired SEs with pre-frozen indeterminate rules.",
+    "day5_distribution_vs_field": "No distribution-matching teacher is used (all teachers are transition-likelihood mixture EM), so no distribution-loss verdict can be confused with a field verdict; teacher-vs-truth and symbolic-vs-teacher errors are tabulated side by side, and H5 reports absolute NLL levels for both teachers.",
+    "day5_multiple_initial_conditions": "Every trajectory has its own Normal(0, 1) initial state (no single initial condition).",
+    "day5_off_manifold_denominator": "Grid NRMSE values above 1 are reported with absolute RMS errors alongside.",
+    "day6_diffusion_input_design": "Diffusion and jump parameters are fitted and verified separately from drift (g, lambda, mu_J, sigma_J each have their own library and verdict); a trajectory-constant input failure mode of the Day 6 type cannot arise here because all libraries take only the current state x.",
+    "day7_absolute_levels_for_shift": "H5's main clause is pre-decided as absolute levels (simulated vs observed large-increment rates for each model), not only a degradation/difference; the NLL clause additionally reports absolute NLL levels for both teachers.",
+    "day7_rare_domain_events": "Lambda negativity is a potentially rare on-manifold event (lambda is bounded below by 0.25 in truth), so it is tested on the wide off-manifold grid (81 points to |x| = 4) rather than by counting rare on-manifold occurrences, and the symbolic clip rate in simulation is counted over all simulated steps.",
+    "day7_structural_library": "Drift candidates include origin-pinned libraries, implemented as mean-0 standardization with no constant term (an implementation note: a no-intercept library in standardized coordinates pins the fit at the train mean, not at the origin -- the first implementation had exactly this bug, visible as a 0.34 diagnostic NRMSE, and was corrected before the final run). Validation selected the free library, because the teacher itself has f(0) = -0.072, not 0; the origin diagnostic is reported alongside."
+  },
+  "seed": 0,
+  "series": "daily_neural_sde",
+  "simulation": {
+    "dt": 0.05,
+    "excursion_radius": 8.0,
+    "failure_classes": [
+      "non_finite",
+      "outside_radius"
+    ],
+    "failure_radius": 30.0,
+    "initial_states": "test trajectories' initial states X(0)",
+    "jump_pairing": "shared Brownian increments, shared uniform jump draws and shared jump-size normals across models; each model decides jumps from its own lambda(x) (U < 1 - exp(-lambda dt))",
+    "large_increment_threshold": 0.5,
+    "paired_brownian": true,
+    "seed": 1234,
+    "t_end": 10.0
+  },
+  "split": {
+    "seed": 0,
+    "test": 144,
+    "train": 480,
+    "unit": "trajectory (disjoint)",
+    "validation": 144
+  },
+  "teacher": {
+    "architecture": "Jump teacher: five small MLPs on standardized x only (truth is time-homogeneous): f net [32, 32] tanh; g net [16] tanh, output softplus + 0.01; log-lambda net [16] tanh, lambda = softplus(raw) + 0.01; mu_J net [16] tanh; log-sigma_J net [16] tanh, sigma_J = softplus(raw) + 0.05. Diffusion-only teacher: f net [32, 32] tanh and g net [16] tanh, Gaussian EM NLL. All teachers trained by Adam on train transitions only.",
+    "deviation_from_paper": "Three declared cuts. (1) Latent point-process pipeline replaced by an identifiable observable 1D jump-diffusion: the paper's latent trajectory, adjoint training through event times, and marked point-process benchmarks (Hawkes, Stack Overflow, MIMIC, earthquakes) are not treated; the teacher is reconstructed in identifiable coordinates as an observable jump-diffusion whose jump part follows the paper's form (state-dependent intensity lambda(z), jump function w). (2) Continuous part extended with a Brownian diffusion term: the paper's continuous dynamics are a deterministic ODE plus jumps, so a diffusion term is added to make diffusion/jump disentangling testable in observed increments; results therefore do not reproduce the paper's model class exactly. (3) Training is by a two-component Gaussian-mixture transition likelihood (no-jump vs one-jump component, jump probability 1 - exp(-lambda dt)) rather than the paper's adjoint point-process likelihood; this is the series' standard estimator and is declared as a method substitution.",
+    "em_coarse": {
+      "batch": 2048,
+      "dt_obs": 0.5,
+      "epochs": 40,
+      "lr": 0.003,
+      "transitions": "train trajectories subsampled to every 10th observation (480 x 20 = 9600 transitions)"
+    },
+    "em_fine_sub": {
+      "batch": 2048,
+      "dt_obs": 0.05,
+      "epochs": 40,
+      "lr": 0.003,
+      "transitions": "9600 transitions subsampled at random (seed-fixed) from train Delta t = 0.05 transitions, matching the coarsened count"
+    },
+    "em_main": {
+      "batch": 8192,
+      "epochs": 40,
+      "lr": 0.003
+    },
+    "estimator": "jump-mixture EM (two-component Gaussian transition likelihood, variable dt not needed: regular grid)",
+    "estimators_compared": {
+      "jump_coarse": "jump-mixture EM on subsampled Delta t = 0.5 train transitions",
+      "jump_diffusion_only": "Gaussian EM (no jump component) on full regular train transitions -- the paper-axis baseline",
+      "jump_fine_sub": "jump-mixture EM on transition-count-matched Delta t = 0.05 train transitions",
+      "jump_main": "jump-mixture EM on full regular train transitions (dt = 0.05) -- the distilled teacher"
+    },
+    "hidden": [
+      32,
+      32
+    ],
+    "optimizer": "Adam"
+  }
+}

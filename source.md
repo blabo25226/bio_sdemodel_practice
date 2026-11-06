@@ -197,7 +197,52 @@ regularization is evaluated explicitly. No trajectory derivative API is forced
 onto direct teacher-function regression.
 Accessed: 2026-10-07.
 
-## 11. Direct stochastic sparse identification assumptions
+## 11. Day 11 paper (daily Neural SDE series)
+
+Title: SDE-Net: Equipping Deep Neural Networks with Uncertainty Estimates
+Authors: Lingkai Kong, Jimeng Sun, Chao Zhang
+Year: 2020
+URL: https://proceedings.mlr.press/v119/kong20b.html
+PDF: http://proceedings.mlr.press/v119/kong20b/kong20b.pdf
+Why relevant: Neural drift f(x_t, t) trained by a task loss and neural diffusion g(x_0) trained to be small on in-distribution inputs and large on Gaussian-perturbed inputs (ICML 2020, eq. 4 and eq. 7, Algorithm 1). Day 11 distills those two networks with a power-only SINDy library. The supplement's test-time sigma_max = 50 is not part of the distilled SDE; the training value sigma_max = 1 is.
+Accessed: 2026-11-04.
+
+## 12. Day 12 paper (daily Neural SDE series)
+
+Title: Efficient Training of Neural Stochastic Differential Equations by Matching Finite Dimensional Distributions
+Authors: Jianxin Zhang, Josh Viktorov, Doosan Jung, Emily Pitler
+Year: 2025
+URL: https://proceedings.iclr.cc/paper_files/paper/2025/hash/5acf5a0ee5c17d372bfe7fdaeffd6e33-Abstract-Conference.html
+PDF: https://proceedings.iclr.cc/paper_files/paper/2025/file/5acf5a0ee5c17d372bfe7fdaeffd6e33-Paper-Conference.pdf
+arXiv: https://arxiv.org/abs/2410.03973
+Code: https://github.com/Z-Jianxin/FDM
+Why relevant: ICLR 2025. Neural drift and neural diffusion are trained by a kernel scoring rule on two-time joints (Finite Dimensional Matching, Theorem 2, Algorithm 1). The released FDDiscriminator minimizes E[k(X,X')] - 2 E[k(X,Y)] on consecutive grid times with a Gaussian RBF of bandwidth 1. Day 12 distills that teacher on an observable 2D Markov diffusion. The paper's Dukascopy KS tables and the rough Bergomi experiment are outside the cut.
+Accessed: 2026-11-04.
+
+## 13. Day 13 paper (daily Neural SDE series)
+
+Title: SDE Matching: Scalable and Simulation-Free Training of Latent Stochastic Differential Equations
+Authors: Grigory Bartosh, Dmitry Vetrov, Christian A. Naesseth
+Year: 2025
+URL: https://proceedings.mlr.press/v267/bartosh25a.html
+PDF: https://raw.githubusercontent.com/mlresearch/v267/main/assets/bartosh25a/bartosh25a.pdf
+arXiv: https://arxiv.org/abs/2502.02472
+Code: https://github.com/GrigoryBartosh/sde_matching
+Why relevant: ICML 2025, PMLR 267:3054-3070. The prior Neural SDE has neural drift h_theta and neural diffusion g_theta (eq. 15). Training minimizes the latent-SDE variational bound without integrating the posterior SDE, by sampling z_t = mu_phi(X, t) + sigma_phi(X, t) epsilon (eq. 37) and converting that flow to a posterior drift with the probability-flow identity (eq. 19-20). Day 13 distills the state-dependent prior on an observable 2D stochastic Lotka-Volterra system (Appendix C.3, sigma = 0.15; drift coefficients from Course and Nair, NeurIPS 2023, Appendix G.1). Motion capture, pendulum video, and the 3D Lorenz experiment are outside the cut.
+Accessed: 2026-11-06.
+
+## 14. Day 14 paper (daily Neural SDE series)
+
+Title: Neural Stochastic Differential Equations for Uncertainty-Aware Offline RL
+Authors: Cevahir Koprulu, Franck Djeumou, Ufuk Topcu
+Year: 2025
+URL: https://proceedings.iclr.cc/paper_files/paper/2025/hash/0f25eb6e9dc26c933a5d7516abf1eb8c-Abstract-Conference.html
+PDF: https://proceedings.iclr.cc/paper_files/paper/2025/file/0f25eb6e9dc26c933a5d7516abf1eb8c-Paper-Conference.pdf
+Partial reimplementation: https://github.com/matthew-lowery/NSDE_ORL
+Why relevant: ICLR 2025. The dynamics model is a neural SDE (eq. 5) whose drift can use rigid-body structure (eq. 8: position rate equals velocity, velocity rate is G(v)a + H(s)v plus a penalized residual) and whose diagonal diffusion is aleatoric sigma_phi plus a bounded monotone function of a distance-aware eta (eq. 3-4, Appendix C.4). Day 14 distills that teacher on an observable controlled point mass with cubic drag. D4RL, NeoRL, MuJoCo, reward learning, and SAC policy optimization are outside the cut. Appendix D's aleatoric-only ablation (NUNO-al) is the H6 baseline.
+Accessed: 2026-11-07.
+
+## 15. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations
 Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi

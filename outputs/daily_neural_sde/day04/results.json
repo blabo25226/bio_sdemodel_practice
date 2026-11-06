@@ -1,0 +1,404 @@
+{
+  "data_stats": {
+    "x_mean": 0.00012214924287514193,
+    "x_std": 0.1427788174220881,
+    "x_range": [
+      -1.1150298026756502,
+      0.5539703023980543
+    ],
+    "v_mean": 0.039928384751770706,
+    "v_std": 0.02589918285100276,
+    "v_range": [
+      -2.013504244476173e-05,
+      0.2773613852904527
+    ],
+    "fraction_observed_v_negative": 1.1625744047619047e-05
+  },
+  "teacher_vs_truth_test": {
+    "drift": 0.24050295518495685,
+    "sigma": 0.1128998149858476
+  },
+  "symbolic_vs_teacher_test": {
+    "drift": 0.07992390659627602,
+    "diffusion": 0.028342042156522033,
+    "sigma": 0.040743143323248666
+  },
+  "symbolic_vs_truth_test": {
+    "drift": 0.224884557247956,
+    "sigma": 0.11025269518982098
+  },
+  "estimators": {
+    "em": {
+      "val_nll": -5.176145197299127,
+      "drift_nrmse_vs_truth_test": 0.22092229322708973,
+      "sigma_nrmse_vs_truth_test": 0.13087564120586376,
+      "drift_nrmse_vs_truth_test_by_regime": {
+        "low": {
+          "n": 3337,
+          "drift_nrmse_vs_truth": 0.12312582101584435,
+          "sigma_nrmse_vs_truth": 0.3001364947277805
+        },
+        "mid": {
+          "n": 9314,
+          "drift_nrmse_vs_truth": 0.35175290090393935,
+          "sigma_nrmse_vs_truth": 0.0740268609343793
+        },
+        "high": {
+          "n": 2709,
+          "drift_nrmse_vs_truth": 0.2247290507312384,
+          "sigma_nrmse_vs_truth": 0.1525592379477583
+        }
+      }
+    },
+    "substep": {
+      "val_nll": -5.183736807298646,
+      "drift_nrmse_vs_truth_test": 0.24050295518495685,
+      "sigma_nrmse_vs_truth_test": 0.1128998149858476,
+      "drift_nrmse_vs_truth_test_by_regime": {
+        "low": {
+          "n": 3337,
+          "drift_nrmse_vs_truth": 0.16241126787283575,
+          "sigma_nrmse_vs_truth": 0.27634606713449805
+        },
+        "mid": {
+          "n": 9314,
+          "drift_nrmse_vs_truth": 0.4837445169472784,
+          "sigma_nrmse_vs_truth": 0.06457893718311847
+        },
+        "high": {
+          "n": 2709,
+          "drift_nrmse_vs_truth": 0.206518994214849,
+          "sigma_nrmse_vs_truth": 0.1303865384620427
+        }
+      }
+    }
+  },
+  "sigma_nrmse_difference_substep_minus_em": 0.01797582622001616,
+  "sigma_diffusion_tie": false,
+  "distillation": {
+    "drift": {
+      "degree": 3,
+      "threshold": 0.02,
+      "active_terms": 20,
+      "val_nrmse_vs_teacher": 0.0777980329959299,
+      "test_nrmse_vs_teacher": 0.07992390659627602,
+      "test_nrmse_vs_truth": 0.224884557247956,
+      "expanded": [
+        {
+          "(0, 0)": 0.037986613932547465,
+          "(1, 0)": -0.07401239530832177,
+          "(0, 1)": -1.197950281947242,
+          "(2, 0)": 0.04463787748525773,
+          "(1, 1)": -0.39861188118951524,
+          "(0, 2)": 0.5652661069523264,
+          "(3, 0)": 0.23083554985362273,
+          "(2, 1)": 2.310108293733005,
+          "(1, 2)": 11.006409473805792,
+          "(0, 3)": 19.27726470595156
+        },
+        {
+          "(0, 0)": 0.06918501459008139,
+          "(1, 0)": 0.06342378788676914,
+          "(0, 1)": -1.36603746252548,
+          "(2, 0)": -0.13294975291232083,
+          "(1, 1)": -1.3575758360013817,
+          "(0, 2)": -10.31702935532171,
+          "(3, 0)": -0.3183414816580001,
+          "(2, 1)": 1.010690074601726,
+          "(1, 2)": 13.94561872804097,
+          "(0, 3)": 57.3868857497649
+        }
+      ]
+    },
+    "diffusion": {
+      "degree": 3,
+      "threshold": 0.02,
+      "active_terms": 19,
+      "val_nrmse_vs_teacher": 0.028531312472736294,
+      "test_nrmse_vs_teacher": 0.028342042156522033,
+      "test_nrmse_vs_truth": null,
+      "expanded": [
+        {
+          "(0, 0)": 0.08946503321382411,
+          "(0, 1)": 2.629831491123718,
+          "(2, 0)": 0.2065684960613456,
+          "(1, 0)": -0.12945856626783664,
+          "(1, 1)": 3.235745455981424
+        },
+        {},
+        {
+          "(0, 0)": -0.016201028268426874,
+          "(0, 1)": -0.6388351868688978,
+          "(2, 0)": -0.02665544058060184,
+          "(1, 0)": 0.015196688493264568,
+          "(1, 1)": -0.24896895953218995,
+          "(0, 2)": 1.328611717618727,
+          "(3, 0)": -0.0954306356227277,
+          "(2, 1)": -0.7249984673553079,
+          "(1, 2)": -3.3116054316874135,
+          "(0, 3)": -4.8577137067441525
+        },
+        {
+          "(0, 0)": 0.02174518858077644,
+          "(0, 1)": 0.32855218131477326,
+          "(2, 0)": 0.09142104864878348,
+          "(1, 0)": -0.03216020957869296,
+          "(1, 1)": 0.7157333984630802,
+          "(0, 2)": 2.206374992937371,
+          "(1, 2)": 2.2630039970975044
+        }
+      ],
+      "per_entry_test_rms_error": [
+        0.00560034426293773,
+        0.0,
+        0.0015297185844019199,
+        0.0013392931465526713
+      ],
+      "per_entry_test_rms_target": [
+        0.20182956746315883,
+        0.0,
+        0.04142586973964464,
+        0.04171351705430778
+      ],
+      "sigma_test_nrmse_vs_teacher": 0.040743143323248666,
+      "sigma_test_nrmse_vs_truth": 0.11025269518982098,
+      "x_dependent_expanded_terms": [
+        {
+          "entry": 0,
+          "exponent": [
+            2,
+            0
+          ],
+          "coef": 0.2065684960613456
+        },
+        {
+          "entry": 0,
+          "exponent": [
+            1,
+            0
+          ],
+          "coef": -0.12945856626783664
+        },
+        {
+          "entry": 0,
+          "exponent": [
+            1,
+            1
+          ],
+          "coef": 3.235745455981424
+        },
+        {
+          "entry": 2,
+          "exponent": [
+            2,
+            0
+          ],
+          "coef": -0.02665544058060184
+        },
+        {
+          "entry": 2,
+          "exponent": [
+            1,
+            0
+          ],
+          "coef": 0.015196688493264568
+        },
+        {
+          "entry": 2,
+          "exponent": [
+            1,
+            1
+          ],
+          "coef": -0.24896895953218995
+        },
+        {
+          "entry": 2,
+          "exponent": [
+            3,
+            0
+          ],
+          "coef": -0.0954306356227277
+        },
+        {
+          "entry": 2,
+          "exponent": [
+            2,
+            1
+          ],
+          "coef": -0.7249984673553079
+        },
+        {
+          "entry": 2,
+          "exponent": [
+            1,
+            2
+          ],
+          "coef": -3.3116054316874135
+        },
+        {
+          "entry": 3,
+          "exponent": [
+            2,
+            0
+          ],
+          "coef": 0.09142104864878348
+        },
+        {
+          "entry": 3,
+          "exponent": [
+            1,
+            0
+          ],
+          "coef": -0.03216020957869296
+        },
+        {
+          "entry": 3,
+          "exponent": [
+            1,
+            1
+          ],
+          "coef": 0.7157333984630802
+        },
+        {
+          "entry": 3,
+          "exponent": [
+            1,
+            2
+          ],
+          "coef": 2.2630039970975044
+        }
+      ]
+    }
+  },
+  "oracle": {
+    "drift": {
+      "degree": 1,
+      "threshold": 0.02,
+      "test_nrmse_vs_truth": 0.007255435239173623
+    },
+    "diffusion": {
+      "degree": 3,
+      "threshold": 0.02,
+      "test_nrmse_vs_truth": 0.020845660555313374
+    }
+  },
+  "collinearity": {
+    "corr_x_v_train": -0.6578918748384989,
+    "vif_x_v_train": 1.7631140568341326,
+    "max_pairwise_abs_corr_degree2_features_train": 0.923808875065996
+  },
+  "off_manifold_grid": {
+    "drift_nrmse_symbolic_vs_teacher": 0.7878404418121201,
+    "drift_nrmse_symbolic_vs_truth": 0.6767393013342089,
+    "drift_nrmse_teacher_vs_truth": 0.3693206433143419,
+    "diffusion_nrmse_symbolic_vs_teacher": 0.15009028983965544,
+    "diffusion_nrmse_symbolic_vs_truth": 0.51375673608912,
+    "diffusion_nrmse_teacher_vs_truth": 0.38804540119679376,
+    "extrapolation_column_v_0.16": {
+      "drift_nrmse_symbolic_vs_teacher": 0.7504216899674844,
+      "diffusion_nrmse_symbolic_vs_teacher": 0.1730357746248776,
+      "diffusion_nrmse_symbolic_vs_truth": 0.602980842615798
+    }
+  },
+  "simulation": {
+    "failure_rate": {
+      "neural": 0.0,
+      "symbolic": 0.0,
+      "truth": 0.0
+    },
+    "failure_class_counts": {
+      "neural": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "symbolic": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "truth": {
+        "non_finite": 0,
+        "outside_radius": 0
+      }
+    },
+    "neg_v_fraction": {
+      "neural": 0.19140625,
+      "symbolic": 0.1875,
+      "truth": 0.03515625
+    },
+    "terminal_mean": {
+      "neural": [
+        0.009824679803073551,
+        0.03844370267261094
+      ],
+      "symbolic": [
+        0.010134556429032037,
+        0.03843018212472767
+      ],
+      "truth": [
+        0.014791626179499527,
+        0.03886134168148428
+      ]
+    },
+    "terminal_std": {
+      "neural": [
+        0.1966756494239618,
+        0.029526396606145332
+      ],
+      "symbolic": [
+        0.1962047061640936,
+        0.029449917232502894
+      ],
+      "truth": [
+        0.19598687533596942,
+        0.0292521041484513
+      ]
+    },
+    "paired_rmse_median_symbolic_vs_neural": 0.002564791971260196,
+    "n_paired": 768
+  },
+  "pricing": {
+    "neural": {
+      "call_price": 0.08539755352028493,
+      "lookback_price": 0.1266778650806348,
+      "failure_rate": 0.0
+    },
+    "symbolic": {
+      "call_price": 0.08533925052096518,
+      "lookback_price": 0.140175179270772,
+      "failure_rate": 0.0001220703125
+    },
+    "truth": {
+      "call_price": 0.08800604973558826,
+      "lookback_price": 0.12345239881195397,
+      "failure_rate": 0.0
+    },
+    "diff_symbolic_minus_neural": {
+      "call": {
+        "mean_diff": -5.8302999319748125e-05,
+        "paired_se": 0.00010115487213480219
+      },
+      "lookback": {
+        "mean_diff": 0.013497314190137184,
+        "paired_se": 0.01423021099462168
+      }
+    },
+    "diff_symbolic_minus_truth": {
+      "call": {
+        "mean_diff": -0.002666799214623085,
+        "paired_se": 0.00012131006710189345
+      },
+      "lookback": {
+        "mean_diff": 0.01672278045881802,
+        "paired_se": 0.014230798270132674
+      }
+    }
+  },
+  "verdicts": {
+    "H1_drift_distillation": true,
+    "H2_diffusion_distillation": true,
+    "H3_truth_recovery": false,
+    "H4_simulation": true,
+    "H5_estimator_bias": false,
+    "H6_paper_axis_pricing": true
+  }
+}

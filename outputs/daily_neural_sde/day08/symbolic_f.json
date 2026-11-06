@@ -1,0 +1,49 @@
+{
+  "powers": [
+    [
+      0
+    ],
+    [
+      1
+    ],
+    [
+      2
+    ],
+    [
+      3
+    ]
+  ],
+  "coefficients": [
+    [
+      0.13641035676453445,
+      -0.43235964890054196,
+      0.007009927641204396,
+      0.0034525474643160663
+    ]
+  ],
+  "mean": [
+    -0.34310744748863115
+  ],
+  "scale": [
+    0.6839653369390873
+  ],
+  "metadata": {
+    "degree": 3,
+    "threshold": 0.02,
+    "ridge": 0.0001,
+    "intercept": true,
+    "origin": false,
+    "library_size": 4,
+    "active_terms": 4,
+    "optimizer": "numpy STLSQ (RMS-normalized, unbias refit)",
+    "feature_rms": [
+      1.0,
+      0.9999999999999895,
+      2.8749332120118662,
+      14.829078922085186
+    ],
+    "target_rms": [
+      0.43706631856390504
+    ]
+  }
+}

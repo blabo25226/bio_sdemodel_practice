@@ -1,0 +1,15 @@
+Symbolic reverse-time SDE in original coordinates (variables $x$, $\\tau = 1 - t$):
+
+$$
+\begin{aligned}
+f_{\\mathrm{rev}}(x, \\tau) &= 0.05571 - 0.1287\,\\tau - 10.6\,x + 0.05531\,\\tau^{2} + 24.49\,x \\tau + 0.007372\,x^{2} - 10.53\,x \\tau^{2} - 0.4677\,x^{3} \\
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+g_{\\mathrm{rev}}(x, \\tau) &= 4.517 - 2.99\,\\tau + 2.162\,\\tau^{2} - 2.969\,\\tau^{3} \\
+\end{aligned}
+$$
+
+with $dX_\\tau = f_{\\mathrm{rev}}(x, \\tau)\\,d\\tau + g_{\\mathrm{rev}}(x, \\tau)\\,d\\bar{W}_\\tau$.

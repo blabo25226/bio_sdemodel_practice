@@ -1,0 +1,7 @@
+# Daily Neural SDE -> SINDy series environment (Day 1, 2026-10-26)
+# Base image already provides: numpy 1.26.4, scipy 1.11.4, pandas, pytest.
+# Teacher training needs PyTorch (CPU wheel):
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+# Verified 2026-10-26: torch 2.14.1+cpu on Python 3.12.3 (CPU only).
+torch>=2.0
+numpy>=1.26

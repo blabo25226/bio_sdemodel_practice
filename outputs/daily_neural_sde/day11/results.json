@@ -1,0 +1,256 @@
+{
+  "semantics": {
+    "x0": [
+      8,
+      2
+    ],
+    "t": [
+      8
+    ],
+    "drift_f": [
+      8,
+      2
+    ],
+    "diffusion_g": [
+      8
+    ],
+    "g_min_probe": 4.75045114356476e-10,
+    "g_max_probe": 0.9992042183876038,
+    "sigma_max": 1.0,
+    "head_weight": [
+      2,
+      2
+    ],
+    "interpretation": "f(x, t) is R^2 -> R^2 with an explicit time input. g(x0) is a positive scalar held constant along the path; it is not re-evaluated at x_t. The linear head is a readout of x_T and is not part of the SDE."
+  },
+  "training_tail": [
+    {
+      "step": 2100,
+      "loss_f": 0.00010615410428727046,
+      "loss_g": -0.828273594379425,
+      "g_id": 0.039365168660879135,
+      "g_ood": 0.872455358505249
+    },
+    {
+      "step": 2200,
+      "loss_f": 0.0001285136677324772,
+      "loss_g": -0.8317409753799438,
+      "g_id": 0.0016244999133050442,
+      "g_ood": 0.8346796631813049
+    },
+    {
+      "step": 2300,
+      "loss_f": 9.220586798619479e-05,
+      "loss_g": -0.8619745969772339,
+      "g_id": 0.010323924943804741,
+      "g_ood": 0.8741579055786133
+    },
+    {
+      "step": 2400,
+      "loss_f": 6.950438546482474e-05,
+      "loss_g": -0.8098222017288208,
+      "g_id": 0.02615061029791832,
+      "g_ood": 0.8470995426177979
+    },
+    {
+      "step": 2499,
+      "loss_f": 0.00010133204341400415,
+      "loss_g": -0.8404946327209473,
+      "g_id": 0.027420667931437492,
+      "g_ood": 0.8697142004966736
+    }
+  ],
+  "linear_x0_test_accuracy": 0.5,
+  "vif_drift_degree3": 56.51724836407951,
+  "vif_g_degree3": 2.4658464137482574,
+  "drift_selection": {
+    "degree": 3,
+    "threshold": 0.02,
+    "validation_nrmse": 0.22412527493955292,
+    "active_terms": 38
+  },
+  "g_selection": {
+    "degree": 3,
+    "threshold": 0.02,
+    "validation_mean_regime_nrmse": 1.153573169327538,
+    "validation_id_nrmse": 1.7878757406573853,
+    "validation_ood_nrmse": 0.5192705979976907,
+    "active_terms": 7
+  },
+  "n_drift_queries": {
+    "train": 7200,
+    "validation": 2400,
+    "test": 2400
+  },
+  "drift_test_nrmse": 0.22122216806966863,
+  "drift_test_rms": 1.4224160456432233,
+  "drift_ceiling_test_nrmse": 0.22120292587616625,
+  "drift_ceiling_test_rms": 1.4222923220352774,
+  "g_id_test_nrmse": 1.8577436018537228,
+  "g_id_test_rms": 0.36983605822396926,
+  "g_id_teacher_rms": 0.19907809552132688,
+  "g_ood_test_nrmse": 0.5370769263371332,
+  "g_ood_test_rms": 0.5038731251115849,
+  "g_ood_teacher_rms": 0.9381768242177181,
+  "g_id_ceiling_nrmse": 1.8577729733644008,
+  "g_id_ceiling_rms": 0.36984190544837764,
+  "g_ood_ceiling_nrmse": 0.5369796997992259,
+  "g_ood_ceiling_rms": 0.5037819094270213,
+  "sigma_id_test_nrmse": 1.0930401535427126,
+  "query_ranges": {
+    "drift_x": [
+      -9.374783730530641,
+      9.5315639873462
+    ],
+    "drift_y": [
+      -7.509325650971535,
+      8.364100961687122
+    ],
+    "drift_t": [
+      0.0,
+      0.8333333333333333
+    ],
+    "g_x": [
+      -7.980451069958624,
+      7.217115889300292
+    ],
+    "g_y": [
+      -8.51754331636896,
+      9.134927534905321
+    ]
+  },
+  "g_outside_range_fraction": 0.04875,
+  "mean_g": {
+    "teacher_id": 0.046072437691658086,
+    "teacher_ood": 0.8844693419763254,
+    "symbolic_id": 0.36075218733457004,
+    "symbolic_ood": 0.5665973962612427,
+    "teacher_gap": 0.8383969042846673,
+    "symbolic_gap": 0.20584520892667268
+  },
+  "grid": {
+    "g_symbolic_vs_teacher": 0.4873365912507489,
+    "g_symbolic_vs_teacher_rms": 0.4580486212881353,
+    "g_ceiling_vs_teacher": 0.4873407192277197,
+    "g_ceiling_vs_teacher_rms": 0.4580525011818148,
+    "g_far_symbolic_vs_teacher": 0.428265628104139,
+    "g_far_symbolic_rms": 0.42826554517491167,
+    "g_far_ceiling_vs_teacher": 0.4282699734092216,
+    "g_far_ceiling_rms": 0.42826989047915287,
+    "n_grid": 289,
+    "n_far": 205,
+    "t_0.0_drift_symbolic": 1.2746960366278297,
+    "t_0.0_drift_symbolic_rms": 7.018236489482908,
+    "t_0.0_drift_ceiling": 1.274994975907878,
+    "t_0.0_drift_far_symbolic": 1.4685061440511171,
+    "t_0.0_drift_far_rms": 8.215733341478954,
+    "t_0.5_drift_symbolic": 0.6639454354374887,
+    "t_0.5_drift_symbolic_rms": 4.077167358504408,
+    "t_0.5_drift_ceiling": 0.6636275715671155,
+    "t_0.5_drift_far_symbolic": 0.6623301430446755,
+    "t_0.5_drift_far_rms": 4.078946397675111,
+    "t_1.0_drift_symbolic": 1.7482059755986463,
+    "t_1.0_drift_symbolic_rms": 11.583294473786127,
+    "t_1.0_drift_ceiling": 1.7494982038142948,
+    "t_1.0_drift_far_symbolic": 1.7658809112520437,
+    "t_1.0_drift_far_rms": 11.556210407506605
+  },
+  "simulation_id": {
+    "teacher_failure_rate": 0.0,
+    "symbolic_failure_rate": 0.0,
+    "teacher_excursion_rate": 0.54,
+    "symbolic_excursion_rate": 0.62,
+    "teacher_failure_class": {
+      "non_finite": 0,
+      "outside_radius": 0
+    },
+    "symbolic_failure_class": {
+      "non_finite": 0,
+      "outside_radius": 0
+    },
+    "paired_terminal_rmse": 1.385984399178728,
+    "teacher_accuracy": 1.0,
+    "symbolic_accuracy": 0.9975,
+    "teacher_terminal_rms": 6.466627513904974,
+    "symbolic_terminal_rms": 6.5309162240477185,
+    "n": 400,
+    "dt": 0.05,
+    "n_steps": 20
+  },
+  "terminal_variance": {
+    "teacher_id": {
+      "failure_rate": 0.0,
+      "variance": 0.25291385892755025,
+      "n_kept": 200
+    },
+    "symbolic_id": {
+      "failure_rate": 0.0,
+      "variance": 0.7004885570737539,
+      "n_kept": 200
+    },
+    "nodiff_id": {
+      "failure_rate": 0.0,
+      "variance": 4.7931774083931775e-31,
+      "n_kept": 200
+    },
+    "teacher_ood": {
+      "failure_rate": 0.0,
+      "variance": 3.973035797320864,
+      "n_kept": 200
+    },
+    "symbolic_ood": {
+      "failure_rate": 0.0,
+      "variance": 1.255017488678608,
+      "n_kept": 200
+    },
+    "nodiff_ood": {
+      "failure_rate": 0.0,
+      "variance": 5.632266566563808e-31,
+      "n_kept": 200
+    },
+    "teacher_ratio": 15.709047397276004,
+    "symbolic_ratio": 1.7916316776413355
+  },
+  "h6": {
+    "fine_dt": 0.03333333333333333,
+    "coarse_dt": 0.16666666666666666,
+    "block": 5,
+    "fine_failure_rate": 0.0,
+    "coarse_failure_rate": 0.0,
+    "paired_terminal_rmse": 1.2394631941546705
+  },
+  "step_contributions": {
+    "id_drift_step": 0.37425748271062725,
+    "id_diffusion_step": 0.010302110256767097,
+    "id_snr_ratio_of_means": 36.328235029788246,
+    "ood_drift_step": 0.37481861735482724,
+    "ood_diffusion_step": 0.1977733572673572,
+    "ood_snr_ratio_of_means": 1.8951926717213676
+  },
+  "verdicts": {
+    "H1": "pass",
+    "H2_id": "fail",
+    "H2_ood": "fail",
+    "H2_sigma": "fail",
+    "H2c": "pass",
+    "H3_drift_vif": "indeterminate",
+    "H3_g_vif": "pass",
+    "H4_failure": "pass",
+    "H4_excursion": "pass",
+    "H4_paired": "pass",
+    "H4_teacher_accuracy": "pass",
+    "H4_symbolic_accuracy": "pass",
+    "H5_teacher_g_id": "pass",
+    "H5_teacher_g_ood": "pass",
+    "H5_symbolic_g_id": "pass",
+    "H5_symbolic_g_ood": "pass",
+    "H5_teacher_gap": "pass",
+    "H5_symbolic_gap": "pass",
+    "H5_teacher_var_ratio": "pass",
+    "H5_symbolic_var_ratio": "pass",
+    "H5_nodiff": "pass",
+    "H6": "pass"
+  },
+  "elapsed_seconds": 8.76530408859253,
+  "torch": "2.15.0+cpu"
+}

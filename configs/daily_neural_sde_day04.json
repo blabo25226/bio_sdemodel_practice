@@ -1,0 +1,150 @@
+{
+  "data": {
+    "dt_fine": 0.001,
+    "dt_obs": 0.05,
+    "generation": "Full-truncation Euler-Maruyama at dt = 0.001 for the Heston-type ground truth (see ground_truth_sde): at each fine step v_pos = max(v, 0) is used in the drift and in sqrt(v) for both the log-price and variance updates, while v itself is carried unclipped. Observations are every 0.05 on [0, 1] (21 points per trajectory). Data are regenerated here: the paper calibrates to market European option prices (Appendix B target data) and does not publish a trajectory dataset, and its market data are not re-used here.",
+    "initial_law": "x_0 = log S_0 = 0 and v_0 = 0.04 for every trajectory (paper Section 5: S_0 = 1, V_0 = v_0 a parameter; v_0 = 0.04 is the declared benchmark value, not a paper estimate)",
+    "n_trajectories": 4096,
+    "t_end": 1.0
+  },
+  "date": "2026-10-29",
+  "day": 4,
+  "distillation": {
+    "diffusion_degrees": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "diffusion_targets": "Cholesky entries (L11, L21, L22, L12) of the teacher diffusion matrix, with L12 fixed to 0 by the triangular identification (see teacher note). Headline diffusion error is the joint NRMSE over all four entries; per-entry RMS errors and the implied covariance Sigma = L L^T NRMSE are reported separately because the likelihood identifies Sigma, not L itself.",
+    "drift_degrees": [
+      1,
+      2,
+      3
+    ],
+    "library_variables": "polynomials in (x, v) only, where x = log S and v = variance. The paper's LSV model is time-homogeneous in the benchmark cut (no t variable in the library); the paper's per-maturity networks are a declared cut (see teacher deviation).",
+    "oracle_diagnostic": "the same SINDy procedure fitted to ground-truth field values at the same query states (diagnostic ceiling only, not a candidate)",
+    "query_states": "observed states of each split (trajectory-disjoint train/validation/test), teacher evaluated directly (no finite differences)",
+    "ridge": 0.0001,
+    "selection": "per field, minimize validation NRMSE against the teacher; test evaluated once after selection",
+    "thresholds": [
+      0.02,
+      0.05,
+      0.1,
+      0.2,
+      0.35
+    ]
+  },
+  "ground_truth_sde": {
+    "Feller_condition": "2*kappa*theta = 0.16 > xi^2 = 0.09, so the continuous-time variance stays positive; Euler excursions below zero are a discretization artefact and are counted, not hidden",
+    "form": "d x_t = (r - 0.5 v_t) dt + sqrt(v_t) dB^S_t; d v_t = kappa (theta - v_t) dt + xi sqrt(v_t) dB^V_t; d<B^S, B^V>_t = rho dt. Equivalently, with independent Brownian motions (W1, W2), the Cholesky diffusion matrix is L = [[sqrt(v), 0], [xi*rho*sqrt(v), xi*sqrt(1-rho^2)*sqrt(v)]], so Sigma = L L^T = [[v, rho*xi*v], [rho*xi*v, xi^2*v]]. x = log S, S_0 = 1.",
+    "kappa": 2.0,
+    "note": "Benchmark Heston-type instance of the paper's LSV form (5.3) with sigma^S = sqrt(v) (so the S-diffusion is S_t * sqrt(v_t) in price coordinates), b^V(v) = kappa (theta - v), sigma^V(v) = xi sqrt(v), constant rho. These parameter values are declared benchmark values chosen for a standard Heston calibration (kappa = 2, theta = 0.04, xi = 0.30, rho = -0.70, r = 0.02); they are NOT estimates from the paper's market calibration, and no paper claim about calibration accuracy is tested here.",
+    "r": 0.02,
+    "rho": -0.7,
+    "theta": 0.04,
+    "v0": 0.04,
+    "xi": 0.3
+  },
+  "hypotheses": {
+    "H1_drift_distillation": {
+      "symbolic_drift_test_nrmse_vs_teacher_max": 0.1
+    },
+    "H2_diffusion_distillation": {
+      "note": "Headline is the Cholesky-entry joint NRMSE; the Sigma clause is the identified-object clause. Both must hold.",
+      "symbolic_diffusion_test_nrmse_vs_teacher_max": 0.2,
+      "symbolic_sigma_test_nrmse_vs_teacher_max": 0.2
+    },
+    "H3_truth_recovery": {
+      "field_symbolic_drift_test_nrmse_vs_truth_max": 0.15,
+      "note": "No parametric coefficient clause: the teacher is a generic MLP, so its weights have no (kappa, theta, xi, rho) interpretation. Truth recovery is judged at field level (symbolic drift vs truth) and at identified-covariance level (teacher Sigma vs truth Sigma).",
+      "teacher_sigma_test_nrmse_vs_truth_max": 0.2
+    },
+    "H4_simulation": {
+      "median_paired_rmse_vs_neural_max": 0.15,
+      "note": "Paired RMSE is in (x, v) coordinates; the threshold is tighter than Days 1-3 (0.5) because the terminal scales here are small (x std ~ 0.2, v std ~ 0.02).",
+      "symbolic_failure_rate_max": 0.05,
+      "symbolic_failure_rate_minus_neural_max": 0.02
+    },
+    "H5_estimator_bias": {
+      "diffusion_tie_zone": "If |Sigma NRMSE(v4) - Sigma NRMSE(v1)| < 0.01 on test transitions, the diffusion comparison is reported as a tie (Day 3 reflection) and does not decide the verdict; the verdict rests on the drift clauses.",
+      "low_v_drift_ratio_max": 0.9,
+      "low_v_threshold": 0.02,
+      "note": "Day 1 reflection applied, adapted to state-dependent diffusion: the bias channel is the freezing of sqrt(v) over the observation interval, which bites hardest where sqrt is most curved and relative variance moves are largest, i.e. at low v. Regimes are defined by v at the transition start: low v < 0.02, mid 0.02 <= v <= 0.06, high v > 0.06. Clauses: (a) v4 drift NRMSE vs truth (test, all transitions) < v1; (b) v4 low-v drift NRMSE <= 0.9 * v1 low-v drift NRMSE. NLL ordering is not a verdict clause (Day 2 reflection).",
+      "substep_drift_test_nrmse_vs_truth_lt_em": true
+    },
+    "H6_paper_axis_pricing": {
+      "call_price_abs_diff_max": 0.01,
+      "lookback_price_abs_diff_max": 0.02,
+      "note": "Paper-axis proxy, NOT the paper's calibration claim: the paper calibrates to market vanilla prices and bounds a lookback payoff (Section 5, Psi = max_t S_t - S_T). Here, with the benchmark truth fixed, European call (K = 1, T = 1, discounted at r) and lookback prices are Monte-Carlo priced under teacher, symbolic and truth with COMMON random increments (paired), so price differences carry paired Monte Carlo error. Thresholds are on |price_symbolic - price_teacher|. The paper's calibration MSE (~1e-9) and robust bounds are not tested."
+    }
+  },
+  "paper": {
+    "arxiv": "2007.04154",
+    "authors": "Patryk Gierjatowicz, Marc Sabate-Vidales, David Siska, Lukasz Szpruch, Zan Zuric",
+    "experiment": "Section 5: neural SDE calibration to European option prices (maturities 2, 4, ..., 12 months; 21 strikes in [0.8, 1.2]); LV model (5.2) and LSV model (5.3); robust bounds for a lookback payoff; hedging-strategy control variate; tamed Euler with 96 steps for T = 1",
+    "title": "Robust pricing and hedging via neural SDEs",
+    "url": "https://arxiv.org/abs/2007.04154",
+    "venue": "arXiv:2007.04154 (submitted 8 Jul 2020)"
+  },
+  "pricing": {
+    "K": 1.0,
+    "discount": "exp(-r*T)",
+    "lookback_payoff": "max_t S_t - S_T, discounted at r (paper Section 5 Psi)",
+    "n_paths": 8192,
+    "seed": 777,
+    "sim_dt": 0.01,
+    "x0": [
+      0.0,
+      0.04
+    ]
+  },
+  "reflections_applied": {
+    "day1_discretization_bias": "Two Gaussian transition-likelihood estimators (EM freezing f and Sigma at the interval start; substep with K = 8 internal steps re-evaluating Sigma at the running mean) are compared on drift NRMSE vs truth, split by variance regime (low / mid / high v at the transition start). The distilled teacher is fixed a priori to the substep estimator because the absolute diffusion level and its state dependence are primary questions. The substep estimator omits the drift-Jacobian term in covariance propagation (documented limitation: that term is O(h * V) per substep); the diagnostic question is the Sigma re-evaluation channel, which is the state-dependent-diffusion bias.",
+    "day2_nll_sensitivity": "Estimator drift ordering is judged by field NRMSE, not by validation NLL ordering.",
+    "day2_off_manifold": "Off-manifold grid diagnosis is standard: x in {-0.6, -0.3, 0, 0.3, 0.6}, v in {0.005, 0.02, 0.04, 0.08, 0.16} (25 points), reported on field / coefficient / off-manifold axes separately. The v = 0.16 column is reported separately as the extrapolation column; the rest of the grid overlaps the data range and is not claimed as strong extrapolation (Day 3 reflection).",
+    "day2_vif_gate": "Train-query corr(x, v), VIF and degree-2 feature correlations are computed before fitting; with VIF > 10 no symbolic coefficient is interpreted. Additionally, x-dependence leaked into the symbolic diffusion field is reported term by term, because the truth diffusion depends on v only.",
+    "day3_common_random_numbers": "Pricing differences (H6) and paired simulation use common random increments across models, so model differences are not confounded with independent Monte Carlo error (the Day 3 mesh-study lesson, applied to pricing instead of meshes).",
+    "day3_diffusion_tie_zone": "The diffusion comparison in H5 carries a pre-declared tie zone of 0.01 in Sigma NRMSE; a within-zone difference is a tie, not a defeat. The H5 verdict rests on the drift clauses."
+  },
+  "seed": 0,
+  "series": "daily_neural_sde",
+  "simulation": {
+    "dt": 0.01,
+    "failure_classes": [
+      "non_finite",
+      "outside_radius"
+    ],
+    "failure_radius": 20.0,
+    "initial_states": "test trajectories' states at t=0",
+    "paired_brownian": true,
+    "seed": 1234,
+    "t_end": 1.0,
+    "v_negative_excursion": "fraction of trajectories with v < 0 at any simulated step, reported per model as a domain excursion (not a failure unless non-finite or outside the radius)"
+  },
+  "split": {
+    "seed": 0,
+    "test": 768,
+    "train": 2560,
+    "unit": "trajectory (disjoint)",
+    "validation": 768
+  },
+  "teacher": {
+    "architecture": "Generic MLP neural SDE in the paper's LSV spirit (Section 5.3: feed-forward networks, softplus-positive diffusion outputs), cut to one small network per field: drift MLP (x, v) -> R^2, hidden [32, 32] tanh; diffusion MLP (x, v) -> (L11, L21, L22) with L11 = softplus(raw) + 0.01, L22 = softplus(raw) + 0.01, L21 unconstrained, and L12 = 0 fixed. The triangular (Cholesky) form fixes the orthogonal rotation ambiguity of the diffusion matrix: the likelihood identifies Sigma = L L^T, and L is then identified by L11 >= 0, L22 >= 0, L12 = 0. Inputs are standardized with train-query mean/std (train only).",
+    "deviation_from_paper": "Four declared cuts. (1) No market data, no option-price calibration, no hedging network, no robust price bounds: the paper's calibration claim is NOT tested. The paper's LSV form (5.3) is taken as a benchmark with declared Heston-type parameters, trajectories are regenerated, and the neural SDE is fitted by transition likelihood in the series' style. (2) The paper's per-maturity networks (4 x 50 ReLU, tamed Euler, 4e4 paths per SGD step, hedging control variate) are cut to one small MLP per field, plain Euler transition likelihood, CPU scale. (3) The paper's sigma^S(t, S, V) may depend on t and S; the benchmark cut is time-homogeneous and, in log coordinates, depends on v only through sqrt(v). (4) The substep estimator omits the drift-Jacobian covariance term (see reflections_applied).",
+    "estimator": "substep (the distilled teacher, chosen A PRIORI per the Day 1 reflection)",
+    "estimators_compared": {
+      "em": "v1 plain Euler-Maruyama Gaussian transition likelihood over dt_obs = 0.05: mean x + f*dt, covariance (L L^T)*dt with f and L frozen at the interval start",
+      "substep": "v4 simulation-based moment propagation with K = 8 internal substeps per observation interval: mean advanced by f at the current mean, covariance advanced by V <- V + Sigma(mean) * h (Sigma = L L^T at the current mean); the drift-Jacobian term J V + V J^T is omitted (documented limitation)",
+      "substep_K": 8
+    },
+    "hidden": [
+      32,
+      32
+    ],
+    "lr": 0.003,
+    "optimizer": "Adam, checkpoint = min validation transition NLL, full-batch, float64",
+    "epochs": 250,
+    "checkpoint_every": 5
+  }
+}

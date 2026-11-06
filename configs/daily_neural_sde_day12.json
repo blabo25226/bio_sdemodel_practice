@@ -1,0 +1,121 @@
+{
+  "series": "daily_neural_sde",
+  "day": 12,
+  "date": "2026-11-04",
+  "seed": 12,
+  "paper": {
+    "title": "Efficient Training of Neural Stochastic Differential Equations by Matching Finite Dimensional Distributions",
+    "authors": "Jianxin Zhang, Josh Viktorov, Doosan Jung, Emily Pitler",
+    "journal": "ICLR 2025",
+    "url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/5acf5a0ee5c17d372bfe7fdaeffd6e33-Abstract-Conference.html",
+    "arxiv": "https://arxiv.org/abs/2410.03973",
+    "code": "https://github.com/Z-Jianxin/FDM",
+    "experiment": "Finite Dimensional Matching trains a neural drift and a neural diffusion by a strictly proper scoring rule on two-time joints of a Markov process. The released FDDiscriminator minimizes E[k(X,X')] - 2 E[k(X,Y)] on the joints of consecutive grid times, with the Gaussian RBF exp(-||u-v||^2 / (2 sigma^2)) and sigma = 1."
+  },
+  "data": {
+    "system": "Noisy van der Pol oscillator, observable coordinates (x, y). Not a gene-regulation model and not a latent gene coordinate.",
+    "mu": 1.0,
+    "g0": 0.25,
+    "g2": 0.05,
+    "gy": 0.3,
+    "sde": "dx = y dt + (g0 + g2 x^2) dW1, dy = (mu (1 - x^2) y - x) dt + gy dW2",
+    "T": 1.5,
+    "dt": 0.05,
+    "x0": "N(0, I_2), independent across trajectories",
+    "data_failure_radius": 50.0,
+    "note": "Parameters were fixed before teacher training. A truth-only probe (seed 12, 512 paths) stayed finite with max norm about 4.5; that probe did not train a network and did not touch the test split of the distillation."
+  },
+  "split": {
+    "seed": 12,
+    "train": 256,
+    "validation": 128,
+    "test": 256,
+    "unit": "One initial condition and its Wiener path. States from a trajectory never cross splits."
+  },
+  "teacher": {
+    "sde": "In train-normalized coordinates z = (x - mean) / std, dz = f_theta(z, t/T) dt + g_theta(z, t/T) dW. Reported fields are mapped back by f_x = std * f_z, g_x = std * g_z.",
+    "architecture": "Drift and diffusion are separate MLPs: Linear(3, 32), tanh, Linear(32, 32), tanh, Linear(32, 2). Diffusion ends in softplus. Input is (z_x, z_y, t/T).",
+    "width": 32,
+    "rbf_sigma": 1.0,
+    "kernel": "exp(-||u-v||^2 / (2 sigma^2)), sigma = 1, on the normalized state. Matches FDDiscriminator.",
+    "fdm_loss": "Mean over consecutive times of (off-diagonal E k(X_t,X_{t+1}) - 2 E k(X_t,X_{t+1}; Y_t,Y_{t+1})). Minimized.",
+    "marginal_loss": "Same kernel loss on the single-time state, mean over the grid. Same architecture, steps, batch, initialization seed, and Brownian draws. Baseline for H6, not a second distillation.",
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "n_opt_steps": 1200,
+    "batch_size": 64,
+    "grad_clip": 1.0,
+    "weight_decay": 0.0,
+    "deviation_from_paper": "Seven declared cuts. (1) Dukascopy prices and the 16/32-dimensional rough Bergomi paths are not used. Rough Bergomi is non-Markov, and the market files are external; the law here is a 2-dimensional Markov Ito diffusion so the drift and diffusion are functions of the current state. The paper's KS tables are not reproduced. (2) The latent state (hidden size 16, Brownian dimension 8, general noise, linear readout, learned initial map) is replaced by an observable diagonal-noise SDE. Latent coordinates are not identifiable, and a degree-3 library in 16 dimensions is outside this daily cut. (3) LipSwish and a final tanh, the Issa et al. 2023 settings adopted by the paper, are replaced by tanh hidden layers and a softplus diffusion so the diffusion stays positive and the drift is not hard-capped. Width 32 and 2 hidden layers replace mlp size 64 and 3 layers. (4) 1200 Adam steps, batch 64, gradient clip 1, on CPU, replace 10000 Adadelta steps on an H100. (5) The objective is the released FDDiscriminator (consecutive grid joints, loss E kxx - 2 kxy), not the uniform (t1, t2) estimator typeset in the paper. The typeset formula and the word maximize disagree in sign; the code minimizes a loss equal to MMD^2 up to a data-only constant. (6) Unit-bandwidth RBF is applied after a train-only mean/variance normalization, which is the paper's preprocessing. The network is trained in that coordinate and fields are mapped back. (7) The initial condition is the data law N(0, I), not a learned xi_theta."
+  },
+  "distillation": {
+    "library": "Powers only of the teacher inputs in original coordinates: (x, y, t). Constants, monomials, and cross terms. No trig, exponential, or rational basis.",
+    "degrees": [1, 2, 3],
+    "thresholds": [0.02, 0.05, 0.1, 0.2, 0.35],
+    "ridge": 0.0001,
+    "query": "Every observed state on the trajectory grid, including the terminal time. Teacher drift and diffusion are queried directly. Finite rows only. Transforms inside SINDy use the training queries only.",
+    "selection": "Separate degree and threshold for drift and for diffusion. Minimize pooled validation NRMSE against the FDM teacher. Ties keep the earlier candidate (lower degree, then lower threshold). Test is evaluated once after selection.",
+    "library_ceiling": "Degree-3 ordinary least squares on the training queries of the FDM teacher, threshold 0. Diagnostic only, never a candidate.",
+    "truth_oracle": "Degree-3 ordinary least squares of the closed-form field on the same training queries. Diagnostic only. The truth is a polynomial of degree <= 3, so this ceiling measures conditioning, not library misspecification.",
+    "grid": "9 by 9 grid on each coordinate from the training 5th to 95th percentile, padded by half that range, at t in {0, T/2, T}. Report only. Not used for selection."
+  },
+  "simulation": {
+    "failure_radius": 12.0,
+    "excursion_radius": 3.5,
+    "discretization_seed": 1201,
+    "law_seed": 1202,
+    "fine_factor": 5,
+    "note": "Excursion radius 3.5 is outside the deterministic van der Pol scale (order 2). It was fixed with the config, before the teacher was trained."
+  },
+  "hypotheses": {
+    "H1_drift": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.25,
+      "teacher_vs_truth_test_nrmse_max": 0.4,
+      "symbolic_vs_truth_test_nrmse_max": 0.45,
+      "note": "All three gates are required. Teacher-vs-truth and symbolic-vs-truth are reported in the same table as symbolic-vs-teacher. A match to the teacher is not a match to the truth."
+    },
+    "H2_diffusion": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.3,
+      "teacher_vs_truth_test_nrmse_max": 0.4,
+      "symbolic_vs_truth_test_nrmse_max": 0.45,
+      "symbolic_vs_teacher_sigma_nrmse_max": 0.45,
+      "note": "sigma means g squared, elementwise. Residual RMS is reported beside each NRMSE and is not an extra gate."
+    },
+    "H2c_range": {
+      "fraction_symbolic_g_nonpositive_max": 0.02,
+      "note": "Fraction of test query rows where either component of the symbolic diffusion is <= 0."
+    },
+    "H3_collinearity_gate": {
+      "vif_max": 10.0,
+      "note": "No coefficient-recovery hypothesis. VIF is the degree-3 library on the training queries, constant column excluded. Above 10, the coefficients are indeterminate."
+    },
+    "H4_simulation": {
+      "failure_rate_max": 0.05,
+      "failure_rate_gap_max": 0.02,
+      "excursion_rate_gap_max": 0.1,
+      "paired_mean_rmse_symbolic_vs_teacher_max": 0.3,
+      "paired_mean_rmse_teacher_vs_truth_max": 0.35,
+      "terminal_cov_rel_frob_symbolic_vs_teacher_max": 0.5,
+      "failure_gate": 0.05,
+      "note": "Test initial conditions and the test Wiener increments, so the truth resimulation is the observed test path. Mean and covariance use finite paths only and are indeterminate when any model's failure rate exceeds the gate or when H7 fails. Failure rates themselves are always scored. Excursion rates are reported as absolute levels and as a gap."
+    },
+    "H5_law": {
+      "time_pairs": [[0, 8], [0, 15], [0, 30], [8, 16], [8, 24], [15, 30], [4, 26], [10, 20]],
+      "teacher_mmd2_max": 0.04,
+      "symbolic_mmd2_max": 0.06,
+      "mean_path_rmse_teacher_vs_observed_max": 0.35,
+      "mean_path_rmse_symbolic_vs_observed_max": 0.45,
+      "failure_gate": 0.05,
+      "note": "Unconditional two-time MMD^2 in the normalized coordinate, same RBF as training, averaged over the listed index pairs. Fresh paths use law_seed and are compared with the observed test paths. The truth-vs-observed MMD^2 is the Monte Carlo floor and is not a gate. Mean-path RMSE is in original coordinates. Distributional claims are indeterminate if the fresh-path failure rate exceeds the gate."
+    },
+    "H6_marginal_baseline": {
+      "diffusion_nrmse_improvement_min": 0.05,
+      "note": "On the same test queries, diffusion NRMSE versus the closed form must be at least 0.05 lower for the FDM teacher than for the marginal-only teacher. Drift is reported and is not the verdict. Single-time marginals do not separate drift from diffusion; adjacent two-time joints do."
+    },
+    "H7_discretization_gate": {
+      "teacher_coarse_vs_fine_terminal_rmse_max": 0.5,
+      "min_retained_fraction": 0.95,
+      "note": "Teacher at dt = 0.05 versus dt = 0.01 on test initial conditions. Fine Wiener increments are standard normals; each coarse increment is their sum divided by sqrt(5). If the terminal RMSE exceeds the max or the jointly finite fraction is below 0.95, H4's mean and covariance are indeterminate."
+    }
+  }
+}

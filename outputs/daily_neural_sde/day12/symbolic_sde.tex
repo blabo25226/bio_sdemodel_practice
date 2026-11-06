@@ -1,0 +1,24 @@
+Symbolic SDE in the original van der Pol coordinates (x, y, t).
+The neural fields take time, so t is a coordinate of the power library.
+Coefficients are the expanded polynomial, not a claim of unique recovery.
+
+$$
+\begin{aligned}
+f_{1}(x, y, t) &= - 0.02583 + 1.085\,y + 0.1199\,x + 0.002509\,y^{2} + 0.003838\,x y + 0.002543\,x^{2} - 0.03949\,y^{3} - 0.08096\,x^{2} y - 0.01165\,x^{3} \\
+f_{2}(x, y, t) &= 0.0162 + 0.4721\,y - 1.107\,x + 0.01103\,x y + 0.04069\,x^{2} - 0.2326\,x^{2} y + 0.08025\,x^{3} \\
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+g_{1}(x, y, t) &= 0.02446 - 0.02198\,t - 0.003036\,y - 0.002388\,x + 0.01279\,t^{2} + 0.003707\,y t + 0.0002664\,y^{2} + 0.001353\,x t + 0.0002221\,x^{2} - 0.003068\,t^{3} - 0.001368\,y t^{2} \\
+g_{2}(x, y, t) &= 0.02701 - 0.02424\,t - 0.003605\,y - 0.002258\,x + 0.01415\,t^{2} + 0.004341\,y t + 0.0003077\,y^{2} + 0.001294\,x t + 0.0002184\,x^{2} - 0.003389\,t^{3} - 0.001585\,y t^{2} \\
+\end{aligned}
+$$
+
+\[
+\begin{aligned}
+dx &= f_{1}(x, y, t)\,dt + g_{1}(x, y, t)\,dW^{1},\\
+dy &= f_{2}(x, y, t)\,dt + g_{2}(x, y, t)\,dW^{2}.
+\end{aligned}
+\]

@@ -1,0 +1,159 @@
+{
+  "series": "daily_neural_sde",
+  "day": 14,
+  "date": "2026-11-07",
+  "seed": 14,
+  "paper": {
+    "title": "Neural Stochastic Differential Equations for Uncertainty-Aware Offline RL",
+    "short": "NUNO",
+    "authors": "Cevahir Koprulu, Franck Djeumou, Ufuk Topcu",
+    "journal": "ICLR 2025",
+    "url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/0f25eb6e9dc26c933a5d7516abf1eb8c-Abstract-Conference.html",
+    "pdf": "https://proceedings.iclr.cc/paper_files/paper/2025/file/0f25eb6e9dc26c933a5d7516abf1eb8c-Paper-Conference.pdf",
+    "code_partial": "https://github.com/matthew-lowery/NSDE_ORL",
+    "predecessor": "Djeumou, Neary, Topcu, Physics-Constrained and Uncertainty-Aware Neural SDEs, CoRL 2023",
+    "experiment": "Equations (5)-(8) and Appendix C.4. The drift is a known kinematic map plus neural G, H, and a penalized residual. The diagonal diffusion is aleatoric sigma_phi plus a bounded monotone h(eta), where eta is trained by local strong convexity, a zero-gradient penalty, and L_mu. Horizon-2 windows, Euler-Maruyama, Adam. Appendix D compares this diffusion with an aleatoric-only ablation (NUNO-al)."
+  },
+  "data": {
+    "system": "Controlled point mass with cubic drag in observable coordinates (q, v) and a scalar action u. Offline logs of a clipped linear behavior policy. Not a gene-regulation model and not a latent gene coordinate.",
+    "b": 1.0,
+    "c": 0.3,
+    "d": 0.8,
+    "sigma": 0.15,
+    "sde": "dq = v dt, dv = (b u - c v - d v^3) dt + sigma dW",
+    "T": 1.5,
+    "dt": 0.05,
+    "x0_q": [-0.7, 0.7],
+    "x0_v": [-0.8, 0.8],
+    "x0_law": "Independent uniform boxes, fixed before training.",
+    "behavior": {
+      "k_p": 0.2,
+      "k_d": 0.2,
+      "noise_std": 0.8,
+      "u_min": -1.2,
+      "u_max": 1.2
+    },
+    "note": "Thresholds below were written before teacher training and before any test query. The action noise is part of the behavior policy so that u is not a deterministic function of (q, v)."
+  },
+  "split": {
+    "seed": 14,
+    "train": 64,
+    "validation": 32,
+    "test": 64,
+    "law": 96,
+    "unit": "One initial condition and its Wiener path and action tape. States from a trajectory never cross splits."
+  },
+  "teacher": {
+    "sde": "Ito. Position drift is the known velocity. Velocity drift is G(v) u + H(q, v) v + residual(q, v, u). Velocity diffusion is softplus(sigma_phi(q, v, u)) + g_floor + wmax * sigmoid((1 + softplus(w)) eta + b). Position diffusion is the structural zero.",
+    "width": 32,
+    "mu_width": 16,
+    "g_floor": 0.02,
+    "wmax": 0.5,
+    "mu_max": 4.0,
+    "sigma_softplus_at_init": 0.25,
+    "h_bias_init": -4.0,
+    "activation_drift": "tanh",
+    "activation_sigma": "tanh",
+    "activation_eta": "silu",
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "n_opt_steps": 800,
+    "batch_size": 64,
+    "grad_clip": 1.0,
+    "weight_decay": 0.0,
+    "eval_every": 40,
+    "selection": "Restore the checkpoint with the smallest validation velocity Euler NLL. The uncertainty penalties are not part of the selection score. Test fields are queried once after this choice.",
+    "lambda_data": 1.0,
+    "lambda_sc": 0.05,
+    "lambda_grad": 1.0,
+    "lambda_mu": 0.01,
+    "lambda_res": 0.02,
+    "ball_radius": 0.25,
+    "n_pairs": 8,
+    "horizon_transitions": 2,
+    "deviation_from_paper": "Ten declared cuts. (1) D4RL, NeoRL, MuJoCo, reward learning, and SAC policy optimization are outside the cut. The law is the cubic-drag point mass above, so the split can be trajectory-disjoint. (2) Networks have two hidden layers of width 32 (mu width 16), not 256 or 64. 800 Adam steps, batch 64, constant lr 0.001, gradient clip 1, on CPU. The paper decays lr from 0.01 to 0.001 over 5000 steps. (3) Position drift is exactly v and its residual is fixed at 0. Position diffusion is fixed at 0. The velocity residual is penalized by lambda_res, which the paper names but does not number. (4) The data term is the teacher-forced Euler-Maruyama Gaussian NLL of the velocity increment, variance g^2 dt, on horizon-2 windows. The printed one-particle residual times (Sigma^{-1}) uses the diffusion coefficient as if it were a covariance and biases g. (5) Aleatoric sigma is softplus plus g_floor. The paper's sigma network is unconstrained. (6) The strong-convexity deficit uses grad(eta)(x) dot (y - x). The printed inner product uses (x - y), which reverses the inequality the text names. mu is mu_max * sigmoid, not an unbounded exponential. (7) Eight local pairs and ball radius 0.25 in original (q, v, u) units. The paper uses 20 pairs and radius 0.1 on MuJoCo states. (8) lambda_grad is 1. Appendix C sets 1e-4 on high-dimensional MuJoCo NLL. On this one-channel velocity NLL that value does not meet eta^2 at order 1. The value 1 is frozen before training. (9) The H6 baseline is the Appendix D aleatoric-only diffusion (NUNO-al), with the same drift structure and the same optimization budget. (10) Mean and std of (q, v, u) are fit on training trajectories only. Network inputs are those standardized coordinates. Reported fields are in original units."
+  },
+  "distillation": {
+    "library": "Powers only of the teacher inputs in original coordinates: (q, v, u). Constants, monomials, and cross terms. No trig, exponential, or rational basis.",
+    "degrees": [1, 2, 3],
+    "thresholds": [0.02, 0.05, 0.1, 0.2, 0.35],
+    "ridge": 0.0001,
+    "query": "Every stored nonterminal state with the action that was applied on the next Euler interval. Teacher drift and velocity diffusion are queried directly. Finite rows only. Standardization inside SINDy uses the training queries only.",
+    "selection": "Separate degree and threshold for the drift vector and for the velocity diffusion. Minimize pooled validation NRMSE against the full NUNO teacher. Ties keep the earlier candidate (lower degree, then lower threshold). Test is evaluated once after selection.",
+    "library_ceiling": "Degree-3 ordinary least squares on the training queries of the full teacher, threshold 0. Diagnostic only, never a candidate.",
+    "truth_oracle": "Degree-3 ordinary least squares of the closed-form velocity drift and of the constant velocity diffusion on the same training queries. Diagnostic only. The truth is a polynomial of degree <= 3 in (q, v, u).",
+    "oracle_exact_nrmse_max": 1e-6,
+    "grid": "5 by 5 by 5 grid on each coordinate from the training 5th to 95th percentile, padded by half that range. Report only. Not used for selection.",
+    "ood": "Training (v, u) rows with q replaced by q_95 + 1.0 * (q_95 - q_5), where the percentiles are training queries. Used only for the frozen H6 gap. Not used for selection.",
+    "attribution_rule": "If both degree-3 oracle NRMSEs on the test queries are <= oracle_exact_nrmse_max, a teacher-vs-truth failure is attributed to the teacher field. Otherwise that attribution is withheld."
+  },
+  "simulation": {
+    "failure_radius": 8.0,
+    "discretization_seed": 1401,
+    "law_seed": 1402,
+    "floor_seed": 1403,
+    "fine_factor": 5,
+    "note": "Failure classes are non_finite and outside_radius. The coordinates are signed, so a negative state is inside the domain. Failed trajectories keep their mass. failure_radius 8 is about five times the initial-box diagonal. Radii and seeds were fixed before teacher training."
+  },
+  "hypotheses": {
+    "H1_drift": {
+      "velocity_symbolic_vs_teacher_test_nrmse_max": 0.3,
+      "velocity_teacher_vs_truth_test_nrmse_max": 0.4,
+      "velocity_symbolic_vs_truth_test_nrmse_max": 0.5,
+      "position_symbolic_vs_teacher_test_nrmse_max": 0.2,
+      "note": "The velocity drift is the neural field. All four gates are required. Position teacher-vs-truth is reported and is not a gate: the position drift is the kinematic identity v. Residual RMS is reported and is not a gate."
+    },
+    "H2_diffusion": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.35,
+      "teacher_vs_truth_test_nrmse_max": 0.45,
+      "symbolic_vs_truth_test_nrmse_max": 0.55,
+      "symbolic_vs_teacher_sigma_nrmse_max": 0.5,
+      "note": "The diffusion under test is the velocity coefficient g_v. Position diffusion is the structural zero and is not a fit. Sigma means g_v^2. Residual RMS is reported and is not a gate. One-step |f_v| dt and g sqrt(dt) are reported as a ratio of means and are not a separate gate."
+    },
+    "H2c_range": {
+      "fraction_symbolic_g_nonpositive_max": 0.02
+    },
+    "H3_collinearity_gate": {
+      "vif_max": 10.0,
+      "note": "Degree-3 library on (q, v, u), constant column removed. Pass means the gate is inside 10. Above 10 the verdict is indeterminate. Either way, a coefficient is not the closed form."
+    },
+    "H4_simulation": {
+      "failure_rate_max": 0.05,
+      "failure_rate_gap_max": 0.02,
+      "failure_gate": 0.05,
+      "paired_mean_rmse_symbolic_vs_teacher_max": 0.3,
+      "paired_mean_rmse_teacher_vs_truth_max": 0.4,
+      "terminal_cov_rel_frob_symbolic_vs_teacher_max": 0.55,
+      "terminal_cov_rel_frob_teacher_vs_truth_max": 0.7,
+      "velocity_teacher_vs_truth_test_nrmse_max": 0.4,
+      "note": "Same test initial conditions, the same logged action tape, and the same Wiener increments. Failed trajectories keep their mass. H4 passes only when failure rates, the path-mean RMSE, the terminal covariance (symbolic vs teacher and teacher vs truth), and the velocity drift teacher-vs-truth gate all pass. A path-mean pass with a failed drift gate is path_match_without_field_recovery and H4 fails. If any failure rate exceeds failure_gate, or H7 fails, or a covariance is undefined, H4 is indeterminate."
+    },
+    "H5_law": {
+      "failure_gate": 0.05,
+      "mean_path_rmse_teacher_vs_observed_max": 0.35,
+      "mean_path_rmse_symbolic_vs_observed_max": 0.45,
+      "terminal_cov_rel_frob_teacher_vs_observed_max": 0.6,
+      "terminal_cov_rel_frob_symbolic_vs_observed_max": 0.75,
+      "note": "Fresh initial conditions and closed-loop behavior actions, seed law_seed. Each model draws its own Wiener noise and therefore its own action tape. The truth-vs-truth mean-path RMSE and terminal-covariance gap, seed floor_seed against law_seed, are the Monte Carlo floor. If that floor exceeds the corresponding teacher threshold, H5 is indeterminate. If any failure rate exceeds failure_gate, H5 is indeterminate. Terminal covariance is required beside the path mean."
+    },
+    "H6_aleatoric_baseline": {
+      "full_id_nrmse_max": 0.45,
+      "h_ood_minus_id_min": 0.05,
+      "g_lift_gap_min": 0.05,
+      "shared_floor_nrmse": 0.8,
+      "note": "ID is the test queries. OOD is the pre-registered position shift of training (v, u). Pass only if the full model's ID g NRMSE is <= 0.45, its mean h rises by at least 0.05 from ID to OOD, and its OOD-minus-ID mean g exceeds the aleatoric-only model's by at least 0.05. If both ID NRMSEs are >= 0.80, record shared_floor. A gap on that floor is not recovery."
+    },
+    "H7_discretization_gate": {
+      "teacher_coarse_vs_fine_terminal_rmse_max": 0.35,
+      "min_retained_fraction": 0.95,
+      "note": "Full teacher only. The action is held across the fine substeps. The coarse Wiener increment is the normalized sum of the fine increments. Both terminal states must be finite. If H7 fails, H4 is indeterminate."
+    }
+  },
+  "lessons_applied": [
+    "Day 13: one-step diffusion scale versus the drift increment is reported as a ratio of means. A path-mean pass does not count as field recovery unless the velocity drift teacher-vs-truth gate also passes. Terminal covariance of teacher versus truth sits beside the path mean. A VIF gate, open or shut, is not a license to read coefficients as the closed form. If the full model and the aleatoric-only model both sit on the shared floor, their gap is not recovery.",
+    "Day 12: residual RMS beside NRMSE. Degree-3 oracle ceiling before attributing a truth failure to the teacher. Lattice RMS beside on-manifold NRMSE.",
+    "Day 11: diffusion scale is a ratio of means. Absolute failure rates are reported with the gaps.",
+    "Day 10: a law clause whose Monte Carlo floor exceeds the threshold is indeterminate.",
+    "Day 5: symbolic-vs-teacher, teacher-vs-truth, and symbolic-vs-truth share one table."
+  ]
+}

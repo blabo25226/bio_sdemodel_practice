@@ -1,0 +1,366 @@
+{
+  "day": 7,
+  "date": "2026-11-01",
+  "paper": {
+    "authors": "YongKyung Oh, Dong-Young Lim, Sungil Kim",
+    "experiment": "Sections 3-4: three stable Neural SDE classes (Langevin-type LSDE Eq. (4), Linear Noise LNSDE Eq. (5), Geometric GSDE Eq. (6)) for irregular time series, with controlled-path drift augmentation (Eq. (10)) and robustness theorems under distribution shift from missing data (Theorems 3.5-3.6). Experiments on PhysioNet Mortality/Sepsis, Speech Commands, and MuJoCo at several missing rates; Figure 1 shows naive diffusion choices (e.g. |z|^3, free neural g) destabilizing training at 50% missing rate. Proposition 3.4(ii): GSDE solutions stay nonnegative a.s. with 0 absorbing.",
+    "journal": "ICLR 2024 (Spotlight), arXiv:2402.14989",
+    "title": "Stable Neural Stochastic Differential Equations in Analyzing Irregular Time Series Data",
+    "url": "https://arxiv.org/abs/2402.14989"
+  },
+  "split_sizes": {
+    "train": 640,
+    "validation": 192,
+    "test": 192
+  },
+  "state_stats_train": {
+    "x1": {
+      "mean": 1.895078238695151,
+      "std": 0.5782708038045388
+    },
+    "x2": {
+      "mean": 0.9152429095299468,
+      "std": 0.36112654492580637
+    }
+  },
+  "collinearity": {
+    "corr_x1_x2": 0.21420358779928833,
+    "vif_linear": [
+      1.0480896845347232,
+      1.048089684534723
+    ],
+    "vif_degree2": [
+      21.937388967924697,
+      21.00240741008473,
+      23.087843149276075,
+      24.60519804570176,
+      16.2394803384289
+    ]
+  },
+  "teachers_vs_truth": {
+    "gsde_thinned": {
+      "drift_vs_truth": {
+        "nrmse": 0.19649585611220555,
+        "rms_error": 0.05364046417036159,
+        "ref_rms": 0.27298521827214073
+      },
+      "g_vs_truth": {
+        "nrmse": 0.027216171170623093,
+        "rms_error": 0.012251219094110135,
+        "ref_rms": 0.4501448428327787
+      },
+      "sigma_vs_truth": {
+        "nrmse": 0.05457827387130945,
+        "rms_error": 0.016183144724155468,
+        "ref_rms": 0.29651257865563563
+      }
+    },
+    "gsde_dense": {
+      "drift_vs_truth": {
+        "nrmse": 0.16617979344324854,
+        "rms_error": 0.04536462718552447,
+        "ref_rms": 0.27298521827214073
+      },
+      "g_vs_truth": {
+        "nrmse": 0.012938427329141716,
+        "rms_error": 0.005824166336579827,
+        "ref_rms": 0.4501448428327787
+      },
+      "sigma_vs_truth": {
+        "nrmse": 0.027004822961488668,
+        "rms_error": 0.008007269692449925,
+        "ref_rms": 0.29651257865563563
+      }
+    },
+    "naive_thinned": {
+      "drift_vs_truth": {
+        "nrmse": 0.2273124381098801,
+        "rms_error": 0.0620529355333981,
+        "ref_rms": 0.27298521827214073
+      },
+      "g_vs_truth": {
+        "nrmse": 0.03359631045902421,
+        "rms_error": 0.015123205891338695,
+        "ref_rms": 0.4501448428327787
+      },
+      "sigma_vs_truth": {
+        "nrmse": 0.08445460086931239,
+        "rms_error": 0.025041851483092303,
+        "ref_rms": 0.29651257865563563
+      }
+    },
+    "naive_dense": {
+      "drift_vs_truth": {
+        "nrmse": 0.23013736986710367,
+        "rms_error": 0.06282410014574767,
+        "ref_rms": 0.27298521827214073
+      },
+      "g_vs_truth": {
+        "nrmse": 0.019539620079783902,
+        "rms_error": 0.008795659209826532,
+        "ref_rms": 0.4501448428327787
+      },
+      "sigma_vs_truth": {
+        "nrmse": 0.041418075476260016,
+        "rms_error": 0.012280980362419602,
+        "ref_rms": 0.29651257865563563
+      }
+    },
+    "gsde_coarse_dt0.5": {
+      "drift_vs_truth": {
+        "nrmse": 0.2132557360454145,
+        "rms_error": 0.058215663652143514,
+        "ref_rms": 0.27298521827214073
+      },
+      "g_vs_truth": {
+        "nrmse": 0.13691925265488697,
+        "rms_error": 0.061633495467115613,
+        "ref_rms": 0.4501448428327787
+      },
+      "sigma_vs_truth": {
+        "nrmse": 0.26229358446233597,
+        "rms_error": 0.07777334709375701,
+        "ref_rms": 0.29651257865563563
+      }
+    },
+    "gsde_fine_sub": {
+      "drift_vs_truth": {
+        "nrmse": 0.3125437149028943,
+        "rms_error": 0.08531981423235233,
+        "ref_rms": 0.27298521827214073
+      },
+      "g_vs_truth": {
+        "nrmse": 0.12064871841045406,
+        "rms_error": 0.054309398386850026,
+        "ref_rms": 0.4501448428327787
+      },
+      "sigma_vs_truth": {
+        "nrmse": 0.2541382932517888,
+        "rms_error": 0.07535520066723005,
+        "ref_rms": 0.29651257865563563
+      }
+    }
+  },
+  "distillation": {
+    "drift_selection": {
+      "degree": 3,
+      "threshold": 0.02
+    },
+    "drift_validation_nrmse": 0.07120153082415445,
+    "diffusion_selection": [
+      {
+        "degree": 2,
+        "threshold": 0.02
+      },
+      {
+        "degree": 2,
+        "threshold": 0.02
+      }
+    ],
+    "diffusion_validation_nrmse": [
+      0.014117666978519655,
+      0.007542304135032481
+    ],
+    "drift_vs_teacher": {
+      "nrmse": 0.07680932265347425,
+      "rms_error": 0.022787693003566742,
+      "ref_rms": 0.2966787391990627
+    },
+    "g_vs_teacher": {
+      "nrmse": 0.0134427034119216,
+      "rms_error": 0.0059668030779470764,
+      "ref_rms": 0.4438692794974145
+    },
+    "sigma_vs_teacher": {
+      "nrmse": 0.02809036776203171,
+      "rms_error": 0.008102400098662343,
+      "ref_rms": 0.2884405133924211
+    },
+    "drift_vs_truth": {
+      "nrmse": 0.17678600096072142,
+      "rms_error": 0.04825996505972142,
+      "ref_rms": 0.27298521827214073
+    },
+    "g_vs_truth": {
+      "nrmse": 0.02386378257073119,
+      "rms_error": 0.010742158654697397,
+      "ref_rms": 0.4501448428327787
+    },
+    "sigma_vs_truth": {
+      "nrmse": 0.04340537047293715,
+      "rms_error": 0.012870238326433784,
+      "ref_rms": 0.29651257865563563
+    },
+    "oracle_drift_vs_truth": {
+      "nrmse": 4.676319428173631e-16,
+      "rms_error": 1.2765660798102308e-16,
+      "ref_rms": 0.27298521827214073
+    },
+    "oracle_g_vs_truth": {
+      "nrmse": 1.8683044493362277e-16,
+      "rms_error": 8.410076127102373e-17,
+      "ref_rms": 0.4501448428327787
+    },
+    "oracle_drift_selection": {
+      "degree": 2,
+      "threshold": 0.02
+    },
+    "full_library_diffusion_cross_max": [
+      0.0,
+      0.0
+    ]
+  },
+  "H3c": {
+    "linear_coefficient_errors": {
+      "f1_(1, 0)": 0.47137207749128385,
+      "f1_(0, 1)": 0.14688669205234509,
+      "f2_(1, 0)": -0.044512819336412504,
+      "f2_(0, 1)": 0.07265456979517798
+    },
+    "max_abs_error": 0.47137207749128385,
+    "pass": false,
+    "quadratic_coefficient_errors_report_only": {
+      "f1_(2, 0)": -0.2765522031033777,
+      "f1_(1, 1)": -0.008856927523044067,
+      "f1_(0, 2)": -0.20537292777059668,
+      "f2_(2, 0)": 0.02072759462007761,
+      "f2_(1, 1)": 0.05969166419103522,
+      "f2_(0, 2)": -0.09754391879652774
+    }
+  },
+  "grid": {
+    "n_points": 88,
+    "n_corner": 4,
+    "drift_symbolic_vs_teacher": {
+      "nrmse": 0.21471266434013822,
+      "rms_error": 0.27459517910867476,
+      "ref_rms": 1.2788960537217
+    },
+    "drift_symbolic_vs_truth": {
+      "nrmse": 0.37732734782371774,
+      "rms_error": 0.7601341267610416,
+      "ref_rms": 2.0145216909010424
+    },
+    "drift_teacher_vs_truth": {
+      "nrmse": 0.4149039169391556,
+      "rms_error": 0.8358329403137335,
+      "ref_rms": 2.0145216909010424
+    },
+    "g_symbolic_vs_teacher": {
+      "nrmse": 0.015017495533498544,
+      "rms_error": 0.010613006154100898,
+      "ref_rms": 0.7067094596716982
+    },
+    "g_symbolic_vs_truth": {
+      "nrmse": 0.025146790331444593,
+      "rms_error": 0.018399499157299055,
+      "ref_rms": 0.7316838019797524
+    },
+    "drift_symbolic_vs_teacher_corner": {
+      "nrmse": 1.5740344274321767,
+      "rms_error": 0.09485349011317877,
+      "ref_rms": 0.060261382127403236
+    },
+    "drift_symbolic_vs_truth_corner": {
+      "nrmse": 1.6656429246161417,
+      "rms_error": 0.09548077644795634,
+      "ref_rms": 0.05732367666374863
+    },
+    "drift_teacher_vs_truth_corner": {
+      "nrmse": 0.1202983754622198,
+      "rms_error": 0.0068959451781705206,
+      "ref_rms": 0.05732367666374863
+    }
+  },
+  "teacher_t_dependence": {
+    "mean_std_across_t": 0.020518605940899777,
+    "field_rms": 0.152255846247784,
+    "ratio": 0.1347639939389087
+  },
+  "H5": {
+    "degradation": {
+      "degradation_gsde": 0.0008193499967302205,
+      "degradation_naive": -9.63007508108728e-05,
+      "difference": -0.0009156507475410936,
+      "se": 3.16221655204754e-05,
+      "pass": false
+    },
+    "coarse_negativity": {
+      "negativity_gsde_coarse": 0.0,
+      "negativity_naive_coarse": 0.005208333333333333,
+      "difference": 0.005208333333333333,
+      "se": 0.005208333333333334,
+      "failure_gsde_coarse": 0.0,
+      "failure_naive_coarse": 0.0,
+      "pass": false
+    },
+    "pass": false
+  },
+  "H6": {
+    "nrmse_gsde_fine_sub": 0.3125437149028943,
+    "nrmse_gsde_coarse": 0.2132557360454145,
+    "nrmse_gsde_fine_sub_small": 0.35783745881188916,
+    "nrmse_gsde_coarse_small": 0.11903792712117177,
+    "nrmse_gsde_fine_sub_large": 0.25747032212233745,
+    "nrmse_gsde_coarse_large": 0.23601551250501032,
+    "n_small": 17841,
+    "n_large": 2872,
+    "sigma_nrmse_gsde_fine_sub": 0.2541382932517888,
+    "sigma_nrmse_gsde_coarse": 0.26229358446233597,
+    "degradation": -0.09928797885747978,
+    "degradation_small": -0.23879953169071738,
+    "degradation_large": -0.021454809617327125,
+    "regime_gap": 0.21734472207339026,
+    "pass_a": false,
+    "pass_b": true,
+    "pass": false
+  },
+  "H7": {
+    "mse_teacher": 0.017025898847475882,
+    "mse_symbolic": 0.01702554933983935,
+    "abs_diff": 3.4950763653368577e-07,
+    "paired_se": 2.0654098711758073e-06,
+    "established": true,
+    "pass": true
+  },
+  "simulation": {
+    "teacher": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.0,
+      "negativity_rate": 0.0
+    },
+    "symbolic": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.0,
+      "negativity_rate": 0.0
+    },
+    "truth": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.0,
+      "negativity_rate": 0.0
+    },
+    "naive_thinned": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.0,
+      "negativity_rate": 0.005208333333333333
+    },
+    "paired_rmse_median": 0.042407666559814886,
+    "paired_rmse_mean": 0.044536011361014226,
+    "n_paired": 192
+  },
+  "verdicts": {
+    "H1_drift_distillation": true,
+    "H2_diffusion_distillation": true,
+    "H3_truth_recovery": true,
+    "H3c_linear_coefficients": false,
+    "H4_simulation": true,
+    "H5_paper_axis_gsde_vs_naive": false,
+    "H6_discretization_bias": false,
+    "H7_downstream_one_step": true
+  },
+  "runtime_seconds": 92.9,
+  "versions": {
+    "torch": "2.15.0+cpu",
+    "numpy": "2.5.4"
+  }
+}

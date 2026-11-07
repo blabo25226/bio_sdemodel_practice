@@ -242,7 +242,17 @@ Partial reimplementation: https://github.com/matthew-lowery/NSDE_ORL
 Why relevant: ICLR 2025. The dynamics model is a neural SDE (eq. 5) whose drift can use rigid-body structure (eq. 8: position rate equals velocity, velocity rate is G(v)a + H(s)v plus a penalized residual) and whose diagonal diffusion is aleatoric sigma_phi plus a bounded monotone function of a distance-aware eta (eq. 3-4, Appendix C.4). Day 14 distills that teacher on an observable controlled point mass with cubic drag. D4RL, NeoRL, MuJoCo, reward learning, and SAC policy optimization are outside the cut. Appendix D's aleatoric-only ablation (NUNO-al) is the H6 baseline.
 Accessed: 2026-11-07.
 
-## 15. Direct stochastic sparse identification assumptions
+## 15. Day 15 paper (daily Neural SDE series)
+
+Title: In-Context Learning of Stochastic Differential Equations with Foundation Inference Models
+Authors: Patrick Seifner, Kostadin Cvejoski, David Berghaus, César Ojeda, Ramsés J. Sánchez
+Year: 2025
+URL: https://proceedings.neurips.cc/paper_files/paper/2025/hash/dff573cecb50646083b5186b565e23a3-Abstract-Conference.html
+PDF: https://proceedings.neurips.cc/paper_files/paper/2025/file/dff573cecb50646083b5186b565e23a3-Paper-Conference.pdf
+Why relevant: NeurIPS 2025. A transformer recognition model maps a context of transitions (y, Δy, Δy², Δτ) to drift and diagonal diffusion at a query state, with a detached uncertainty head U (eqs. 7-10). Dense finetuning is the short-time Gaussian likelihood (eq. 34). The pretraining class is polynomial drift of degree at most 3 and a degree-at-most-2 polynomial inside the diffusion square root. Day 15 distills a miniature of that teacher on the paper's 2D synthetic system (Appendix G.1, eqs. 38-39). The 20M-parameter pretraining run, signature-kernel MMD, BISDE, SparseGP, Latent SDE, Lorenz, and the wind, oil, and equity series are outside the cut.
+Accessed: 2026-11-08.
+
+## 16. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations
 Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi

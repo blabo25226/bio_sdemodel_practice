@@ -252,7 +252,19 @@ PDF: https://proceedings.neurips.cc/paper_files/paper/2025/file/dff573cecb506460
 Why relevant: NeurIPS 2025. A transformer recognition model maps a context of transitions (y, Δy, Δy², Δτ) to drift and diagonal diffusion at a query state, with a detached uncertainty head U (eqs. 7-10). Dense finetuning is the short-time Gaussian likelihood (eq. 34). The pretraining class is polynomial drift of degree at most 3 and a degree-at-most-2 polynomial inside the diffusion square root. Day 15 distills a miniature of that teacher on the paper's 2D synthetic system (Appendix G.1, eqs. 38-39). The 20M-parameter pretraining run, signature-kernel MMD, BISDE, SparseGP, Latent SDE, Lorenz, and the wind, oil, and equity series are outside the cut.
 Accessed: 2026-11-08.
 
-## 16. Direct stochastic sparse identification assumptions
+## 16. Day 16 paper (daily Neural SDE series)
+
+Title: LieStoNet: Learning Lie Symmetries from Spatiotemporal Data for Stochastic Dynamical Systems
+Authors: Shida Liu, Abhishek Gupta, Sumit Sinha, L. Mahadevan
+Year: 2026
+URL: https://proceedings.mlr.press/v306/liu26aq.html
+PDF: https://raw.githubusercontent.com/mlresearch/v306/main/assets/liu26aq/liu26aq.pdf
+arXiv: https://arxiv.org/abs/2608.01582
+Code: https://github.com/sumit-sinha-seas/LieStoNet_Final
+Why relevant: ICML 2026, PMLR 306:76384-76408. Stage 1 fits a neural drift and a neural Cholesky diffusion by the Euler-Gauss increment likelihood (Section 3.1, equation 8; Appendix P). Example 4 is the 2D Ito equation dx = (1/x) dt + dW1, dy = dt + dW2 (Table 2). The released notebook uses a2 = 0.5; Day 16 follows Table 2 and sets a2 = 1. Day 16 distills that stage-1 surrogate. Stage-2 generator training, the Lie-algebra sweep, principal angles, Fokker-Planck symmetries, the 10D Brownian motion, and BTC/USDT are outside the cut. The analytic scaling generator is used only as a probe of the learned drift.
+Accessed: 2026-11-08.
+
+## 17. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations
 Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi

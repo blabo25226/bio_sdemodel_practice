@@ -1,0 +1,138 @@
+{
+  "seed": 16,
+  "paper": {
+    "title": "LieStoNet: Learning Lie Symmetries from Spatiotemporal Data for Stochastic Dynamical Systems",
+    "authors": "Shida Liu, Abhishek Gupta, Sumit Sinha, L. Mahadevan",
+    "venue": "ICML",
+    "year": 2026,
+    "pmlr": "306:76384-76408",
+    "system": "Example 4, Table 2: dx=(1/x)dt+dW1, dy=dt+dW2, neural drift plus Cholesky diffusion"
+  },
+  "data": {
+    "T": 2.0,
+    "dt": 0.01,
+    "n_train": 64,
+    "n_val": 32,
+    "n_test": 48,
+    "a1": 1.0,
+    "a2": 1.0,
+    "sigma": 1.0,
+    "x0_low": 0.5,
+    "x0_high": 3.0,
+    "y0_low": -2.0,
+    "y0_high": 2.0,
+    "x_floor": 0.2,
+    "failure_radius": 12.0,
+    "max_resample": 40,
+    "paired_paths": 48,
+    "law_paths": 64,
+    "law_x0": [1.75, 0.0]
+  },
+  "model": {
+    "hidden": 64,
+    "depth": 2,
+    "sigma_floor": 0.001,
+    "outer_steps": 1500,
+    "batch_size": 512,
+    "lr_f": 0.002,
+    "lr_L": 0.001,
+    "drift_steps_per_iter": 3,
+    "diff_steps_per_iter": 1,
+    "grad_clip": 1.0,
+    "weight_decay": 0.0,
+    "smooth_weight": 0.001,
+    "var_weight": 0.0005,
+    "whiten_weight": 0.005,
+    "eval_every": 25
+  },
+  "distill": {
+    "degrees": [1, 2, 3],
+    "thresholds": [0.02, 0.05, 0.1, 0.2, 0.35],
+    "ridge": 0.0001,
+    "grid_size": 7,
+    "grid_quantile": [0.05, 0.95],
+    "grid_pad_fraction": 0.5,
+    "grid_x_min": 0.25,
+    "vif_degree": 3,
+    "oracle_degree": 3,
+    "near_floor_x": [0.25, 0.45],
+    "near_floor_n": 8,
+    "probe_x": [0.6, 3.5],
+    "probe_y": [-1.0, 3.0],
+    "probe_t": [0.5, 1.0, 1.5],
+    "probe_n_x": 6,
+    "probe_n_y": 6,
+    "finite_difference_eps": 1e-5
+  },
+  "hypotheses": {
+    "H1_drift": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.25,
+      "teacher_vs_truth_test_nrmse_max": 0.30,
+      "symbolic_vs_truth_test_nrmse_max": 0.40,
+      "note": "Both components. Residual RMS is reported and is not a gate. A pass is not the closed form 1/x."
+    },
+    "H2_diffusion": {
+      "diag_symbolic_vs_teacher_nrmse_max": 0.20,
+      "diag_teacher_vs_truth_nrmse_max": 0.15,
+      "diag_symbolic_vs_truth_nrmse_max": 0.25,
+      "l21_rms_teacher_max": 0.10,
+      "l21_rms_symbolic_vs_teacher_max": 0.12,
+      "l21_rms_symbolic_vs_truth_max": 0.12,
+      "note": "Diagonal Cholesky entries use NRMSE. The off-diagonal truth is 0, so l21 is gated by RMS."
+    },
+    "H2c_range": {
+      "fraction_symbolic_diagonal_nonpositive_max": 0.02
+    },
+    "H3_collinearity_gate": {
+      "vif_max": 10.0,
+      "note": "Constant column excluded. A pass is not permission to read coefficients as 1/x."
+    },
+    "H4_simulation": {
+      "failure_rate_max": 0.05,
+      "failure_rate_gap_max": 0.02,
+      "failure_gate": 0.05,
+      "paired_path_rmse_symbolic_vs_teacher_max": 0.40,
+      "paired_path_rmse_teacher_vs_truth_max": 0.50,
+      "terminal_cov_rel_frob_symbolic_vs_teacher_max": 0.50,
+      "terminal_cov_rel_frob_teacher_vs_truth_max": 0.65,
+      "drift_teacher_vs_truth_test_nrmse_max": 0.30
+    },
+    "H5_law": {
+      "mean_path_rmse_teacher_max": 0.45,
+      "mean_path_rmse_symbolic_max": 0.60,
+      "terminal_cov_rel_frob_teacher_max": 0.55,
+      "terminal_cov_rel_frob_symbolic_max": 0.75,
+      "failure_gate": 0.05,
+      "note": "All paths start at (1.75, 0). Indeterminate if the truth-vs-truth floor exceeds the teacher gate."
+    },
+    "H6_scaling": {
+      "v2_teacher_mean_abs_max": 0.08,
+      "v3_teacher_mean_abs_max": 0.15,
+      "v3_symbolic_mean_abs_max": 0.15,
+      "oracle_relative_gap_max": 0.25,
+      "note": "v3 is the analytic scaling generator 2t d_t + x d_x + (y+a2 t) d_y. The drift identity does not use sigma because xi is linear. A symbolic failure within the relative gap of the degree-3 truth oracle is library_breaks_scaling_identity."
+    },
+    "H7_discretization_gate": {
+      "teacher_coarse_vs_fine_terminal_rmse_max": 0.35,
+      "min_retained_fraction": 0.95,
+      "fine_factor": 2
+    }
+  },
+  "interpretation": {
+    "oracle_closed_form_nrmse_max": 0.05,
+    "nll_floor_gap_max": 0.05,
+    "cubic_rms_ratio_small": 0.15,
+    "grid_over_ontraj_rms_min": 2.0,
+    "step_ratio_drift_blind": 0.25,
+    "coefficients_are_closed_form": false
+  },
+  "pre_registration_design": {
+    "note": "These are analytic-SDE design calculations used to place thresholds. They are not the trained-teacher or test-split results.",
+    "box_degree3_f1_nrmse_about": 0.038,
+    "trajectory_degree3_f1_nrmse_about": 0.18,
+    "trajectory_v3_residual_mean_abs_about": 0.33,
+    "truth_em_failure_rate_about": 0.03,
+    "law_mean_path_floor_about": 0.19,
+    "law_cov_floor_max_about": 0.45
+  }
+}

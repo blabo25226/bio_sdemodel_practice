@@ -1,0 +1,919 @@
+{
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "1.26.4",
+    "torch": "2.15.0+cpu",
+    "cuda": false,
+    "platform": "Linux-6.12.113+-x86_64-with-glibc2.39",
+    "git_head": "acd8360b1a6322909f5bc9c07463ad8343abe035",
+    "seconds": 69.23506331443787
+  },
+  "training": {
+    "best_epoch": 99,
+    "best_val_elbo": 389.90060333761056,
+    "final_train_elbo": 389.87804437628137,
+    "final_val_elbo": 389.90060333761056,
+    "history": [
+      {
+        "epoch": 0,
+        "train_elbo": 307.36217773547065,
+        "val_elbo": 368.30827762385275
+      },
+      {
+        "epoch": 1,
+        "train_elbo": 372.5308632716697,
+        "val_elbo": 376.79165837517223
+      },
+      {
+        "epoch": 2,
+        "train_elbo": 378.9894095750366,
+        "val_elbo": 382.0689001947597
+      },
+      {
+        "epoch": 3,
+        "train_elbo": 383.66661850713456,
+        "val_elbo": 386.1782172832958
+      },
+      {
+        "epoch": 4,
+        "train_elbo": 387.1776021022932,
+        "val_elbo": 388.5523738891334
+      },
+      {
+        "epoch": 5,
+        "train_elbo": 388.60308448712897,
+        "val_elbo": 389.30608086650227
+      },
+      {
+        "epoch": 6,
+        "train_elbo": 389.1178386621687,
+        "val_elbo": 389.47472075514645
+      },
+      {
+        "epoch": 7,
+        "train_elbo": 389.29685246557995,
+        "val_elbo": 389.4522513639437
+      },
+      {
+        "epoch": 8,
+        "train_elbo": 389.31772480599614,
+        "val_elbo": 389.53707789542693
+      },
+      {
+        "epoch": 9,
+        "train_elbo": 389.43149444926325,
+        "val_elbo": 389.69029911468385
+      },
+      {
+        "epoch": 10,
+        "train_elbo": 389.5197467311426,
+        "val_elbo": 389.7267362206729
+      },
+      {
+        "epoch": 11,
+        "train_elbo": 389.52559936158207,
+        "val_elbo": 389.7434305365017
+      },
+      {
+        "epoch": 12,
+        "train_elbo": 389.5913361235439,
+        "val_elbo": 389.74959971417576
+      },
+      {
+        "epoch": 13,
+        "train_elbo": 389.6717755018518,
+        "val_elbo": 389.7752778461975
+      },
+      {
+        "epoch": 14,
+        "train_elbo": 389.6905126273989,
+        "val_elbo": 389.80536687973006
+      },
+      {
+        "epoch": 15,
+        "train_elbo": 389.7380678105542,
+        "val_elbo": 389.75681552754224
+      },
+      {
+        "epoch": 16,
+        "train_elbo": 389.6972933498379,
+        "val_elbo": 389.814412543576
+      },
+      {
+        "epoch": 17,
+        "train_elbo": 389.7317522158646,
+        "val_elbo": 389.7866590494059
+      },
+      {
+        "epoch": 18,
+        "train_elbo": 389.77963175649586,
+        "val_elbo": 389.7855420300324
+      },
+      {
+        "epoch": 19,
+        "train_elbo": 389.78305630801805,
+        "val_elbo": 389.8411395631141
+      },
+      {
+        "epoch": 20,
+        "train_elbo": 389.80755007178016,
+        "val_elbo": 389.79269322904145
+      },
+      {
+        "epoch": 21,
+        "train_elbo": 389.8031459689349,
+        "val_elbo": 389.78863477225775
+      },
+      {
+        "epoch": 22,
+        "train_elbo": 389.7391651102145,
+        "val_elbo": 389.8232288811252
+      },
+      {
+        "epoch": 23,
+        "train_elbo": 389.7941830546655,
+        "val_elbo": 389.7373971020815
+      },
+      {
+        "epoch": 24,
+        "train_elbo": 389.75087638012764,
+        "val_elbo": 389.84844817309727
+      },
+      {
+        "epoch": 25,
+        "train_elbo": 389.81507946561453,
+        "val_elbo": 389.8511585729213
+      },
+      {
+        "epoch": 26,
+        "train_elbo": 389.7589837811082,
+        "val_elbo": 389.83449093416436
+      },
+      {
+        "epoch": 27,
+        "train_elbo": 389.7363244427544,
+        "val_elbo": 389.84551852829327
+      },
+      {
+        "epoch": 28,
+        "train_elbo": 389.80670209232505,
+        "val_elbo": 389.8468515716243
+      },
+      {
+        "epoch": 29,
+        "train_elbo": 389.82878000374865,
+        "val_elbo": 389.84476717213613
+      },
+      {
+        "epoch": 30,
+        "train_elbo": 389.807625736895,
+        "val_elbo": 389.82371178346756
+      },
+      {
+        "epoch": 31,
+        "train_elbo": 389.78662093555124,
+        "val_elbo": 389.81879146349604
+      },
+      {
+        "epoch": 32,
+        "train_elbo": 389.81306782418,
+        "val_elbo": 389.7959057972209
+      },
+      {
+        "epoch": 33,
+        "train_elbo": 389.7673844769085,
+        "val_elbo": 389.8494069730292
+      },
+      {
+        "epoch": 34,
+        "train_elbo": 389.85253491279957,
+        "val_elbo": 389.82267392685856
+      },
+      {
+        "epoch": 35,
+        "train_elbo": 389.83016817813035,
+        "val_elbo": 389.8354145174179
+      },
+      {
+        "epoch": 36,
+        "train_elbo": 389.752662149485,
+        "val_elbo": 389.82737567282476
+      },
+      {
+        "epoch": 37,
+        "train_elbo": 389.8460761689522,
+        "val_elbo": 389.82823663334375
+      },
+      {
+        "epoch": 38,
+        "train_elbo": 389.7837505354571,
+        "val_elbo": 389.8610550204362
+      },
+      {
+        "epoch": 39,
+        "train_elbo": 389.8113015562831,
+        "val_elbo": 389.8200617836965
+      },
+      {
+        "epoch": 40,
+        "train_elbo": 389.77371192125565,
+        "val_elbo": 389.85337565239104
+      },
+      {
+        "epoch": 41,
+        "train_elbo": 389.8378361331332,
+        "val_elbo": 389.8597947912513
+      },
+      {
+        "epoch": 42,
+        "train_elbo": 389.7333704981364,
+        "val_elbo": 389.82208113793615
+      },
+      {
+        "epoch": 43,
+        "train_elbo": 389.78873618140193,
+        "val_elbo": 389.8483961785744
+      },
+      {
+        "epoch": 44,
+        "train_elbo": 389.773049204856,
+        "val_elbo": 389.84763228797453
+      },
+      {
+        "epoch": 45,
+        "train_elbo": 389.81534070360163,
+        "val_elbo": 389.8190673513839
+      },
+      {
+        "epoch": 46,
+        "train_elbo": 389.81728180659405,
+        "val_elbo": 389.84573536124225
+      },
+      {
+        "epoch": 47,
+        "train_elbo": 389.88719716028584,
+        "val_elbo": 389.86801321101285
+      },
+      {
+        "epoch": 48,
+        "train_elbo": 389.8052561277004,
+        "val_elbo": 389.86124732221634
+      },
+      {
+        "epoch": 49,
+        "train_elbo": 389.8390053808979,
+        "val_elbo": 389.8460313293625
+      },
+      {
+        "epoch": 50,
+        "train_elbo": 389.8881645464111,
+        "val_elbo": 389.8334007282681
+      },
+      {
+        "epoch": 51,
+        "train_elbo": 389.7992443314584,
+        "val_elbo": 389.8378261319025
+      },
+      {
+        "epoch": 52,
+        "train_elbo": 389.8134186593892,
+        "val_elbo": 389.7932100450256
+      },
+      {
+        "epoch": 53,
+        "train_elbo": 389.8824126854973,
+        "val_elbo": 389.81006771929697
+      },
+      {
+        "epoch": 54,
+        "train_elbo": 389.8453872292529,
+        "val_elbo": 389.82536652799143
+      },
+      {
+        "epoch": 55,
+        "train_elbo": 389.8615339175947,
+        "val_elbo": 389.825373428924
+      },
+      {
+        "epoch": 56,
+        "train_elbo": 389.8036098707213,
+        "val_elbo": 389.8536955229048
+      },
+      {
+        "epoch": 57,
+        "train_elbo": 389.8490553712277,
+        "val_elbo": 389.86249735851015
+      },
+      {
+        "epoch": 58,
+        "train_elbo": 389.82263587502047,
+        "val_elbo": 389.82484211986986
+      },
+      {
+        "epoch": 59,
+        "train_elbo": 389.7715461657699,
+        "val_elbo": 389.83186060318
+      },
+      {
+        "epoch": 60,
+        "train_elbo": 389.7998971713327,
+        "val_elbo": 389.8798974381949
+      },
+      {
+        "epoch": 61,
+        "train_elbo": 389.7926776193902,
+        "val_elbo": 389.85550257692944
+      },
+      {
+        "epoch": 62,
+        "train_elbo": 389.8169078895456,
+        "val_elbo": 389.8617616845275
+      },
+      {
+        "epoch": 63,
+        "train_elbo": 389.8685294882886,
+        "val_elbo": 389.86195128624047
+      },
+      {
+        "epoch": 64,
+        "train_elbo": 389.8263176658117,
+        "val_elbo": 389.8701510234883
+      },
+      {
+        "epoch": 65,
+        "train_elbo": 389.8332111191097,
+        "val_elbo": 389.8915717864395
+      },
+      {
+        "epoch": 66,
+        "train_elbo": 389.8021088771219,
+        "val_elbo": 389.8483287518676
+      },
+      {
+        "epoch": 67,
+        "train_elbo": 389.91959254278794,
+        "val_elbo": 389.8699452894013
+      },
+      {
+        "epoch": 68,
+        "train_elbo": 389.84599001526533,
+        "val_elbo": 389.8726554477968
+      },
+      {
+        "epoch": 69,
+        "train_elbo": 389.8550481684,
+        "val_elbo": 389.8573234452766
+      },
+      {
+        "epoch": 70,
+        "train_elbo": 389.7433160067544,
+        "val_elbo": 389.8900130960989
+      },
+      {
+        "epoch": 71,
+        "train_elbo": 389.8117363585183,
+        "val_elbo": 389.79886869000984
+      },
+      {
+        "epoch": 72,
+        "train_elbo": 389.79494532392437,
+        "val_elbo": 389.78596533999314
+      },
+      {
+        "epoch": 73,
+        "train_elbo": 389.79405824734715,
+        "val_elbo": 389.7744653610262
+      },
+      {
+        "epoch": 74,
+        "train_elbo": 389.8361465307031,
+        "val_elbo": 389.8287767753538
+      },
+      {
+        "epoch": 75,
+        "train_elbo": 389.8074629707205,
+        "val_elbo": 389.84963920933853
+      },
+      {
+        "epoch": 76,
+        "train_elbo": 389.80430154539215,
+        "val_elbo": 389.86331072655787
+      },
+      {
+        "epoch": 77,
+        "train_elbo": 389.8649714027896,
+        "val_elbo": 389.87880943829396
+      },
+      {
+        "epoch": 78,
+        "train_elbo": 389.8377786080322,
+        "val_elbo": 389.87630135449007
+      },
+      {
+        "epoch": 79,
+        "train_elbo": 389.8639734521266,
+        "val_elbo": 389.8304825593971
+      },
+      {
+        "epoch": 80,
+        "train_elbo": 389.83808414114856,
+        "val_elbo": 389.84329057929864
+      },
+      {
+        "epoch": 81,
+        "train_elbo": 389.9044689599523,
+        "val_elbo": 389.82674407584557
+      },
+      {
+        "epoch": 82,
+        "train_elbo": 389.8426130240414,
+        "val_elbo": 389.87862975329165
+      },
+      {
+        "epoch": 83,
+        "train_elbo": 389.8110061113091,
+        "val_elbo": 389.86653359849004
+      },
+      {
+        "epoch": 84,
+        "train_elbo": 389.89030611187104,
+        "val_elbo": 389.81501703727133
+      },
+      {
+        "epoch": 85,
+        "train_elbo": 389.848132226533,
+        "val_elbo": 389.87780496703215
+      },
+      {
+        "epoch": 86,
+        "train_elbo": 389.870845298619,
+        "val_elbo": 389.8666605106776
+      },
+      {
+        "epoch": 87,
+        "train_elbo": 389.83472846260213,
+        "val_elbo": 389.8225379552875
+      },
+      {
+        "epoch": 88,
+        "train_elbo": 389.82505757133896,
+        "val_elbo": 389.84706959888234
+      },
+      {
+        "epoch": 89,
+        "train_elbo": 389.7804869300245,
+        "val_elbo": 389.82248555343375
+      },
+      {
+        "epoch": 90,
+        "train_elbo": 389.8511772936869,
+        "val_elbo": 389.86603543537404
+      },
+      {
+        "epoch": 91,
+        "train_elbo": 389.8398006588714,
+        "val_elbo": 389.840227446731
+      },
+      {
+        "epoch": 92,
+        "train_elbo": 389.78827220020577,
+        "val_elbo": 389.84777075498096
+      },
+      {
+        "epoch": 93,
+        "train_elbo": 389.85842552077224,
+        "val_elbo": 389.8527797851465
+      },
+      {
+        "epoch": 94,
+        "train_elbo": 389.8385319713409,
+        "val_elbo": 389.8878440570173
+      },
+      {
+        "epoch": 95,
+        "train_elbo": 389.82110678640674,
+        "val_elbo": 389.8741085315079
+      },
+      {
+        "epoch": 96,
+        "train_elbo": 389.8473460634736,
+        "val_elbo": 389.86733286696654
+      },
+      {
+        "epoch": 97,
+        "train_elbo": 389.85974278989335,
+        "val_elbo": 389.8750947669875
+      },
+      {
+        "epoch": 98,
+        "train_elbo": 389.8458668679492,
+        "val_elbo": 389.8575659391351
+      },
+      {
+        "epoch": 99,
+        "train_elbo": 389.87804437628137,
+        "val_elbo": 389.90060333761056
+      }
+    ]
+  },
+  "elbo_test_once": 395.92772704799256,
+  "elbo_val_truth_drift_zero_correction": 388.4082446338024,
+  "elbo_val_truth_drift_learned_correction": 389.8630612357493,
+  "data": {
+    "rejected_train": 0,
+    "rejected_val": 0,
+    "rejected_test": 0,
+    "z_train_min": 4.722309992957608,
+    "z_train_max": 83.43254160626776,
+    "event_count_mean": 144.86328125,
+    "event_count_var": 456.59458923339844,
+    "index_of_dispersion": 3.151900090164487,
+    "scalers": {
+      "drift_mean": [
+        36.20733247607597,
+        1.9799999999999998
+      ],
+      "drift_scale": [
+        16.040877868763577,
+        1.1546428019088746
+      ],
+      "corr_mean": [
+        36.20733247607597,
+        1.9799999999999998,
+        90.3060546875
+      ],
+      "corr_scale": [
+        16.040877868763577,
+        1.1546428019088746,
+        46.32868857647054
+      ]
+    }
+  },
+  "drift_search": {
+    "selected": {
+      "degree": 3,
+      "threshold": 0.0,
+      "score": 0.08208279711585294,
+      "active_terms": 10
+    },
+    "candidates": [
+      {
+        "degree": 1,
+        "threshold": 0.0,
+        "score": 0.1429899713400189,
+        "active_terms": 3
+      },
+      {
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.14309499949159332,
+        "active_terms": 2
+      },
+      {
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.14309499949159332,
+        "active_terms": 2
+      },
+      {
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.14309499949159332,
+        "active_terms": 2
+      },
+      {
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.14309499949159332,
+        "active_terms": 2
+      },
+      {
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.31389755339659065,
+        "active_terms": 1
+      },
+      {
+        "degree": 2,
+        "threshold": 0.0,
+        "score": 0.12037115255893491,
+        "active_terms": 6
+      },
+      {
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.12037115255893491,
+        "active_terms": 6
+      },
+      {
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.12037115255893491,
+        "active_terms": 6
+      },
+      {
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.12095738983740437,
+        "active_terms": 5
+      },
+      {
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.14309499949159332,
+        "active_terms": 2
+      },
+      {
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.31389755339659065,
+        "active_terms": 1
+      },
+      {
+        "degree": 3,
+        "threshold": 0.0,
+        "score": 0.08208279711585294,
+        "active_terms": 10
+      },
+      {
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.08208279711585294,
+        "active_terms": 10
+      },
+      {
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.08208279711585294,
+        "active_terms": 10
+      },
+      {
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.08611039008253864,
+        "active_terms": 8
+      },
+      {
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.08611039008253864,
+        "active_terms": 8
+      },
+      {
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.31389755339659065,
+        "active_terms": 1
+      }
+    ]
+  },
+  "sigma_search": {
+    "selected": {
+      "degree": 3,
+      "threshold": 0.0,
+      "score": 0.004084845522719523,
+      "active_terms": 4
+    },
+    "candidates": [
+      {
+        "degree": 1,
+        "threshold": 0.0,
+        "score": 0.036022978240148,
+        "active_terms": 2
+      },
+      {
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.036022978240148,
+        "active_terms": 2
+      },
+      {
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.036022978240148,
+        "active_terms": 2
+      },
+      {
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.036022978240148,
+        "active_terms": 2
+      },
+      {
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.036022978240148,
+        "active_terms": 2
+      },
+      {
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.24542836167949525,
+        "active_terms": 1
+      },
+      {
+        "degree": 2,
+        "threshold": 0.0,
+        "score": 0.010675756466785471,
+        "active_terms": 3
+      },
+      {
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.010675756466785471,
+        "active_terms": 3
+      },
+      {
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.036022978240148,
+        "active_terms": 2
+      },
+      {
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.036022978240148,
+        "active_terms": 2
+      },
+      {
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.036022978240148,
+        "active_terms": 2
+      },
+      {
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.24542836167949525,
+        "active_terms": 1
+      },
+      {
+        "degree": 3,
+        "threshold": 0.0,
+        "score": 0.004084845522719523,
+        "active_terms": 4
+      },
+      {
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.004084845522719523,
+        "active_terms": 4
+      },
+      {
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.036022978240148,
+        "active_terms": 2
+      },
+      {
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.036022978240148,
+        "active_terms": 2
+      },
+      {
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.036022978240148,
+        "active_terms": 2
+      },
+      {
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.24542836167949525,
+        "active_terms": 1
+      }
+    ]
+  },
+  "bootstrap": {
+    "support_frequency": 1.0,
+    "coef_std_max": 0.9521844849819155,
+    "n_boot": 12
+  },
+  "failure_classes": {
+    "truth": {
+      "non_finite": 0,
+      "below_floor": 0,
+      "outside_radius": 0
+    },
+    "teacher": {
+      "non_finite": 0,
+      "below_floor": 0,
+      "outside_radius": 0
+    },
+    "symbolic": {
+      "non_finite": 0,
+      "below_floor": 0,
+      "outside_radius": 0
+    },
+    "poly": {
+      "non_finite": 0,
+      "below_floor": 0,
+      "outside_radius": 0
+    }
+  },
+  "metrics": {
+    "drift_test": {
+      "sym_teacher_nrmse": 0.08413915434019123,
+      "teacher_truth_nrmse": 0.16397457609630223,
+      "sym_truth_nrmse": 0.14447272176355233,
+      "sym_teacher_rms": 1.1691929285188012,
+      "teacher_truth_rms": 2.264862396807408,
+      "sym_truth_rms": 1.9954973671925706,
+      "teacher_rms": 13.895943424764209,
+      "truth_rms": 13.812277797731614
+    },
+    "drift_val_not_used_for_teacher_selection": {
+      "sym_teacher_nrmse": 0.08208279711585294,
+      "teacher_truth_nrmse": 0.16055695703194814,
+      "sym_truth_nrmse": 0.13807673874631438,
+      "sym_teacher_rms": 1.149120906752036,
+      "teacher_truth_rms": 2.2362947483517357,
+      "sym_truth_rms": 1.9231822241528613,
+      "teacher_rms": 13.999533972144599,
+      "truth_rms": 13.928357821995533
+    },
+    "sigma_test_nrmse": 0.004238109871029241,
+    "sigma_test_rms": 0.025783798260223208,
+    "sigma_truth_rms": 6.083796561404745,
+    "sigma_low_z_nrmse": 0.31575305104159507,
+    "sigma_low_z_rms": 0.4736295765623926,
+    "sigma_nonpositive_fraction": 0.0,
+    "vif_selected": 894.860379297748,
+    "vif_degree3": 894.860379297748,
+    "vif_sigma_selected": 3.860627930279353,
+    "oracle_teacher_nrmse": 0.08413915434019123,
+    "oracle_truth_nrmse": 3.3919798593786564e-15,
+    "cubic_rms_ratio": 0.2842906812078755,
+    "fail_truth": 0.0,
+    "fail_teacher": 0.0,
+    "fail_symbolic": 0.0,
+    "fail_poly": 0.0,
+    "paired_sym_teacher": 0.5963640895362717,
+    "paired_teacher_truth": 1.434271319676422,
+    "paired_poly_teacher": 0.5909799772084132,
+    "var_sym_teacher": 0.05737617052172465,
+    "var_teacher_truth": 0.5837052822372831,
+    "var_poly_teacher": 0.058304535786737686,
+    "law_fail_truth": 0.0,
+    "law_fail_teacher": 0.0,
+    "law_fail_symbolic": 0.0,
+    "law_mean_teacher": 1.2967472356233833,
+    "law_mean_symbolic": 0.9232869921839801,
+    "floor_mean": 1.8329370387377246,
+    "law_var_teacher": 0.5770221804750435,
+    "law_var_symbolic": 0.20617346465233136,
+    "floor_var": 0.10695629596055918,
+    "time_teacher": 0.966087385092183,
+    "time_symbolic": 1.8693709623601205,
+    "grid_teacher_truth_nrmse": 0.8920949037641411,
+    "grid_sym_teacher_nrmse": 1.3064717521064761,
+    "grid_sym_truth_nrmse": 1.9874922937161579,
+    "grid_teacher_truth_rms": 12.936395928869668,
+    "grid_sym_teacher_rms": 19.435601351960504,
+    "ontraj_teacher_truth_rms": 2.264862396807408,
+    "disc_rmse": 0.10568309166008902,
+    "disc_retained": 1.0,
+    "post_rmse": 4.69140684700552,
+    "post_fail": 0.0,
+    "prior_rmse": 6.0627313196172095,
+    "prior_fail": 0.0,
+    "step_ratio": 0.5475567427668059,
+    "nll_teacher": 1.545931143586927,
+    "nll_truth": 1.5417951095541051,
+    "grid_over_ontraj": 5.711780083021843
+  },
+  "verdicts": {
+    "H1": "pass",
+    "H2": "pass",
+    "H2_local_shadow": true,
+    "H2_is_square_root": false,
+    "H3": "indeterminate",
+    "H3_closed_form": false,
+    "H4": "fail",
+    "H4b": "fail",
+    "H7": "pass",
+    "H5": "fail",
+    "H6": "fail",
+    "H6_reason": "teacher_uses_time",
+    "H8": "pass",
+    "drift_step_ratio_blind": false,
+    "nll_hides_drift": false,
+    "coefficients_are_closed_form": false,
+    "diffusion_teacher_is_neural": false
+  },
+  "equations": {
+    "drift_tex": "\\begin{aligned}\nb &= 22.76 + 6.884\\,t - 0.2487\\,z - 15.31\\,t^{2} + 1.253\\,z t - 0.04004\\,z^{2} + 3.55\\,t^{3} - 0.3303\\,z t^{2} + 0.009753\\,z^{2} t + 6.245e-05\\,z^{3} \\\\\n\\end{aligned}",
+    "sigma_polynomial_tex": "\\begin{aligned}\n\\sigma &= 1.485 + 0.1843\\,z - 0.002042\\,z^{2} + 1.172e-05\\,z^{3} \\\\\n\\end{aligned}",
+    "sigma_paper_tex": "\\sigma(z) = \\sqrt{z}",
+    "symbolic_sde_tex": "\\begin{aligned}\ndZ_t &= b(Z_t, t)\\,dt + \\sigma(Z_t)\\,dW_t \\\\\nb &= 22.76 + 6.884\\,t - 0.2487\\,z - 15.31\\,t^{2} + 1.253\\,z t - 0.04004\\,z^{2} + 3.55\\,t^{3} - 0.3303\\,z t^{2} + 0.009753\\,z^{2} t + 6.245e-05\\,z^{3} \\\\\n\\sigma &= 1.485 + 0.1843\\,z - 0.002042\\,z^{2} + 1.172e-05\\,z^{3} \\\\\n\\end{aligned}"
+  },
+  "probe_shapes": {
+    "drift": [
+      3
+    ],
+    "correction": [
+      3
+    ]
+  }
+}

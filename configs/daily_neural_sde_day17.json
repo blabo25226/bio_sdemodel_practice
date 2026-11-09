@@ -1,0 +1,156 @@
+{
+  "seed": 17,
+  "paper": {
+    "title": "Neural Diffusion Intensity Models for Point Process Data",
+    "authors": "Xinlong Du, Harsha Honnappa, Vinayak Rao",
+    "venue": "UAI",
+    "year": 2026,
+    "pmlr": "337:1448-1473",
+    "url": "https://proceedings.mlr.press/v337/du26a.html",
+    "pdf": "https://raw.githubusercontent.com/mlresearch/v337/main/assets/du26a/du26a.pdf",
+    "system": "Section 4.1 CIR intensity: dZ = 0.3(80-Z) dt + sqrt(Z) dW, neural prior drift, known diffusion, remaining-count posterior correction"
+  },
+  "data": {
+    "T": 4.0,
+    "dt": 0.04,
+    "n_steps": 100,
+    "n_train": 256,
+    "n_val": 64,
+    "n_test": 64,
+    "kappa": 0.3,
+    "theta": 80.0,
+    "sigma_scale": 1.0,
+    "z0": 5.0,
+    "project_floor": 0.5,
+    "failure_floor": 0.2,
+    "failure_radius": 250.0,
+    "max_resample_factor": 40,
+    "paired_paths": 64,
+    "law_paths": 64
+  },
+  "model": {
+    "hidden": 64,
+    "depth": 2,
+    "epochs": 100,
+    "batch_size": 32,
+    "n_brownian": 10,
+    "lr": 0.005,
+    "grad_clip": 5.0,
+    "last_layer_scale": 0.1
+  },
+  "distill": {
+    "degrees": [1, 2, 3],
+    "thresholds": [0.0, 0.02, 0.05, 0.1, 0.2, 0.35],
+    "ridge": 0.0001,
+    "vif_degree": 3,
+    "oracle_degree": 3,
+    "grid_z_quantiles": [0.05, 0.95],
+    "grid_n_z": 8,
+    "grid_n_t": 8,
+    "low_z": [0.5, 4.0],
+    "low_z_n": 40,
+    "bootstrap": 12,
+    "posterior_paths": 16,
+    "step_ratio_drift_blind": 0.25,
+    "nll_floor_gap": 0.05
+  },
+  "seeds": {
+    "data": 17,
+    "train_noise": 17001,
+    "val_noise": 17002,
+    "test_noise": 17003,
+    "paired": 17011,
+    "law_truth": 17012,
+    "law_floor": 17013,
+    "law_teacher": 17014,
+    "law_symbolic": 17015,
+    "law_poly_sigma": 17016,
+    "time_shuffle": 17017,
+    "posterior": 17018,
+    "prior_rollout": 17019,
+    "bootstrap": 17020,
+    "discretization": 17021
+  },
+  "hypotheses": {
+    "H1_drift": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.20,
+      "teacher_vs_truth_test_nrmse_max": 0.30,
+      "symbolic_vs_truth_test_nrmse_max": 0.35,
+      "note": "On held-out latent states. Residual RMS is reported and is not a gate. A pass is not the closed form 0.3(80-z)."
+    },
+    "H2_diffusion_probe": {
+      "symbolic_vs_sigma_test_nrmse_max": 0.05,
+      "fraction_nonpositive_max": 0.02,
+      "low_z_over_ontraj_factor": 5.0,
+      "note": "Sigma is the paper's closed form sqrt(z), not a neural network. The polynomial is a library probe. Low-z NRMSE is reported beside the on-trajectory number. If low-z exceeds five times the on-trajectory NRMSE, the probe is a local shadow and is not sqrt(z)."
+    },
+    "H3_collinearity_gate": {
+      "vif_max": 10.0,
+      "note": "VIF of the selected drift degree, constant column excluded. Degree-3 VIF is reported beside it. A pass is not permission to read coefficients as 0.3(80-z) or as sqrt(z)."
+    },
+    "H4_simulation": {
+      "failure_rate_max": 0.05,
+      "failure_rate_gap_max": 0.02,
+      "failure_gate": 0.05,
+      "paired_path_rmse_symbolic_vs_teacher_max": 4.0,
+      "paired_path_rmse_teacher_vs_truth_max": 6.0,
+      "terminal_var_rel_symbolic_vs_teacher_max": 0.40,
+      "terminal_var_rel_teacher_vs_truth_max": 0.50,
+      "drift_teacher_vs_truth_test_nrmse_max": 0.30,
+      "note": "Primary symbolic SDE uses the polynomial drift and the paper's sqrt(z). H4b repeats the gates with the polynomial diffusion probe."
+    },
+    "H5_law": {
+      "mean_path_rmse_teacher_max": 4.0,
+      "mean_path_rmse_symbolic_max": 5.0,
+      "terminal_var_rel_teacher_max": 0.35,
+      "terminal_var_rel_symbolic_max": 0.45,
+      "failure_gate": 0.05,
+      "note": "All paths start at z0=5. Indeterminate if the truth-vs-truth floor exceeds the teacher gate. The floor is reported beside a pass."
+    },
+    "H6_time_and_grid": {
+      "time_sensitivity_teacher_max": 0.15,
+      "time_sensitivity_symbolic_max": 0.15,
+      "grid_teacher_vs_truth_nrmse_max": 0.50,
+      "grid_symbolic_vs_teacher_nrmse_max": 0.30,
+      "grid_over_ontraj_rms_min": 2.0,
+      "note": "Time sensitivity is the RMS of f(z,t)-f(z,t') divided by the RMS of f(z,t), with t' drawn independently of the path. The product grid pairs z and t independently and is not used for selection."
+    },
+    "H7_discretization_gate": {
+      "teacher_coarse_vs_fine_terminal_rmse_max": 1.5,
+      "min_retained_fraction": 0.95,
+      "fine_factor": 2
+    },
+    "H8_posterior": {
+      "posterior_mean_path_rmse_max": 8.0,
+      "min_improvement_over_prior": 1.0,
+      "failure_gate": 0.05,
+      "note": "Remaining-count encoder from Section 3.3.1, which the paper marks as generally misspecified. Posterior paths are conditioned on the test events and do not reuse the data Brownian motion."
+    }
+  },
+  "interpretation": {
+    "coefficients_are_closed_form": false,
+    "diffusion_teacher_is_neural": false,
+    "oracle_closed_form_nrmse_max": 0.05,
+    "cubic_rms_ratio_small": 0.15
+  },
+  "pre_registration_design": {
+    "note": "Analytic CIR calculations used to place thresholds. Not trained-teacher or test-split results.",
+    "box_and_trajectory_degree3_drift_nrmse_about": 1e-15,
+    "degree3_vif_zt_about": 941.0,
+    "degree1_vif_zt_about": 6.5,
+    "sqrt_on_trajectory_degree3_nrmse_about": 0.005,
+    "sqrt_low_z_0.5_to_4_nrmse_about": 0.31,
+    "step_ratio_mean_about": 0.55,
+    "sigma_sqrt_dt_about": 1.17,
+    "abs_drift_dt_about": 0.53,
+    "law_mean_path_floor_n64_about": 0.97,
+    "terminal_var_rel_floor_about": 0.084,
+    "truth_em_failure_rate_about": 0.0,
+    "discretization_terminal_rmse_about": 0.11,
+    "paired_rmse_for_drift_bias_2_about": 3.1,
+    "paired_rmse_for_drift_bias_5_about": 7.7,
+    "drift_nrmse_for_bias_5_about": 0.36,
+    "mean_event_count_about": 145.0,
+    "z_p5_p95_about": [8.8, 60.7]
+  }
+}

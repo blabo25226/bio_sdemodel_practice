@@ -92,3 +92,4 @@
 | 14 | 2026-11-07 | Koprulu, Djeumou & Topcu 2025, NUNO (ICLR) | controlled point mass with cubic drag (2D state + scalar action, physics-structured drift, distance-aware diffusion) | `day14_koprulu_nuno/report.md` |
 | 15 | 2026-11-08 | Seifner, Cvejoski, Berghaus, Ojeda & Sánchez 2025, FIM-SDE (NeurIPS) | 2D synthetic Stuart–Landau with state-dependent diffusion \(\sqrt{1+x^{2}}\) (in-context neural operator) | `day15_seifner_fim/report.md` |
 | 16 | 2026-11-08 | Liu, Gupta, Sinha & Mahadevan 2026, LieStoNet (ICML) | 2D reciprocal drift \(1/x\) with constant diffusion (stage-1 neural drift and Cholesky diffusion) | `day16_liu_liestonet/report.md` |
+| 17 | 2026-11-09 | Du, Honnappa & Rao 2026, Neural Diffusion Intensity (UAI) | CIR latent intensity (1D state + time, neural prior drift, known \(\sqrt{z}\) diffusion, Cox counts) | `day17_du_ndm/report.md` |

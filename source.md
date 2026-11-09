@@ -264,7 +264,17 @@ Code: https://github.com/sumit-sinha-seas/LieStoNet_Final
 Why relevant: ICML 2026, PMLR 306:76384-76408. Stage 1 fits a neural drift and a neural Cholesky diffusion by the Euler-Gauss increment likelihood (Section 3.1, equation 8; Appendix P). Example 4 is the 2D Ito equation dx = (1/x) dt + dW1, dy = dt + dW2 (Table 2). The released notebook uses a2 = 0.5; Day 16 follows Table 2 and sets a2 = 1. Day 16 distills that stage-1 surrogate. Stage-2 generator training, the Lie-algebra sweep, principal angles, Fokker-Planck symmetries, the 10D Brownian motion, and BTC/USDT are outside the cut. The analytic scaling generator is used only as a probe of the learned drift.
 Accessed: 2026-11-08.
 
-## 17. Direct stochastic sparse identification assumptions
+## 17. Day 17 paper (daily Neural SDE series)
+
+Title: Neural Diffusion Intensity Models for Point Process Data
+Authors: Xinlong Du, Harsha Honnappa, Vinayak Rao
+Year: 2026
+URL: https://proceedings.mlr.press/v337/du26a.html
+PDF: https://raw.githubusercontent.com/mlresearch/v337/main/assets/du26a/du26a.pdf
+Why relevant: UAI 2026, PMLR 337:1448-1473. A Cox process is driven by a latent diffusion intensity. The prior drift is a neural network (equation 1); the diffusion coefficient in the experiments is the known CIR factor \(\sqrt{z}\), not a network. The variational posterior keeps that diffusion and adds a neural drift correction (equation 3, Theorem 2.1, Theorem 3.1). Day 17 distills the prior drift on Section 4.1, \(dZ=0.3(80-Z)\,dt+\sqrt{Z}\,dW\), and probes \(\sqrt{Z}\) with the power library. The remaining-count encoder is the paper's misspecified option in Section 3.3.1. Deep Sets, the hard constraint, MCMC, the U.S. bank calls, the Allen spike trains, and the multivariate CIR are outside the cut.
+Accessed: 2026-11-09.
+
+## 18. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations
 Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi

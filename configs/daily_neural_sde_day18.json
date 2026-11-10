@@ -1,0 +1,139 @@
+{
+  "seed": 18,
+  "paper": {
+    "title": "Gradient-Flow SDEs Have Unique Transient Population Dynamics",
+    "authors": "Vincent Guan, Joseph Janssen, Nicolas Lanzetti, Antonio Terpin, Geoffrey Schiebinger, Elina Robeva",
+    "venue": "AISTATS",
+    "year": 2026,
+    "pmlr": "300:2449-2457",
+    "url": "https://proceedings.mlr.press/v300/guan26a.html",
+    "pdf": "https://raw.githubusercontent.com/mlresearch/v300/main/assets/guan26a/guan26a.pdf",
+    "arxiv": "https://arxiv.org/abs/2505.21770",
+    "code": "https://github.com/guanton/identifying-gradient-flow-sdes",
+    "system": "Section 5.1 Styblinski-Tang gradient flow, three marginals, neural potential drift, scalar diffusivity"
+  },
+  "data": {
+    "dimension": 2,
+    "dt": 0.01,
+    "n_steps": 2,
+    "sigma2": 0.2,
+    "n_train": 512,
+    "n_val": 128,
+    "n_test": 128,
+    "n_law": 1024,
+    "generation_radius": 12.0,
+    "failure_radius": 12.0,
+    "max_resample_rounds": 8
+  },
+  "model": {
+    "width": 128,
+    "depth": 2,
+    "epochs": 500,
+    "batch_size": 512,
+    "lr": 0.003,
+    "outer_iterations": 30,
+    "sinkhorn_iterations": 200,
+    "sinkhorn_tol": 1e-5,
+    "activation": "silu",
+    "conservative": true
+  },
+  "distill": {
+    "degrees": [1, 2, 3],
+    "thresholds": [0.0, 0.02, 0.05, 0.1, 0.2, 0.35],
+    "ridge": 0.0001,
+    "grid_low": -4.0,
+    "grid_high": 4.0,
+    "grid_size": 11,
+    "step_ratio_blind": 0.25,
+    "nll_floor_gap": 0.05,
+    "nll_blind_nrmse": 0.3
+  },
+  "seeds": {
+    "data": 18,
+    "diffusion_prior": 18,
+    "sinkhorn": 18001,
+    "network": 18002,
+    "shuffle": 18011,
+    "law_truth": 18021,
+    "law_floor": 18022,
+    "law_teacher": 18023,
+    "law_symbolic": 18024
+  },
+  "interpretation": {
+    "coefficients_are_closed_form": false,
+    "diffusion_teacher_is_neural": false,
+    "coordinate_is_gene_regulation": false,
+    "distillation_discovers_true_sde": false
+  },
+  "hypotheses": {
+    "H1_drift": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.25,
+      "teacher_vs_truth_test_nrmse_max": 0.4,
+      "symbolic_vs_truth_test_nrmse_max": 0.5,
+      "note": "On held-out particle states. Residual RMS is reported and is not a gate. A pass is not the Styblinski cubic."
+    },
+    "H2_diffusion": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.05,
+      "fraction_nonpositive_max": 0.02,
+      "sigma2_relative_error_max": 0.2,
+      "grid_over_ontraj_factor": 5.0,
+      "note": "H2_distill compares the polynomial to the scalar teacher. H2_truth requires relative error at most 0.20. The seed-18 prior is already 0.37 away, and the true-path MLE on the probe is 0.01 away, so 0.20 asks the iteration to move the prior. The grid factor flags a local shadow and is not itself the pass."
+    },
+    "H3_collinearity_gate": {
+      "vif_max": 10.0,
+      "note": "Degree-3 free library, constant column excluded, fit on train queries. Passing the gate is not permission to read the cubic as -2 x^3 + 16 x - 2.5."
+    },
+    "H4_simulation": {
+      "failure_rate_max": 0.05,
+      "failure_gap_max": 0.02,
+      "path_rmse_symbolic_vs_teacher_max": 0.08,
+      "path_rmse_teacher_vs_truth_max": 0.1,
+      "terminal_cov_symbolic_vs_teacher_max": 0.45,
+      "terminal_cov_teacher_vs_truth_max": 0.55,
+      "drift_teacher_vs_truth_max": 0.4,
+      "note": "Two Euler steps, shared Wiener increments, test initial states. Failure above the rate gate makes H4 indeterminate. The drift gate stops a short path from passing while the field is wrong."
+    },
+    "H5_law": {
+      "failure_rate_max": 0.05,
+      "mean_path_rmse_teacher_max": 0.09,
+      "mean_path_rmse_symbolic_max": 0.11,
+      "terminal_cov_teacher_max": 0.5,
+      "terminal_cov_symbolic_max": 0.6,
+      "note": "Independent draws from the same realized mixture. If the truth-vs-truth floor exceeds the teacher gate, H5 is indeterminate. Terminal covariance is scored even when the mean path is below the floor."
+    },
+    "H6_shuffle_and_grid": {
+      "shuffle_abs_gap_max": 0.2,
+      "teacher_vs_truth_grid_nrmse_max": 0.6,
+      "symbolic_vs_teacher_grid_nrmse_max": 0.45,
+      "amplification_factor": 2.0,
+      "note": "Shuffle permutes y independently. The grid is [-4,4]^2, 11 by 11, and is not used for selection. Amplification is recorded when the grid RMS exceeds twice the on-trajectory residual RMS."
+    },
+    "H7_discretization": {
+      "terminal_rmse_max": 0.4,
+      "min_retained_fraction": 0.95,
+      "note": "Teacher drift, dt=0.01 versus one Euler step of dt=0.02 with the summed normalized Gaussian increment. The probe truth gap was 0.148, so the gate is 0.40 rather than the truncation itself."
+    },
+    "H8_fixed_diffusion": {
+      "adaptive_improvement_min": 0.05,
+      "adaptive_nrmse_max": 0.45,
+      "note": "The fixed run keeps the Section 5.1 prior and still refits the drift. Both numbers are test-set NRMSE against the true drift. The adaptive model must be inside 0.45 and at least 0.05 better."
+    }
+  },
+  "threshold_basis": {
+    "probe_seed": 18099,
+    "drift_rms": 17.1804,
+    "step_ratio": 4.1507,
+    "cubic_ratio": 1.8022,
+    "vif_degree3": 15.2978,
+    "oracle_pure_val_nrmse": 3.845e-15,
+    "paired_bias2_rmse": 0.02584,
+    "sigma2_mle_true_paths": 0.19785,
+    "diffusion_prior": 0.12579,
+    "prior_relative_error": 0.3711,
+    "floor_mean_n1024": 0.04429,
+    "floor_var_n1024": 0.04440,
+    "disc_rmse_truth": 0.14848,
+    "shuffle_truth": 1.0992,
+    "note": "Truth-only probe, seed 18099, before the evaluation seed is trained. The degree-3 library matches the Styblinski drift to 1e-15. Probe VIF 15.3 is already above the gate of 10; the gate is not raised. The seed-18 prior has relative error 0.371, so H2_truth at 0.20 is not passed by the prior. The truth Euler gap at dt=0.02 is 0.148, so H7 is 0.40. Thresholds are not revised after test."
+  }
+}

@@ -93,3 +93,4 @@
 | 15 | 2026-11-08 | Seifner, Cvejoski, Berghaus, Ojeda & Sánchez 2025, FIM-SDE (NeurIPS) | 2D synthetic Stuart–Landau with state-dependent diffusion \(\sqrt{1+x^{2}}\) (in-context neural operator) | `day15_seifner_fim/report.md` |
 | 16 | 2026-11-08 | Liu, Gupta, Sinha & Mahadevan 2026, LieStoNet (ICML) | 2D reciprocal drift \(1/x\) with constant diffusion (stage-1 neural drift and Cholesky diffusion) | `day16_liu_liestonet/report.md` |
 | 17 | 2026-11-09 | Du, Honnappa & Rao 2026, Neural Diffusion Intensity (UAI) | CIR latent intensity (1D state + time, neural prior drift, known \(\sqrt{z}\) diffusion, Cox counts) | `day17_du_ndm/report.md` |
+| 18 | 2026-11-10 | Guan et al. 2026, nn-APPEX (AISTATS) | Styblinski–Tang gradient flow (2D, neural potential drift, scalar diffusivity, three marginals) | `day18_guan_nnappex/report.md` |

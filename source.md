@@ -274,7 +274,19 @@ PDF: https://raw.githubusercontent.com/mlresearch/v337/main/assets/du26a/du26a.p
 Why relevant: UAI 2026, PMLR 337:1448-1473. A Cox process is driven by a latent diffusion intensity. The prior drift is a neural network (equation 1); the diffusion coefficient in the experiments is the known CIR factor \(\sqrt{z}\), not a network. The variational posterior keeps that diffusion and adds a neural drift correction (equation 3, Theorem 2.1, Theorem 3.1). Day 17 distills the prior drift on Section 4.1, \(dZ=0.3(80-Z)\,dt+\sqrt{Z}\,dW\), and probes \(\sqrt{Z}\) with the power library. The remaining-count encoder is the paper's misspecified option in Section 3.3.1. Deep Sets, the hard constraint, MCMC, the U.S. bank calls, the Allen spike trains, and the multivariate CIR are outside the cut.
 Accessed: 2026-11-09.
 
-## 18. Direct stochastic sparse identification assumptions
+## 18. Day 18 paper (daily Neural SDE series)
+
+Title: Gradient-Flow SDEs Have Unique Transient Population Dynamics
+Authors: Vincent Guan, Joseph Janssen, Nicolas Lanzetti, Antonio Terpin, Geoffrey Schiebinger, Elina Robeva
+Year: 2026
+URL: https://proceedings.mlr.press/v300/guan26a.html
+PDF: https://raw.githubusercontent.com/mlresearch/v300/main/assets/guan26a/guan26a.pdf
+arXiv: https://arxiv.org/abs/2505.21770
+Code: https://github.com/guanton/identifying-gradient-flow-sdes
+Why relevant: AISTATS 2026, PMLR 300:2449-2457. nn-APPEX alternates a multi-marginal Schrödinger bridge, a neural drift MLE, and a closed-form isotropic diffusivity MLE (Section 4, Algorithm 1, equations 16-17). The released fitter uses a SiLU potential MLP and sets the drift to minus its gradient (`models/nn_APPEX.py`, `utils/MLE_parameter_estimation.py`, `conservative=True`). Day 18 distills that drift on the Section 5.1 Styblinski-Tang gradient flow, \(\sigma^{2}=0.2\), three marginals at spacing 0.01. The scalar diffusivity is not a network. The hESC experiment, the other four potentials, JKOnet*, and WOT are outside the cut.
+Accessed: 2026-11-10.
+
+## 19. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations
 Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi

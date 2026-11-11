@@ -286,7 +286,18 @@ Code: https://github.com/guanton/identifying-gradient-flow-sdes
 Why relevant: AISTATS 2026, PMLR 300:2449-2457. nn-APPEX alternates a multi-marginal Schrödinger bridge, a neural drift MLE, and a closed-form isotropic diffusivity MLE (Section 4, Algorithm 1, equations 16-17). The released fitter uses a SiLU potential MLP and sets the drift to minus its gradient (`models/nn_APPEX.py`, `utils/MLE_parameter_estimation.py`, `conservative=True`). Day 18 distills that drift on the Section 5.1 Styblinski-Tang gradient flow, \(\sigma^{2}=0.2\), three marginals at spacing 0.01. The scalar diffusivity is not a network. The hESC experiment, the other four potentials, JKOnet*, and WOT are outside the cut.
 Accessed: 2026-11-10.
 
-## 19. Direct stochastic sparse identification assumptions
+## 19. Day 19 paper (daily Neural SDE series)
+
+Title: Neural MJD: Neural Non-Stationary Merton Jump Diffusion for Time Series Prediction
+Authors: Yuanpei Gao, Qi Yan, Yan Leng, Renjie Liao
+Year: 2025
+URL: https://proceedings.neurips.cc/paper_files/paper/2025/hash/be86db1a7a293eec8d291edf9fcaa550-Abstract-Conference.html
+PDF: https://proceedings.neurips.cc/paper_files/paper/2025/file/be86db1a7a293eec8d291edf9fcaa550-Paper-Conference.pdf
+Code: https://github.com/DSL-Lab/neural-MJD
+Why relevant: NeurIPS 2025. A network maps a price history and future time to the time-inhomogeneous Merton rates (equation 8). Training is the jump-truncated transition likelihood (equation 12, Theorem 4.1, kappa = 5) plus a conditional-mean price penalty (equation 13, Algorithm 1, omega = 1). Day 19 distills those neural rates on the Appendix D.2 scalar Merton jump diffusion. The likelihood bin is the Euler step 0.01 so that the published rate ranges stay in the simulation clock. The Transformer, the stride-1 windows, SafeGraph, S&P 500, and the restart solver are outside the cut.
+Accessed: 2026-11-11.
+
+## 20. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations
 Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi

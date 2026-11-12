@@ -297,6 +297,18 @@ Code: https://github.com/DSL-Lab/neural-MJD
 Why relevant: NeurIPS 2025. A network maps a price history and future time to the time-inhomogeneous Merton rates (equation 8). Training is the jump-truncated transition likelihood (equation 12, Theorem 4.1, kappa = 5) plus a conditional-mean price penalty (equation 13, Algorithm 1, omega = 1). Day 19 distills those neural rates on the Appendix D.2 scalar Merton jump diffusion. The likelihood bin is the Euler step 0.01 so that the published rate ranges stay in the simulation clock. The Transformer, the stride-1 windows, SafeGraph, S&P 500, and the restart solver are outside the cut.
 Accessed: 2026-11-11.
 
+## 21. Day 20 paper (daily Neural SDE series)
+
+Title: Control Consistency Losses for Diffusion Bridges
+Authors: Samuel Howard, Nikolas Nüsken, Jakiw Pidstrigach
+Year: 2026
+URL: https://proceedings.mlr.press/v306/howard26b.html
+PDF: https://raw.githubusercontent.com/mlresearch/v306/main/assets/howard26b/howard26b.pdf
+arXiv: https://arxiv.org/abs/2512.05070
+Code: https://github.com/samuel-howard/control_consistency_bridges
+Why relevant: ICML 2026, PMLR 306:44330-44367. A neural adjustment eta is added to a Brownian-bridge guide (equation 16, Appendix B.1). For a reference drift that is not a gradient, the controlled drift keeps that drift. Training uses the self-consistency property (4.1) and the average schedule (equation 49, Algorithm 1). Day 20 distills eta on the normal cell-differentiation bridge in Appendix E.4 (Wang et al. 2011 drift, sigma = 0.1, x0 = (0.1, -0.1), xT = (2, -0.1), T = 4). The diffusion coefficient is the constant 0.1, not a network. The rare and multimodal cell events, OU, CIR, Müller-Brown, and the chemistry bridges are outside the cut.
+Accessed: 2026-11-12.
+
 ## 20. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations

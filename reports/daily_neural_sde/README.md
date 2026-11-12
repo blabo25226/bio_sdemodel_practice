@@ -95,3 +95,4 @@
 | 17 | 2026-11-09 | Du, Honnappa & Rao 2026, Neural Diffusion Intensity (UAI) | CIR latent intensity (1D state + time, neural prior drift, known \(\sqrt{z}\) diffusion, Cox counts) | `day17_du_ndm/report.md` |
 | 18 | 2026-11-10 | Guan et al. 2026, nn-APPEX (AISTATS) | Styblinski–Tang gradient flow (2D, neural potential drift, scalar diffusivity, three marginals) | `day18_guan_nnappex/report.md` |
 | 19 | 2026-11-11 | Gao, Yan, Leng & Liao 2025, Neural MJD (NeurIPS) | scalar Merton jump diffusion (context log-returns + future time, neural drift rate and neural diffusion rate) | `day19_gao_neural_mjd/report.md` |
+| 20 | 2026-11-12 | Howard, Nüsken & Pidstrigach 2026, Control Consistency Diffusion Bridges (ICML) | 2D cell-differentiation bridge (known Hill drift, constant diffusion, neural bridge adjustment) | `day20_howard_ccdb/report.md` |

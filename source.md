@@ -309,6 +309,18 @@ Code: https://github.com/samuel-howard/control_consistency_bridges
 Why relevant: ICML 2026, PMLR 306:44330-44367. A neural adjustment eta is added to a Brownian-bridge guide (equation 16, Appendix B.1). For a reference drift that is not a gradient, the controlled drift keeps that drift. Training uses the self-consistency property (4.1) and the average schedule (equation 49, Algorithm 1). Day 20 distills eta on the normal cell-differentiation bridge in Appendix E.4 (Wang et al. 2011 drift, sigma = 0.1, x0 = (0.1, -0.1), xT = (2, -0.1), T = 4). The diffusion coefficient is the constant 0.1, not a network. The rare and multimodal cell events, OU, CIR, Müller-Brown, and the chemistry bridges are outside the cut.
 Accessed: 2026-11-12.
 
+## 22. Day 21 paper (daily Neural SDE series)
+
+Title: Neural Structure Learning with Stochastic Differential Equations
+Authors: Benjie Wang, Joel Jennings, Wenbo Gong
+Year: 2024
+URL: https://proceedings.iclr.cc/paper_files/paper/2024/hash/6ce9d51dded7dac82b3b4d3dbb1d73bc-Abstract-Conference.html
+PDF: https://proceedings.iclr.cc/paper_files/paper/2024/file/6ce9d51dded7dac82b3b4d3dbb1d73bc-Paper-Conference.pdf
+arXiv: https://arxiv.org/abs/2311.03309
+Code: https://github.com/microsoft/causica/tree/main/research_experiments/scotch
+Why relevant: ICLR 2024. SCOTCH places neural networks on both the drift and the diagonal diffusion of an Ito diffusion, gated by a signature graph (Appendix B, equation 33). Day 21 distills those two fields on a 3D cubic chain in that observational class. Lorenz-96, glycolysis, the latent ELBO, and the graph posterior are outside the cut.
+Accessed: 2026-11-14.
+
 ## 20. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations

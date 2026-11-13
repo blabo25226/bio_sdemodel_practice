@@ -96,3 +96,4 @@
 | 18 | 2026-11-10 | Guan et al. 2026, nn-APPEX (AISTATS) | Styblinski–Tang gradient flow (2D, neural potential drift, scalar diffusivity, three marginals) | `day18_guan_nnappex/report.md` |
 | 19 | 2026-11-11 | Gao, Yan, Leng & Liao 2025, Neural MJD (NeurIPS) | scalar Merton jump diffusion (context log-returns + future time, neural drift rate and neural diffusion rate) | `day19_gao_neural_mjd/report.md` |
 | 20 | 2026-11-12 | Howard, Nüsken & Pidstrigach 2026, Control Consistency Diffusion Bridges (ICML) | 2D cell-differentiation bridge (known Hill drift, constant diffusion, neural bridge adjustment) | `day20_howard_ccdb/report.md` |
+| 21 | 2026-11-14 | Wang, Jennings & Gong 2024, SCOTCH (ICLR) | 3D cubic chain (graph-gated neural drift and graph-gated diagonal diffusion) | `day21_wang_scotch/report.md` |

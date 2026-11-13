@@ -1,0 +1,8 @@
+%% Day 9 symbolic McKean-Vlasov SDE (Yang et al. 2024 Neural McKean-Vlasov Processes; distilled MV teacher; x = X, m = E[X])
+\begin{aligned}
+\hat f &= 0.01298 + 1.025\,m - 0.1439\,x - 0.002717\,m^{2} - 0.002215\,x m - 0.03416\,x^{2} - 0.1819\,m^{3} + 0.3611\,x m^{2} - 0.4363\,x^{2} m - 0.6277\,x^{3} \\
+\end{aligned}
+\begin{aligned}
+\hat g &= 0.5939 + 6.982e-05\,m - 0.0007515\,x + 0.02788\,m^{2} - 0.05103\,x m \\
+\end{aligned}
+%% Mean-field SDE: dX = f(X, m) dt + g dW, m = E[X] (self-consistent ensemble mean).

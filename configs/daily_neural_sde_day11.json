@@ -1,0 +1,132 @@
+{
+  "series": "daily_neural_sde",
+  "day": 11,
+  "date": "2026-11-04",
+  "seed": 0,
+  "paper": {
+    "title": "SDE-Net: Equipping Deep Neural Networks with Uncertainty Estimates",
+    "authors": "Lingkai Kong, Jimeng Sun, Chao Zhang",
+    "journal": "ICML 2020, PMLR 119:5405-5415",
+    "url": "https://proceedings.mlr.press/v119/kong20b.html",
+    "pdf": "http://proceedings.mlr.press/v119/kong20b/kong20b.pdf",
+    "experiment": "Section 3: a neural SDE whose drift net f(x_t, t) implements the predictive map and whose diffusion net g(x_0) captures epistemic uncertainty. Training alternates a task loss on the terminal state with an objective that minimizes g on in-distribution inputs and maximizes g on Gaussian-perturbed inputs. The diffusion output is sigma_max * sigmoid(net(x_0)). Euler-Maruyama, one path per sample during training (Algorithm 1, eq. 4 and eq. 7)."
+  },
+  "data": {
+    "system": "2D four-blob XOR. Class 0 modes at (-1.5, -1.5) and (1.5, 1.5); class 1 modes at (-1.5, 1.5) and (1.5, -1.5). Isotropic Gaussian noise of std sigma around the mode. Each sample is one initial condition and therefore one trajectory.",
+    "centers": [[-1.5, -1.5], [1.5, 1.5], [-1.5, 1.5], [1.5, -1.5]],
+    "center_labels": [0, 0, 1, 1],
+    "sigma": 0.3,
+    "ood_noise_variance": 4.0,
+    "ood_note": "Paper uses additive Gaussian noise of variance 4 on MNIST/SVHN pixels. The same variance is used here on the 2D coordinate scale (declared scale transplant, not a pixel experiment)."
+  },
+  "split": {
+    "seed": 0,
+    "train": 1200,
+    "validation": 400,
+    "test": 400,
+    "unit": "initial condition x0 (one trajectory). Path states queried from an x0 stay in that x0's split. OOD queries are perturbations of that split's x0 only."
+  },
+  "ground_truth_sde": null,
+  "teacher": {
+    "sde": "dX_t = f(X_t, t; theta_f) dt + g(X_0; theta_g) dW_t, W in R^2, g scalar and frozen at the initial state (paper eq. 4 and eq. 7, not the general g(x_t, t) of eq. 3).",
+    "architecture": "Drift MLP: Linear(3, 64) tanh, Linear(64, 64) tanh, Linear(64, 2), input (x, y, t). Diffusion MLP: Linear(2, 64) tanh, Linear(64, 64) tanh, Linear(64, 1), then sigma_max * sigmoid, input (x0, y0) only. Linear readout head h2: R^2 -> 2 logits. No downsampling h1: the state is the observed 2D coordinate.",
+    "sigma_max": 1.0,
+    "sigma_max_note": "Supplement sets sigma_max = 1 during training and inflates it to 50 at test time for detection metrics. The distilled object is the training-time diffusion net (sigma_max = 1). The test-time rescaling is not part of the SDE.",
+    "T": 1.0,
+    "n_steps_train": 6,
+    "optimizer": "Adam, lr 1e-3 on drift and head, lr 1e-2 on diffusion. Alternate updates inside each step (Algorithm 1). Task loss does not backpropagate through g.",
+    "n_opt_steps": 2500,
+    "batch_size": 256,
+    "task_loss": "cross-entropy of h2(X_T) on one Euler-Maruyama path",
+    "diffusion_loss": "mean g(x_ID) - mean g(x_OOD), OOD = x_ID + N(0, 4 I)",
+    "deviation_from_paper": "Four declared cuts. (1) MNIST/SVHN/YearMSD are replaced by a 2D XOR mixture so the SDE state is the observed coordinate (no unidentifiable hidden state) and the drift must implement a nonlinear map (a linear head on x0 cannot solve XOR). Results say nothing about the paper's image AUROC. (2) The image downsampling net h1 is omitted. (3) tanh MLPs and Adam replace the paper's ReLU residual block and SGD+momentum; both nets stay Lipschitz, as Theorem 1 requires. (4) sigma_max stays at the training value 1; the supplement's test-time sigma_max = 50 is not used."
+  },
+  "distillation": {
+    "library": "Powers only: constants, monomials, and cross terms. Drift library variables are the drift-net inputs (x, y, t). Diffusion library variables are the diffusion-net inputs (x, y) = x0. No trig, exponential, or rational basis.",
+    "degrees": [1, 2, 3],
+    "thresholds": [0.02, 0.05, 0.1, 0.2, 0.35],
+    "ridge": 0.0001,
+    "drift_query": "States at the start of each training-grid EM step along one path from the split's x0 (trajectory-disjoint). Teacher drift is queried directly.",
+    "diffusion_query": "The split's x0 (ID) and one variance-4 perturbation of each x0 (OOD). Teacher diffusion is queried directly.",
+    "drift_selection": "Minimize pooled validation NRMSE against the teacher. Test once after selection.",
+    "diffusion_selection": "Minimize the unweighted mean of validation ID NRMSE and validation OOD NRMSE, so the larger OOD scale does not dominate the score. Test once after selection.",
+    "library_ceiling": "Degree-3 ordinary least squares on the same training queries (no thresholding). Diagnostic only, never a candidate. Used to attribute a distillation failure to library capacity rather than to sparsity or to teacher noise (Day 10 reflection, adapted from a truth-field oracle to a teacher-field ceiling because this paper has no closed-form SDE).",
+    "query_seed": 11
+  },
+  "hypotheses": {
+    "H1_drift_distillation": {
+      "symbolic_drift_test_nrmse_vs_teacher_max": 0.3
+    },
+    "H2_diffusion_distillation": {
+      "symbolic_g_id_test_nrmse_vs_teacher_max": 0.3,
+      "symbolic_g_ood_test_nrmse_vs_teacher_max": 0.5,
+      "symbolic_sigma_id_test_nrmse_vs_teacher_max": 0.4,
+      "note": "Headline is g on ID and on OOD separately. Sigma = g^2 on ID is the law-level companion. OOD is allowed a looser bar because g is a saturating sigmoid, but 0.50 is still a real fit."
+    },
+    "H2c_range": {
+      "definition": "Fraction of test diffusion queries (ID and OOD pooled) where symbolic g is outside (0, sigma_max].",
+      "max": 0.05
+    },
+    "H3_collinearity_gate": {
+      "vif_max": 10.0,
+      "note": "No coefficient-recovery hypothesis: there is no closed-form true SDE. VIF is computed at degree 3 (the maximum selectable degree) on the training queries, constant column excluded. If VIF exceeds 10, coefficient-level reading of the selected polynomial is indeterminate."
+    },
+    "H4_simulation": {
+      "population": "ID test initial conditions, T=1, dt=0.05, paired Wiener increments",
+      "failure_radius": 25.0,
+      "excursion_radius": 8.0,
+      "symbolic_failure_rate_max": 0.05,
+      "symbolic_failure_rate_minus_teacher_max": 0.02,
+      "excursion_rate_symbolic_minus_teacher_max": 0.1,
+      "paired_terminal_rmse_max": 1.5,
+      "teacher_accuracy_min": 0.85,
+      "symbolic_accuracy_min": 0.75,
+      "accuracy_definition": "Retained-mass accuracy: a failed trajectory counts as incorrect. The same linear head, trained with the teacher, is applied to teacher and symbolic terminals. The head is a readout, not part of the symbolic SDE."
+    },
+    "H5_paper_axis_id_ood_gap": {
+      "teacher_mean_g_id_max": 0.4,
+      "teacher_mean_g_ood_min": 0.7,
+      "symbolic_mean_g_id_max": 0.5,
+      "symbolic_mean_g_ood_min": 0.5,
+      "teacher_gap_min": 0.3,
+      "symbolic_gap_min": 0.2,
+      "teacher_terminal_var_ratio_min": 2.0,
+      "symbolic_terminal_var_ratio_min": 1.5,
+      "nodiff_ood_terminal_var_max": 0.02,
+      "failure_gate": 0.05,
+      "note": "Absolute levels of mean g on ID and on OOD (Day 7), not only the gap. Terminal variance is the mean across-path variance of X_T over K=8 paired paths. If the failure rate on that population exceeds 0.05, the variance clause is gated and is not a separation verdict (Day 10); the failure rate itself is the verdict. The no-diffusion baseline uses the teacher drift with g=0; its OOD terminal variance is an absolute level, not a ratio, because both ID and OOD variances collapse."
+    },
+    "H6_discretization": {
+      "fine_dt": 0.03333333333333333,
+      "coarse_dt": 0.16666666666666666,
+      "paired_terminal_rmse_min": 0.05,
+      "failure_gate": 0.05,
+      "note": "Coarse step equals the training step T/6. Fine step is T/30 so each coarse increment is the sum of exactly 5 fine increments (common random numbers). The clause asks that the training step leave a detectable terminal discrepancy versus the fine step. If either failure rate exceeds 0.05 the clause is indeterminate. Per-step SNR on ID versus OOD is reported and is not a separate pass/fail."
+    }
+  },
+  "simulation": {
+    "dt": 0.05,
+    "T": 1.0,
+    "failure_radius": 25.0,
+    "excursion_radius": 8.0,
+    "n_id": 400,
+    "variance_n": 200,
+    "variance_paths": 8,
+    "seed": 1234
+  },
+  "diagnostics_not_verdicts": {
+    "one_step": "One-step MSE is reported on ID and OOD only to show the drift contribution |f|dt against the diffusion contribution g sqrt(dt). It is not a frozen clause (Day 10: one-step error is diffusion-dominated where g is large).",
+    "grid": "A fixed (x, y) grid on [-4, 4]^2, and for the drift also t in {0, 0.5, 1}, is reported with symbolic-vs-teacher NRMSE and absolute RMS, plus the degree-3 OLS ceiling. Never used for selection. A far slice (distance to the nearest mode > 1.2) is reported separately so overlap with the blobs is not called extrapolation.",
+    "linear_x0": "Least-squares linear classifier on x0, fit on train only, scored on test. Sanity check that XOR is not linearly separable; not a hypothesis."
+  },
+  "reflections_applied": {
+    "day10_library_ceiling": "Degree-3 OLS ceiling on the teacher field is reported next to every distillation NRMSE so a failure of the saturating diffusion is attributed to library capacity when the ceiling matches the sparse fit.",
+    "day10_failure_gate": "Terminal-variance and coarse-vs-fine clauses are gated by failure rate 0.05. Survivor-only moments are not read as separation.",
+    "day10_one_step_not_a_verdict": "No one-step MSE hypothesis. The drift-versus-diffusion step contributions are reported by regime instead.",
+    "day10_structural_beside_distribution": "Mean g (structural) and terminal variance (distribution) are both required, at absolute levels.",
+    "day2_time_collinearity": "Drift queries lie on trajectories, so t and state are coupled. The (x, y, t) grid is the off-manifold diagnostic and is not used for selection.",
+    "day4_domain_validity": "Excursion ||X||>8 is a clause separate from the failure radius 25.",
+    "day8_vif_excludes_constant": "VIF drops the constant column.",
+    "day1_vif_at_max_degree": "VIF is computed at degree 3 before any coefficient reading."
+  }
+}

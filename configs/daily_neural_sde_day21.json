@@ -1,0 +1,145 @@
+{
+  "seed": 21,
+  "paper": {
+    "title": "Neural Structure Learning with Stochastic Differential Equations",
+    "authors": "Benjie Wang, Joel Jennings, Wenbo Gong",
+    "venue": "ICLR",
+    "year": 2024,
+    "url": "https://proceedings.iclr.cc/paper_files/paper/2024/hash/6ce9d51dded7dac82b3b4d3dbb1d73bc-Abstract-Conference.html",
+    "pdf": "https://proceedings.iclr.cc/paper_files/paper/2024/file/6ce9d51dded7dac82b3b4d3dbb1d73bc-Paper-Conference.pdf",
+    "arxiv": "https://arxiv.org/abs/2311.03309",
+    "code": "https://github.com/microsoft/causica/tree/main/research_experiments/scotch",
+    "system": "Observational Ito diffusion in the SCOTCH class. The neural objects are the graph-gated prior drift and the graph-gated diagonal diffusion (Appendix B, equation 33). The 3D cubic chain below replaces Lorenz-96 and glycolysis."
+  },
+  "truth": {
+    "linear": [
+      [-0.4, 0.7, 0.0],
+      [0.0, -0.35, 0.55],
+      [0.5, 0.0, -0.45]
+    ],
+    "cubic_x": -0.2,
+    "cubic_z": -0.15,
+    "sigma": [0.4, 0.4, 0.4],
+    "graph": [
+      [1, 0, 1],
+      [1, 1, 0],
+      [0, 1, 1]
+    ],
+    "note": "Rows are sources and columns are targets, including self-loops. f1 depends on (x, y), f2 on (y, z), f3 on (x, z). The cubic terms are the only nonlinearity."
+  },
+  "data": {
+    "horizon": 4.0,
+    "dt_gen": 0.01,
+    "dt_obs": 0.2,
+    "dt_sim": 0.05,
+    "n_sim_steps": 80,
+    "x0_std": 0.5,
+    "n_series": 80,
+    "n_train": 72,
+    "n_val": 24,
+    "n_test": 24,
+    "n_extra_rollouts": 16,
+    "n_rollout_pool": 200,
+    "n_paired": 64,
+    "n_law": 64,
+    "failure_radius": 8.0,
+    "grid_axis": [-1.5, -0.75, 0.0, 0.75, 1.5]
+  },
+  "model": {
+    "embed": 16,
+    "hidden": 16,
+    "epochs": 600,
+    "batch_size": 128,
+    "lr": 0.001,
+    "grad_clip": 5.0,
+    "activation": "softplus",
+    "diffusion_head": "sigmoid",
+    "residual_when_widths_match": true,
+    "diffusion_bias_at_logit_sigma": true,
+    "graph_fixed_at_truth": true
+  },
+  "distill": {
+    "degrees": [1, 2, 3],
+    "thresholds": [0.0, 0.02, 0.05, 0.1, 0.2, 0.35],
+    "ridge": 0.0001,
+    "bootstrap": 8,
+    "vif_degree": 3,
+    "curl_eps": 0.0001,
+    "partial_eps": 0.0001
+  },
+  "seeds": {
+    "data": 21001,
+    "network": 21002,
+    "queries": 21011,
+    "bootstrap": 21017,
+    "paired": 21031,
+    "law_a": 21041,
+    "law_b": 21042,
+    "law_symbolic": 21043
+  },
+  "threshold_basis": {
+    "frozen_before_test": true,
+    "note": "Thresholds use the pre-run scales of the declared cubic chain only: state RMS near 1, drift RMS near 0.4, sigma 0.4, horizon 4, one-step noise 0.179 at dt 0.2, and the series gates 0.25 / VIF 10. No teacher fit and no test path entered these numbers.",
+    "state_rms_pilot": 0.9,
+    "drift_rms_pilot": 0.38,
+    "one_step_noise": 0.1788854382
+  },
+  "interpretation": {
+    "coefficients_are_closed_form": false,
+    "diffusion_teacher_is_neural": true,
+    "drift_teacher_is_neural": true,
+    "neural_object": "graph-gated prior drift and graph-gated diagonal diffusion",
+    "graph_posterior_is_in_scope": false,
+    "coordinate_is_gene_regulation": false,
+    "distillation_discovers_true_sde": false
+  },
+  "hypotheses": {
+    "H1_drift": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.25,
+      "must_beat_constant_predictor": true,
+      "note": "All three components. The constant predictor is the training-query mean, scored on test. A pass that matches the degree-3 threshold-0 ceiling is not a sparse recovery."
+    },
+    "H2_diffusion": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.25,
+      "nonpositive_fraction_max": 0.02,
+      "note": "All three neural diffusion components. A pass is agreement with the teacher, not recovery of the constant 0.4."
+    },
+    "H3_collinearity_gate": {
+      "vif_max": 10.0,
+      "degree": 3,
+      "note": "Gate on the degree-3 library with the constant column removed, even if validation selects a lower degree. VIF at most 10 still does not license a closed form."
+    },
+    "H4_paired_simulation": {
+      "failure_rate_max": 0.05,
+      "failure_gap_max": 0.02,
+      "path_rmse_max": 0.45,
+      "note": "Shared noise, fresh initial states, dt 0.05, horizon 4. Above the failure gate the path score is indeterminate. Survivor-only scores are still written down."
+    },
+    "H5_law": {
+      "failure_rate_max": 0.05,
+      "floor_mean_path_rmse_max": 0.25,
+      "symbolic_mean_path_rmse_max": 0.25,
+      "note": "Fresh trajectories. If the teacher-versus-teacher mean-path floor exceeds 0.25, H5 is indeterminate."
+    },
+    "H6_off_manifold": {
+      "grid_nrmse_max": 0.60,
+      "amplification_factor": 5.0,
+      "note": "The product grid is not used to choose degree or threshold. It overlaps the visited range, so it is not a far-extrapolation claim."
+    },
+    "H7_signature": {
+      "teacher_nonparent_partial_rms_max": 1e-6,
+      "symbolic_relative_nonparent_max": 0.25,
+      "parent_rms_min_for_ratio": 0.001,
+      "note": "Finite-difference partials on the grid. The teacher is independent of non-parents by the gate. If the parent partial RMS is below 0.001, the symbolic ratio is indeterminate."
+    },
+    "H8_parent_library": {
+      "gap_max": 0.05,
+      "note": "A second SINDy fit, selected on validation only, keeps only powers of the true parents of each component. Its mean test NRMSE must be at most 0.05 worse than the full power library."
+    },
+    "H9_truth": {
+      "drift_nrmse_max": 0.45,
+      "diffusion_nrmse_max": 0.20,
+      "note": "Teacher and symbolic, both, against the cubic drift and the constant diffusion, on the test query states. A distillation pass with teacher above 0.45 is not recovery of the cubic SDE."
+    }
+  }
+}

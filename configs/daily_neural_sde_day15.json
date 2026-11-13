@@ -1,0 +1,113 @@
+{
+  "seed": 15,
+  "paper": {
+    "title": "In-Context Learning of Stochastic Differential Equations with Foundation Inference Models",
+    "authors": "Patrick Seifner, Kostadin Cvejoski, David Berghaus, Cesar Ojeda, Ramses J. Sanchez",
+    "venue": "NeurIPS",
+    "year": 2025,
+    "system": "2D synthetic state-dependent diffusion (Appendix G.1, eqs. 38-39)"
+  },
+  "data": {
+    "T": 2.0,
+    "dt": 0.02,
+    "n_train": 48,
+    "n_val": 24,
+    "n_test": 48,
+    "x0_xy": [1.5, 1.5],
+    "x0_jitter": 0.05,
+    "observation_noise_rho": 0.0,
+    "failure_radius": 8.0,
+    "paired_paths": 48,
+    "law_paths": 64
+  },
+  "model": {
+    "hidden": 48,
+    "sigma_floor": 0.02,
+    "context_size": 96,
+    "pretrain_tasks": 64,
+    "pretrain_epochs": 6,
+    "pretrain_queries": 32,
+    "pretrain_steps": 40,
+    "pretrain_dt": 0.05,
+    "finetune_steps": 400,
+    "scratch_steps": 400,
+    "eval_every": 10,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "grad_clip": 1.0,
+    "batch_size": 256,
+    "nll_tie_atol": 0.0001,
+    "candidate_priority": ["finetuned", "zero_shot", "scratch"],
+    "finetune_u_weight": 0.0
+  },
+  "distill": {
+    "degrees": [1, 2, 3],
+    "thresholds": [0.02, 0.05, 0.1, 0.2, 0.35],
+    "ridge": 0.0001,
+    "grid_size": 7,
+    "grid_quantile": [0.05, 0.95],
+    "grid_pad_fraction": 0.5,
+    "vif_degree": 3,
+    "oracle_degree": 3
+  },
+  "hypotheses": {
+    "H1_drift": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.30,
+      "teacher_vs_truth_test_nrmse_max": 0.40,
+      "symbolic_vs_truth_test_nrmse_max": 0.50,
+      "note": "Each drift component must meet the same gate. Residual RMS is reported and is not a gate."
+    },
+    "H2_diffusion": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.35,
+      "teacher_vs_truth_test_nrmse_max": 0.45,
+      "symbolic_vs_truth_test_nrmse_max": 0.55,
+      "symbolic_vs_teacher_variance_nrmse_max": 0.50,
+      "note": "Gates are on the SDE coefficient sigma. A numerical pass is not a closed form for sqrt(1+x^2)."
+    },
+    "H2c_range": {
+      "fraction_symbolic_sigma_nonpositive_max": 0.02
+    },
+    "H3_collinearity_gate": {
+      "vif_max": 10.0,
+      "note": "Constant column excluded. A pass is not permission to read coefficients as the closed form."
+    },
+    "H4_simulation": {
+      "failure_rate_max": 0.05,
+      "failure_rate_gap_max": 0.02,
+      "failure_gate": 0.05,
+      "paired_path_rmse_symbolic_vs_teacher_max": 0.45,
+      "paired_path_rmse_teacher_vs_truth_max": 0.55,
+      "terminal_cov_rel_frob_symbolic_vs_teacher_max": 0.55,
+      "terminal_cov_rel_frob_teacher_vs_truth_max": 0.70,
+      "drift_teacher_vs_truth_test_nrmse_max": 0.40
+    },
+    "H5_law": {
+      "mean_path_rmse_teacher_max": 0.35,
+      "mean_path_rmse_symbolic_max": 0.50,
+      "terminal_cov_rel_frob_teacher_max": 0.45,
+      "terminal_cov_rel_frob_symbolic_max": 0.60,
+      "failure_gate": 0.05,
+      "note": "Single initial condition (1.5, 1.5). Indeterminate if the truth-vs-truth floor exceeds the teacher gate."
+    },
+    "H6_uncertainty": {
+      "u_interior_minus_id_min": 0.30,
+      "penalty_ratio_min": 0.05,
+      "interior_radius": 0.25,
+      "n_probe": 24,
+      "note": "H6 is the pretrained U head. Finetune U weight is 0, so a rise after NLL finetuning is not what this gate scores."
+    },
+    "H7_discretization_gate": {
+      "teacher_coarse_vs_fine_terminal_rmse_max": 0.35,
+      "min_retained_fraction": 0.95,
+      "fine_factor": 2
+    }
+  },
+  "interpretation": {
+    "oracle_exact_nrmse_max": 1e-6,
+    "diffusion_sigma_library_ceiling_above": 0.01,
+    "cubic_rms_ratio_small": 0.15,
+    "nll_floor_gap_max": 0.05,
+    "grid_over_ontraj_rms_min": 2.0,
+    "coefficients_are_closed_form": false
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "series": "daily_neural_sde",
+  "day": 13,
+  "date": "2026-11-06",
+  "seed": 13,
+  "paper": {
+    "title": "SDE Matching: Scalable and Simulation-Free Training of Latent Stochastic Differential Equations",
+    "authors": "Grigory Bartosh, Dmitry Vetrov, Christian A. Naesseth",
+    "journal": "ICML 2025",
+    "proceedings": "Proceedings of the 42nd International Conference on Machine Learning, PMLR 267:3054-3070",
+    "url": "https://proceedings.mlr.press/v267/bartosh25a.html",
+    "arxiv": "https://arxiv.org/abs/2502.02472",
+    "code": "https://github.com/GrigoryBartosh/sde_matching",
+    "experiment": "Appendix C.3 stochastic Lotka-Volterra. The prior is an Ito SDE whose drift and diagonal diffusion are neural networks. Training minimizes the latent-SDE variational bound by sampling the posterior marginal from F_phi(epsilon, t, X) = mu_phi(X, t) + sigma_phi(X, t) epsilon, without integrating the posterior SDE. Equation (19) turns that flow into a posterior drift that shares g_theta with the prior. The diffusion loss is equation (23)."
+  },
+  "data": {
+    "system": "Stochastic Lotka-Volterra in observable population coordinates (x, y). Not a gene-regulation model and not a latent gene coordinate.",
+    "alpha": 0.6666666666666666,
+    "beta": 1.3333333333333333,
+    "delta": 1.0,
+    "gamma": 1.0,
+    "sigma": 0.15,
+    "sde": "dx = (alpha x - beta x y) dt + sigma x dW1, dy = (delta x y - gamma y) dt + sigma y dW2",
+    "coefficient_source": "Drift coefficients are Course and Nair, NeurIPS 2023, Appendix G.1 (alpha = 2/3, beta = 4/3, delta = gamma = 1). Bartosh et al. Appendix C.3 keep that setup and replace the diffusion by the multiplicative volatility sigma = 0.15.",
+    "T": 6.0,
+    "dt": 0.1,
+    "generation_substeps": 5,
+    "x0_log_mean": [0.0, -0.6931471805599453],
+    "x0_log_std": 0.25,
+    "x0_min": [0.25, 0.12],
+    "x0_max": [2.5, 1.8],
+    "x0_law": "Independent lognormal around the deterministic equilibrium (1, 0.5), then clipped to x0_min/x0_max.",
+    "note": "Thresholds below were written before teacher training and before any test query. A truth-only probe may be logged; it does not select hyperparameters and it does not read the distillation test split."
+  },
+  "split": {
+    "seed": 13,
+    "train": 128,
+    "validation": 64,
+    "test": 128,
+    "unit": "One initial condition and its Wiener path. States from a trajectory never cross splits."
+  },
+  "teacher": {
+    "sde": "In train-normalized coordinates z = (x - mean) / std, dz = h_theta(z, t) dt + g_theta(z, t) dW on physical time t in [0, T]. Reported fields are h_x = std * h_z and g_x = std * g_z. The map is linear, so there is no Ito correction.",
+    "architecture": "Drift MLP: Linear(3, width), tanh, Linear(width, width), tanh, Linear(width, 2), input (z_x, z_y, t/T). Diffusion MLP of the same shape with softplus plus g_floor. State-independent baseline uses Linear(1, width) on t/T only. Posterior: reverse-time GRU (input (z_x, z_y, t/T), hidden gru_hidden) then two MLPs for mu and pre-softplus sigma, input (context, t/T).",
+    "width": 32,
+    "gru_hidden": 32,
+    "g_floor": 0.001,
+    "g_init": 0.25,
+    "sigma_floor": 0.05,
+    "sigma_init": 0.3,
+    "rho_floor": 0.05,
+    "rho_init": 0.15,
+    "prior_std_floor": 0.05,
+    "prior_std_init": 0.95,
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "n_opt_steps": 1200,
+    "batch_size": 32,
+    "grad_clip": 1.0,
+    "weight_decay": 0.0,
+    "deviation_from_paper": "Seven declared cuts. (1) Motion capture and the pendulum video are not used, and the 3D Lorenz experiment is not repeated because Day 1 already distilled that system. The law is the Appendix C.3 Lotka-Volterra diffusion. (2) The prior state is the observed population, not an unidentifiable latent with a separate observation network. The decoder is an isotropic Gaussian in the normalized coordinates whose std is rho_floor plus softplus. (3) Many trajectories on [0, 6] replace one 50-second 10 Hz series, so train, validation, and test can be trajectory-disjoint. Generation uses generation_substeps Euler-Maruyama steps per stored interval. (4) The posterior context is one reverse-time GRU of size gru_hidden. mu and sigma are width-32 tanh MLPs. The paper's log-sigma is replaced by sigma_floor + softplus so the Gaussian score stays finite. (5) Prior networks are width 32 with two tanh layers. Diffusion is diagonal. The H6 baseline is the same objective with a time-only diffusion. 1200 Adam steps, batch 32, gradient clip 1, on CPU. No adjoint-sensitivity teacher is trained. (6) The diffusion loss estimates the integral from 0 to T of 1/2 ||g^{-1}(h - f)||^2 dt by one uniform time per series, multiplied by T. Reconstruction uses one uniform observation index, multiplied by the number of observation times, as in Algorithm 1. (7) Mean and std are fit on training trajectories only."
+  },
+  "distillation": {
+    "library": "Powers only of the teacher inputs in original coordinates: (x, y, t). Constants, monomials, and cross terms. No trig, exponential, or rational basis.",
+    "degrees": [1, 2, 3],
+    "thresholds": [0.02, 0.05, 0.1, 0.2, 0.35],
+    "ridge": 0.0001,
+    "query": "Every stored state on the observation grid, including the terminal time. Teacher drift and diffusion are queried directly. Finite rows only. Standardization inside SINDy uses the training queries only.",
+    "selection": "Separate degree and threshold for drift and for diffusion. Minimize pooled validation NRMSE against the state-dependent teacher. Ties keep the earlier candidate (lower degree, then lower threshold). Test is evaluated once after selection.",
+    "library_ceiling": "Degree-3 ordinary least squares on the training queries of the state-dependent teacher, threshold 0. Diagnostic only, never a candidate.",
+    "truth_oracle": "Degree-3 ordinary least squares of the closed-form field on the same training queries. Diagnostic only. The truth is a polynomial of degree <= 2 in (x, y) and degree 0 in t, so a large oracle residual is numerical conditioning of the (x, y, t) library, not a missing basis function.",
+    "oracle_exact_nrmse_max": 1e-6,
+    "grid": "9 by 9 grid on each coordinate from the training 5th to 95th percentile, padded by half that range, at t in {0, T/2, T}. Report only. Not used for selection.",
+    "attribution_rule": "If both degree-3 oracle NRMSEs on the test queries are <= oracle_exact_nrmse_max, a teacher-vs-truth failure is attributed to the teacher field, not to the polynomial degree. Otherwise the (x, y, t) design is treated as ill-conditioned and that attribution is withheld."
+  },
+  "simulation": {
+    "failure_radius": 10.0,
+    "excursion_radius": 5.0,
+    "discretization_seed": 1301,
+    "law_seed": 1302,
+    "fine_factor": 5,
+    "note": "negative_state is a hard failure: the continuous multiplicative Lotka-Volterra flow started in the positive orthant does not cross 0, so an Euler step with a non-positive coordinate leaves the domain. outside_radius and non_finite are the other classes. An excursion is a still-positive finite state with norm above excursion_radius. Radii were fixed before teacher training. failure_radius 10 is about three times the initial-box diagonal."
+  },
+  "hypotheses": {
+    "H1_drift": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.25,
+      "teacher_vs_truth_test_nrmse_max": 0.4,
+      "symbolic_vs_truth_test_nrmse_max": 0.5,
+      "note": "All three gates are required. Teacher-vs-truth and symbolic-vs-truth are reported beside symbolic-vs-teacher. A match to the teacher is not a match to the truth. Residual RMS is reported and is not a gate."
+    },
+    "H2_diffusion": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.3,
+      "teacher_vs_truth_test_nrmse_max": 0.4,
+      "symbolic_vs_truth_test_nrmse_max": 0.5,
+      "symbolic_vs_teacher_sigma_nrmse_max": 0.45,
+      "note": "Sigma means g^2, componentwise, pooled. Residual RMS is reported and is not a gate. One-step |f| dt and g sqrt(dt) are reported as a ratio of means and are not a gate."
+    },
+    "H2c_range": {
+      "fraction_symbolic_g_nonpositive_max": 0.02
+    },
+    "H3_collinearity_gate": {
+      "vif_max": 10.0,
+      "note": "Degree-3 library on (x, y, t), constant column removed. Pass means the gate is inside 10. It is not a claim that any coefficient equals the closed form. Closed-form reading stays disallowed on either side of the gate."
+    },
+    "H4_simulation": {
+      "failure_rate_max": 0.05,
+      "failure_rate_gap_max": 0.02,
+      "failure_gate": 0.05,
+      "excursion_rate_gap_max": 0.1,
+      "paired_mean_rmse_symbolic_vs_teacher_max": 0.3,
+      "paired_mean_rmse_teacher_vs_truth_max": 0.4,
+      "terminal_cov_rel_frob_symbolic_vs_teacher_max": 0.5,
+      "note": "Same test initial conditions and the same Wiener increments. Failure classes are non_finite, negative_state, and outside_radius. Failed trajectories keep their mass. Mean-path RMSE and terminal covariance are judged only when every failure rate is <= failure_gate and H7 passes; otherwise H4 is indeterminate. Absolute excursion rates are reported whether or not the gap passes. Survivor-conditional means are not treated as unconditional."
+    },
+    "H5_law": {
+      "failure_gate": 0.05,
+      "mean_path_rmse_teacher_vs_observed_max": 0.35,
+      "mean_path_rmse_symbolic_vs_observed_max": 0.45,
+      "terminal_cov_rel_frob_teacher_vs_observed_max": 0.55,
+      "terminal_cov_rel_frob_symbolic_vs_observed_max": 0.7,
+      "note": "Fresh initial conditions from the same lognormal law and a fresh Wiener path, seed law_seed. The truth-vs-observed mean-path RMSE and terminal-covariance gap are the Monte Carlo floor. If that floor exceeds the corresponding teacher threshold, H5 is indeterminate. If any failure rate exceeds failure_gate, H5 is indeterminate. H5 does not use a path MMD."
+    },
+    "H6_state_independent_baseline": {
+      "diffusion_nrmse_improvement_min": 0.05,
+      "state_dependent_nrmse_max": 0.4,
+      "shared_floor_nrmse": 0.8,
+      "note": "Same test queries. Pass only if the state-independent diffusion NRMSE exceeds the state-dependent NRMSE by at least 0.05 AND the state-dependent NRMSE is <= 0.40. If both NRMSEs are >= 0.80, record shared_floor and do not read the gap as a win. Drift NRMSEs are reported and are not a gate."
+    },
+    "H7_discretization_gate": {
+      "teacher_coarse_vs_fine_terminal_rmse_max": 0.5,
+      "min_retained_fraction": 0.95,
+      "note": "Teacher only. Fine step dt/fine_factor. The coarse Wiener increment is the normalized sum of the fine increments. Both terminal states must be finite. If H7 fails, H4 is indeterminate."
+    }
+  },
+  "lessons_applied": [
+    "Day 12: residual RMS beside NRMSE; Monte Carlo floor beside the path metric; degree-3 oracle ceiling before attributing a truth failure to the teacher; a gap between two models on the same high floor is not a win; lattice RMS beside on-manifold NRMSE; VIF at degree 3 with the constant column removed; coefficients are not read as the closed form even when the VIF gate is open.",
+    "Day 11: diffusion scale is a ratio of means, not a mean of ratios. Excursion and failure rates are reported as absolute levels as well as gaps.",
+    "Day 10: distribution clauses are gated by the failure rate. A metric that is finer than the truth-vs-observed floor is indeterminate.",
+    "Day 5: symbolic-vs-teacher, teacher-vs-truth, and symbolic-vs-truth share one table.",
+    "Day 4: leaving the positive orthant is its own failure class, separate from explosion."
+  ]
+}

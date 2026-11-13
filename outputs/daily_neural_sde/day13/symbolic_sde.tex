@@ -1,0 +1,25 @@
+Symbolic SDE in the original Lotka-Volterra coordinates (x, y, t).
+This is the polynomial fit to the state-dependent SDE Matching teacher.
+It is not a claim that the closed-form coefficients were recovered.
+t is a coordinate because the teacher networks take time.
+
+$$
+\begin{aligned}
+f_{1}(x, y, t) &= 0.1368 - 0.01422\,t - 0.5292\,y + 0.04454\,x + 0.04914\,y t - 0.03321\,y^{2} + 0.00348\,x t - 0.08534\,x y + 0.1132\,x^{2} - 0.03143\,y^{2} t + 0.2313\,y^{3} - 0.151\,x y^{2} + 0.1205\,x^{2} y - 0.05376\,x^{3} \\
+f_{2}(x, y, t) &= 0.05806 - 0.007602\,t - 0.4657\,y - 0.0699\,x + 0.03477\,y t + 0.117\,y^{2} - 0.009689\,x t + 0.2826\,x y + 0.1779\,x^{2} - 0.02022\,y^{2} t + 0.09532\,y^{3} - 0.2401\,x y^{2} + 0.004922\,x^{2} t - 0.06279\,x^{3} \\
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+g_{1}(x, y, t) &= 0.05047 - 0.01\,y + 0.02224\,x + 0.0377\,x y - 0.009627\,x^{2} \\
+g_{2}(x, y, t) &= 0.0302 + 0.002432\,t - 0.006602\,y + 0.02163\,x + 0.04645\,y^{2} - 0.04219\,x y - 0.006445\,x^{2} - 0.0302\,y^{3} + 0.02912\,x y^{2} \\
+\end{aligned}
+$$
+
+\[
+\begin{aligned}
+dx &= f_{1}(x, y, t)\,dt + g_{1}(x, y, t)\,dW^{1},\\
+dy &= f_{2}(x, y, t)\,dt + g_{2}(x, y, t)\,dW^{2}.
+\end{aligned}
+\]

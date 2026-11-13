@@ -1,0 +1,106 @@
+{
+  "data": {
+    "dt_obs": 0.025,
+    "dt_sim": 0.001,
+    "n_trajectories": 1024,
+    "note": "Paper Appendix 9.10.2: 1024 series observed at intervals of 0.025 from time 0 to 1, normalized per dimension, corrupted by Gaussian noise std 0.01. Data are regenerated here from the ground-truth SDE with Euler-Maruyama at dt_sim (the paper does not publish the generated dataset itself).",
+    "obs_noise_std": 0.01,
+    "t_end": 1.0,
+    "x0_distribution": "N(0, I_3)"
+  },
+  "date": "2026-10-26",
+  "day": 1,
+  "distillation": {
+    "diffusion_degrees": [
+      0,
+      1,
+      2
+    ],
+    "drift_degrees": [
+      2,
+      3
+    ],
+    "oracle_diagnostic": "the same SINDy procedure fitted to ground-truth field values at the same query states (diagnostic ceiling only, not a candidate)",
+    "query_states": "observed states of each split (trajectory-disjoint train/validation/test), teacher evaluated directly (no finite differences)",
+    "ridge": 0.0001,
+    "selection": "per field, minimize validation NRMSE against the teacher; test evaluated once after selection",
+    "thresholds": [
+      0.02,
+      0.05,
+      0.1,
+      0.2,
+      0.35
+    ]
+  },
+  "ground_truth_sde": {
+    "alpha": [
+      0.15,
+      0.15,
+      0.15
+    ],
+    "beta": 2.6666666666666665,
+    "form": "dX = sigma*(Y-X) dt + alpha_x dW1; dY = (X*(rho-Z)-Y) dt + alpha_y dW2; dZ = (X*Y-beta*Z) dt + alpha_z dW3 (diagonal, constant diffusion)",
+    "rho": 28.0,
+    "sigma": 10.0
+  },
+  "hypotheses": {
+    "H1_drift_distillation": {
+      "degree2_within_relative_of_degree3_validation_nrmse": 0.1,
+      "symbolic_drift_test_nrmse_vs_teacher_max": 0.1
+    },
+    "H2_diffusion_distillation": {
+      "nonconstant_contribution_rms_fraction_max": 0.25,
+      "symbolic_diffusion_test_nrmse_vs_teacher_max": 0.2
+    },
+    "H3_truth_recovery": {
+      "spurious_contribution_rms_fraction_max": 0.15,
+      "true_monomial_relative_error_max": 0.35,
+      "true_monomial_sign_match": "all 7 drift monomials"
+    },
+    "H4_simulation": {
+      "median_paired_rmse_vs_neural_max": 2.0,
+      "symbolic_failure_rate_max": 0.05,
+      "symbolic_failure_rate_minus_neural_max": 0.02
+    }
+  },
+  "paper": {
+    "arxiv": "2001.01328",
+    "authors": "Xuechen Li, Ting-Kam Leonard Wong, Ricky T. Q. Chen, David Duvenaud",
+    "code": "https://github.com/google-research/torchsde (examples/latent_sde.py)",
+    "experiment": "Section 7.2 / Appendix 9.10.2: latent SDE fit to a 3D stochastic Lorenz attractor process",
+    "title": "Scalable Gradients for Stochastic Differential Equations",
+    "url": "https://arxiv.org/abs/2001.01328",
+    "venue": "AISTATS 2020 (PMLR 108)"
+  },
+  "seed": 0,
+  "series": "daily_neural_sde",
+  "simulation": {
+    "dt": 0.0025,
+    "failure_classes": [
+      "non_finite",
+      "outside_radius"
+    ],
+    "failure_radius": 200.0,
+    "initial_states": "test trajectories' observed states at t=0",
+    "paired_brownian": true,
+    "seed": 1234,
+    "t_end": 1.0
+  },
+  "split": {
+    "seed": 0,
+    "test": 192,
+    "train": 640,
+    "unit": "trajectory (disjoint)",
+    "validation": 192
+  },
+  "teacher": {
+    "architecture": "drift MLP and diffusion MLP, each Linear(3,64)-Softplus-Linear(64,64)-Softplus-Linear(64,3); diffusion output Softplus + 0.01 floor; inputs standardized with train-state mean/std",
+    "deviation_from_paper": "The paper fits a latent SDE (4-dim latent, GRU encoder, linear decoder, ELBO, stochastic adjoint). Its latent coordinates are not identifiable, so a symbolic equation in latent coordinates could not be compared with the Lorenz SDE. This study therefore estimates a neural SDE directly in the observed 3D state coordinates: drift and diffusion are separate MLPs trained by the Gaussian Euler-Maruyama transition likelihood of the observed trajectories. This is a declared scope cut, not the paper's model.",
+    "loss": "mean Gaussian NLL of one-step transitions; v2 variance = g(x)^2*dt_obs + 2*obs_noise_std^2 + (dt_obs^3/3)*sum_j (df_i/dx_j)^2 g_j^2; v1 variance = g(x)^2*dt_obs + 2*obs_noise_std^2",
+    "optimizer": "Adam lr 0.002, batch 8192 transitions, 600 epochs, checkpoint = min validation NLL",
+    "epochs": 600,
+    "batch_transitions": 8192,
+    "optimizer_lr": 0.002,
+    "estimator": "v3 local_linearization_exp (the distilled teacher): local-linearization Gaussian transition likelihood with the mean resummed through the matrix exponential, mean_step = Psi @ f with Psi = integral_0^dt exp(A s) ds from the augmented matrix exponential (A = drift Jacobian, treated as a fixed local coefficient per step), and variance = kappa_i * g_i^2 + (dt^3/3) * sum_{j != i} A_ij^2 g_j^2 + 2*obs_noise_std^2 with kappa_i the diagonal Van Loan factor (exp(2 A_ii dt) - 1) / (2 A_ii). Baselines trained and reported in the estimator comparison: v1 em (plain Euler-Maruyama transition likelihood) and v2 local_linearization (dt^2-truncated mean/variance corrections). Reason for the corrections: at the paper's observation interval dt=0.025 the plain EM likelihood is biased for the nonlinear Lorenz drift - it attributes drift curvature within the interval to the diffusion (v1: g means [0.155, 0.544, 0.507] vs the first, linear component recovered correctly). Estimator revision was decided from this known bias structure and the v1/v2 comparison, before any symbolic model was selected; symbolic selection remained validation-only."
+  }
+}

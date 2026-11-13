@@ -1,0 +1,582 @@
+{
+  "paper": {
+    "title": "LieStoNet: Learning Lie Symmetries from Spatiotemporal Data for Stochastic Dynamical Systems",
+    "authors": "Shida Liu, Abhishek Gupta, Sumit Sinha, L. Mahadevan",
+    "venue": "ICML",
+    "year": 2026,
+    "pmlr": "306:76384-76408",
+    "system": "Example 4, Table 2: dx=(1/x)dt+dW1, dy=dt+dW2, neural drift plus Cholesky diffusion"
+  },
+  "seed": 16,
+  "deviations_locked_in_config": true,
+  "rejections": {
+    "train": {
+      "attempts": 68,
+      "rejected": 4
+    },
+    "val": {
+      "attempts": 33,
+      "rejected": 1
+    },
+    "test": {
+      "attempts": 48,
+      "rejected": 0
+    }
+  },
+  "training": {
+    "best_step": 375,
+    "best_val_nll": -3.622827709365128,
+    "history_tail": [
+      {
+        "step": 1325,
+        "val_nll": -3.620744079745226,
+        "nll": -3.563409621443985,
+        "smooth": 0.0002050106783920679,
+        "var": 0.00023008673011719896,
+        "whiten": 0.019515163063979355
+      },
+      {
+        "step": 1350,
+        "val_nll": -3.6218213075304577,
+        "nll": -3.7146641749478624,
+        "smooth": 0.00014664860396432474,
+        "var": 9.007222076783163e-05,
+        "whiten": 0.021994045994582576
+      },
+      {
+        "step": 1375,
+        "val_nll": -3.6196378525860666,
+        "nll": -3.6163100523149265,
+        "smooth": 0.00047721347235254275,
+        "var": 0.0005714545323052335,
+        "whiten": 0.01625150120561396
+      },
+      {
+        "step": 1400,
+        "val_nll": -3.6209005398954583,
+        "nll": -3.5588286926350894,
+        "smooth": 0.00033873904703592356,
+        "var": 0.0005061479343646538,
+        "whiten": 0.01596479232406569
+      },
+      {
+        "step": 1425,
+        "val_nll": -3.6223903802423445,
+        "nll": -3.6358603212738365,
+        "smooth": 0.0001281509432589739,
+        "var": 0.00011803861275857054,
+        "whiten": 0.01514742028334952
+      },
+      {
+        "step": 1450,
+        "val_nll": -3.620141950611548,
+        "nll": -3.628327354018763,
+        "smooth": 0.00039808462339799695,
+        "var": 0.000353801843539523,
+        "whiten": 0.03177755208266401
+      },
+      {
+        "step": 1475,
+        "val_nll": -3.6226300337406823,
+        "nll": -3.639101178212184,
+        "smooth": 0.00022133887506540565,
+        "var": 0.0003380492484556607,
+        "whiten": 0.015738403209350632
+      },
+      {
+        "step": 1500,
+        "val_nll": -3.622116500596436,
+        "nll": -3.669977921984842,
+        "smooth": 0.0002673114384929628,
+        "var": 0.0003562456152737233,
+        "whiten": 0.016771395631732113
+      }
+    ]
+  },
+  "val_field_not_used_for_selection": {
+    "drift_nrmse": [
+      0.3420810214030504,
+      0.1295606165556735
+    ],
+    "diag_nrmse": [
+      0.029980734163221914,
+      0.016679698182982275
+    ],
+    "l21_rms": 0.014390063121104316
+  },
+  "nll_floor_val": -3.6232925948772543,
+  "drift_selection": {
+    "degree": 3,
+    "threshold": 0.02,
+    "score": 0.014514906491621217,
+    "active_terms": 11,
+    "candidates": [
+      {
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.1032068154885489,
+        "active_terms": 6
+      },
+      {
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.1032068154885489,
+        "active_terms": 6
+      },
+      {
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.1298159825636689,
+        "active_terms": 4
+      },
+      {
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.13294841081387143,
+        "active_terms": 3
+      },
+      {
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.13294841081387143,
+        "active_terms": 3
+      },
+      {
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.017726443734508008,
+        "active_terms": 10
+      },
+      {
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.023269185361707276,
+        "active_terms": 9
+      },
+      {
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.11046264201950497,
+        "active_terms": 5
+      },
+      {
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.13294841081387143,
+        "active_terms": 3
+      },
+      {
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.13294841081387143,
+        "active_terms": 3
+      },
+      {
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.014514906491621217,
+        "active_terms": 11
+      },
+      {
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.03626152062107072,
+        "active_terms": 8
+      },
+      {
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.11046264201950497,
+        "active_terms": 5
+      },
+      {
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.13294841081387143,
+        "active_terms": 3
+      },
+      {
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.13294841081387143,
+        "active_terms": 3
+      }
+    ],
+    "library_size": 10
+  },
+  "chol_selection": {
+    "degree": 3,
+    "threshold": 0.02,
+    "score": 0.016198338576608108,
+    "active_terms": 10,
+    "candidates": [
+      {
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.027779089017050534,
+        "active_terms": 5
+      },
+      {
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.027779089017050534,
+        "active_terms": 5
+      },
+      {
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.027779089017050534,
+        "active_terms": 5
+      },
+      {
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.027779089017050534,
+        "active_terms": 5
+      },
+      {
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.028911325911340525,
+        "active_terms": 3
+      },
+      {
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.017760957605180035,
+        "active_terms": 8
+      },
+      {
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.017760957605180035,
+        "active_terms": 8
+      },
+      {
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.01782378958290214,
+        "active_terms": 7
+      },
+      {
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.01782378958290214,
+        "active_terms": 7
+      },
+      {
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.020586382304733027,
+        "active_terms": 6
+      },
+      {
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.016198338576608108,
+        "active_terms": 10
+      },
+      {
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.016198338576608108,
+        "active_terms": 10
+      },
+      {
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.01790035462448638,
+        "active_terms": 9
+      },
+      {
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.020586382304733027,
+        "active_terms": 6
+      },
+      {
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.020586382304733027,
+        "active_terms": 6
+      }
+    ],
+    "library_size": 10
+  },
+  "drift": {
+    "sym_teacher": [
+      0.015351510577755023,
+      0.010117160775331507
+    ],
+    "teacher_truth": [
+      0.3645310820406957,
+      0.16370644934801887
+    ],
+    "sym_truth": [
+      0.36425104956841925,
+      0.16204777822344416
+    ],
+    "resid_sym_teacher": [
+      0.011395163146135751,
+      0.010394975774319725
+    ],
+    "resid_teacher_truth": [
+      0.22250898005366165,
+      0.16370644934801887
+    ],
+    "resid_sym_truth": [
+      0.22233804884132358,
+      0.16204777822344416
+    ],
+    "teacher_rms": [
+      0.7422828579910447,
+      1.0274597789990259
+    ],
+    "truth_rms": [
+      0.6103978261826823,
+      1.0
+    ]
+  },
+  "diffusion_diag": {
+    "sym_teacher": [
+      0.018066129009043964,
+      0.00828792249424954
+    ],
+    "teacher_truth": [
+      0.025368848271383828,
+      0.016663175738920285
+    ],
+    "sym_truth": [
+      0.016980937463053625,
+      0.014794049146660382
+    ],
+    "resid_teacher_truth": [
+      0.025368848271383828,
+      0.016663175738920285
+    ]
+  },
+  "l21_rms_teacher": 0.01717680460094714,
+  "l21_rms_sym_teacher": 0.0003513058861167435,
+  "l21_rms_sym_truth": 0.017162687330359538,
+  "fraction_nonpositive": 0.0,
+  "oracle_drift_vs_truth": [
+    0.13997578726750887,
+    3.1711252708734473e-13
+  ],
+  "oracle_drift_vs_teacher": [
+    0.002645818858875911,
+    0.002850960094016223
+  ],
+  "oracle_chol_vs_truth": [
+    3.1711252708734473e-13,
+    0.0,
+    3.1711252708734473e-13
+  ],
+  "identity": {
+    "truth": {
+      "v2": 0.0,
+      "v3": 4.76618096841482e-11
+    },
+    "teacher": {
+      "v2": 0.04697971452615954,
+      "v3": 0.479631772686744
+    },
+    "symbolic": {
+      "v2": 0.047424115283383146,
+      "v3": 0.47403208478151115
+    },
+    "oracle_truth": {
+      "v2": 0.0034931630490567553,
+      "v3": 0.16122275177535994
+    }
+  },
+  "grid_rms": {
+    "sym_teacher": 0.060201384184583956,
+    "teacher_truth": 0.6851840622254026,
+    "sym_truth": 0.685200339105539
+  },
+  "near_floor_rms": {
+    "teacher_truth": 1.0534616690936816,
+    "sym_truth": 1.0500613221379698,
+    "sym_teacher": 0.017682613498566112
+  },
+  "on_trajectory_teacher_truth_rms": 0.1953331100487783,
+  "vif": 4.19602674207457,
+  "simulation": {
+    "failure_rate": {
+      "truth": 0.125,
+      "teacher": 0.10416666666666667,
+      "symbolic": 0.10416666666666667
+    },
+    "paired_sym_teacher": 0.011822380436603148,
+    "paired_teacher_truth": 0.14997781530257853,
+    "cov_sym_teacher": 0.007760010475676908,
+    "cov_teacher_truth": 0.24338024049614612
+  },
+  "law": {
+    "mean_teacher": 0.07793906903253636,
+    "mean_symbolic": 0.0800985128647241,
+    "cov_teacher": 0.16284898946713716,
+    "cov_symbolic": 0.16367716854480638,
+    "floor_mean": 0.16617457638873734,
+    "floor_cov": 0.4169681337330605,
+    "failure_rate": {
+      "truth": 0.03125,
+      "teacher": 0.03125,
+      "symbolic": 0.03125
+    }
+  },
+  "discretization": {
+    "disc_rmse": 0.0019196443665776802,
+    "disc_retained": 1.0
+  },
+  "step_scales_train": {
+    "mean_abs_drift_dt": 0.011613301360646661,
+    "mean_abs_sigma_sqrt_dt": 0.14142135623730953,
+    "drift_over_diffusion_step": 0.08211844144076212
+  },
+  "step_scales_test": {
+    "mean_abs_drift_dt": 0.011574472114583711,
+    "mean_abs_sigma_sqrt_dt": 0.14142135623730953,
+    "drift_over_diffusion_step": 0.08184387720876739
+  },
+  "flags": {
+    "nll_at_floor": true,
+    "nll_gap": 0.0004648855121263118,
+    "drift_step_ratio_blind": true,
+    "oracle_f1_above_closed_form": true,
+    "cubic_ratio_f1": 0.0,
+    "cubic_ratio_small": true,
+    "grid_over_ontraj": 3.5077722463657057,
+    "coefficients_are_closed_form": false
+  },
+  "failure_classes": {
+    "truth": {
+      "non_finite": 0,
+      "nonpositive_chol": 0,
+      "below_floor": 6,
+      "outside_radius": 0
+    },
+    "teacher": {
+      "non_finite": 0,
+      "nonpositive_chol": 0,
+      "below_floor": 5,
+      "outside_radius": 0
+    },
+    "symbolic": {
+      "non_finite": 0,
+      "nonpositive_chol": 0,
+      "below_floor": 5,
+      "outside_radius": 0
+    }
+  },
+  "verdicts": {
+    "H1": "fail",
+    "H2": "pass",
+    "H2c": "pass",
+    "H3": "pass",
+    "H3_closed_form": false,
+    "H4_failure": "fail",
+    "H4_path_match_without_field_recovery": true,
+    "H4": "indeterminate",
+    "H7": "pass",
+    "H5": "pass",
+    "H6": "fail",
+    "H6_reason": "teacher_breaks_scaling",
+    "coefficients_are_closed_form": false
+  },
+  "shapes": {
+    "query": [
+      3,
+      2
+    ],
+    "drift": [
+      3,
+      2
+    ],
+    "chol": [
+      3,
+      2,
+      2
+    ],
+    "numpy_max_abs_drift": 2.220446049250313e-16,
+    "numpy_max_abs_chol": 1.1102230246251565e-16
+  },
+  "standardizer": {
+    "mean": [
+      2.400952517390384,
+      0.8856183690675188
+    ],
+    "scale": [
+      0.9988885151494341,
+      1.7099210072920505
+    ]
+  },
+  "dropped_train_rows": 0,
+  "dropped_val_rows": 0,
+  "query_counts": {
+    "train": 12800,
+    "val": 6400,
+    "test": 9600
+  },
+  "runtime_seconds": 19.66066288948059,
+  "python": "3.12.3",
+  "numpy": "1.26.4",
+  "torch": "2.15.0+cpu",
+  "cuda": false,
+  "git_head": "71ad851c34f9ce7ee04119223b597c0042963713",
+  "symbolic_tex": "\\begin{aligned}\nf_{x} &= 1.884 - 0.03737\\,y - 0.6884\\,x + 0.005148\\,y^{2} + 0.05477\\,x^{2} \\\\\nf_{y} &= 1.241 + 0.1601\\,y - 0.1261\\,x - 0.04506\\,x y - 0.01323\\,x^{2} + 0.005092\\,x^{3} \\\\\n\\end{aligned}\n\\begin{aligned}\n\\ell_{11} &= 0.983 \\\\\n\\ell_{21} &= 0.04833 + 0.01001\\,y - 0.03722\\,x - 0.0008752\\,y^{2} - 0.001703\\,x y + 0.005444\\,x^{2} + 0.000165\\,y^{3} - 0.0005099\\,x^{2} y \\\\\n\\ell_{22} &= 0.9852 \\\\\n\\end{aligned}",
+  "metrics_for_decide": {
+    "drift_sym_teacher": [
+      0.015351510577755023,
+      0.010117160775331507
+    ],
+    "drift_teacher_truth": [
+      0.3645310820406957,
+      0.16370644934801887
+    ],
+    "drift_sym_truth": [
+      0.36425104956841925,
+      0.16204777822344416
+    ],
+    "diag_sym_teacher": [
+      0.018066129009043964,
+      0.00828792249424954
+    ],
+    "diag_teacher_truth": [
+      0.025368848271383828,
+      0.016663175738920285
+    ],
+    "diag_sym_truth": [
+      0.016980937463053625,
+      0.014794049146660382
+    ],
+    "l21_rms_teacher": 0.01717680460094714,
+    "l21_rms_sym_teacher": 0.0003513058861167435,
+    "l21_rms_sym_truth": 0.017162687330359538,
+    "fraction_nonpositive": 0.0,
+    "vif": 4.19602674207457,
+    "fail_truth": 0.125,
+    "fail_teacher": 0.10416666666666667,
+    "fail_symbolic": 0.10416666666666667,
+    "paired_sym_teacher": 0.011822380436603148,
+    "paired_teacher_truth": 0.14997781530257853,
+    "cov_sym_teacher": 0.007760010475676908,
+    "cov_teacher_truth": 0.24338024049614612,
+    "disc_rmse": 0.0019196443665776802,
+    "disc_retained": 1.0,
+    "law_fail_truth": 0.03125,
+    "law_fail_teacher": 0.03125,
+    "law_fail_symbolic": 0.03125,
+    "law_mean_teacher": 0.07793906903253636,
+    "law_mean_symbolic": 0.0800985128647241,
+    "law_cov_teacher": 0.16284898946713716,
+    "law_cov_symbolic": 0.16367716854480638,
+    "floor_mean": 0.16617457638873734,
+    "floor_cov": 0.4169681337330605,
+    "v2_teacher": 0.04697971452615954,
+    "v3_teacher": 0.479631772686744,
+    "v3_symbolic": 0.47403208478151115,
+    "v3_oracle": 0.16122275177535994
+  }
+}

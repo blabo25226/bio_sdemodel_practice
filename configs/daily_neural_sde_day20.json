@@ -1,0 +1,134 @@
+{
+  "seed": 20,
+  "paper": {
+    "title": "Control Consistency Losses for Diffusion Bridges",
+    "authors": "Samuel Howard, Nikolas Nüsken, Jakiw Pidstrigach",
+    "venue": "ICML",
+    "year": 2026,
+    "pages": "44330-44367",
+    "volume": 306,
+    "url": "https://proceedings.mlr.press/v306/howard26b.html",
+    "pdf": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/howard26b/howard26b.pdf",
+    "arxiv": "https://arxiv.org/abs/2512.05070",
+    "code": "https://github.com/samuel-howard/control_consistency_bridges",
+    "system": "Appendix E.4 normal cell-differentiation bridge. The reference drift is the Wang et al. (2011) vector field. The neural object is the bridge adjustment eta = grad psi."
+  },
+  "data": {
+    "horizon": 4.0,
+    "sigma": 0.1,
+    "x0": [0.1, -0.1],
+    "x_terminal": [2.0, -0.1],
+    "hill_eps": 0.0625,
+    "n_train": 96,
+    "n_val": 32,
+    "n_test": 32,
+    "n_law": 64,
+    "n_extra_rollouts": 48,
+    "failure_radius": 8.0,
+    "grid_t": [0.0, 1.0, 2.0, 3.0, 3.8],
+    "grid_x1": [-0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5],
+    "grid_x2": [-1.0, -0.5, 0.0, 0.5, 1.0]
+  },
+  "model": {
+    "width": 32,
+    "depth": 2,
+    "n_freq": 4,
+    "n_steps": 40,
+    "train_steps": 180,
+    "batch_size": 16,
+    "lr": 0.001,
+    "grad_clip": 100.0,
+    "self_consistency": "4.1",
+    "alpha_schedule": "average",
+    "activation": "silu",
+    "head_initialized_at_zero": true
+  },
+  "distill": {
+    "degrees": [1, 2, 3],
+    "thresholds": [0.0, 0.02, 0.05, 0.1, 0.2, 0.35],
+    "ridge": 0.0001,
+    "bootstrap": 8,
+    "vif_degree": 3,
+    "early_time_max": 2.0,
+    "curl_eps": 0.0001
+  },
+  "seeds": {
+    "network": 20002,
+    "queries": 20011,
+    "bootstrap": 20017,
+    "sim": 20031,
+    "law_a": 20041,
+    "law_b": 20042,
+    "law_symbolic": 20043,
+    "time_reversal": 20019
+  },
+  "threshold_basis": {
+    "frozen_before_test": true,
+    "note": "Thresholds use the published scales only: state travel about 1.9, sigma 0.1, horizon 4, and the Day 11-19 gates 0.25 / VIF 10. No teacher fit and no test path entered these numbers.",
+    "state_travel": 1.9,
+    "one_step_noise": 0.0158113883,
+    "constant_margin": 0.0
+  },
+  "interpretation": {
+    "coefficients_are_closed_form": false,
+    "diffusion_teacher_is_neural": false,
+    "drift_teacher_is_neural": true,
+    "neural_object": "bridge adjustment eta",
+    "reference_drift_is_closed_form": true,
+    "bridge_guide_is_closed_form": true,
+    "coordinate_is_gene_regulation": false,
+    "distillation_discovers_true_sde": false,
+    "one_dimensional_gradient_constraint_is_vacuous": false
+  },
+  "hypotheses": {
+    "H1_eta": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.25,
+      "must_beat_constant_predictor": true,
+      "note": "Both components. The constant predictor is the training-query mean, scored on test. A pass that matches the degree-3 threshold-0 ceiling is not a sparse recovery."
+    },
+    "H2_diffusion": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.05,
+      "nonpositive_fraction_max": 0.02,
+      "note": "The teacher diffusion is the constant 0.1, not a network. This gate only checks that the power library does not invent a state-dependent diffusion."
+    },
+    "H3_collinearity_gate": {
+      "vif_max": 10.0,
+      "degree": 3,
+      "note": "Gate on the degree-3 library with the constant column removed, even if validation selects a lower degree. VIF at most 10 still does not license a closed form."
+    },
+    "H4_paired_simulation": {
+      "failure_rate_max": 0.05,
+      "failure_gap_max": 0.02,
+      "path_rmse_max": 0.25,
+      "prejump_rmse_max": 0.30,
+      "note": "Shared noise, same initial state, deterministic terminal jump. Above the failure gate the path scores are indeterminate. Survivor-only scores are still written down."
+    },
+    "H5_law": {
+      "failure_rate_max": 0.05,
+      "floor_mean_path_rmse_max": 0.15,
+      "symbolic_mean_path_rmse_max": 0.15,
+      "note": "Fresh trajectories. If the teacher-versus-teacher mean-path floor exceeds 0.15, H5 is indeterminate."
+    },
+    "H6_off_manifold": {
+      "grid_nrmse_max": 0.60,
+      "time_reversal_teacher_min": 0.10,
+      "time_reversal_gap_max": 0.25,
+      "amplification_factor": 5.0,
+      "note": "The grid is not used to choose degree or threshold. Time reversal sends t to (T - dt - t)."
+    },
+    "H7_adjustment": {
+      "eta_rms_min": 0.5,
+      "baseline_path_rmse_min": 0.04,
+      "note": "eta = 0 is the Brownian-bridge guide plus the reference drift. The neural adjustment has to move the field and the paired path."
+    },
+    "H8_pure_polynomial": {
+      "gap_min": 0.10,
+      "note": "A second SINDy fit, selected on validation only, replaces the whole controlled drift by powers of (t, x1, x2). It must be at least 0.10 worse in test NRMSE than the structured drift, which keeps b and the bridge guide."
+    },
+    "H9_curl": {
+      "teacher_curl_rms_max": 0.001,
+      "symbolic_relative_curl_max": 0.25,
+      "note": "Finite-difference curl on the off-manifold grid. The teacher is a gradient by construction. The polynomial need not be."
+    }
+  }
+}

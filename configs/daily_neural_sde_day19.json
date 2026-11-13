@@ -1,0 +1,147 @@
+{
+  "seed": 19,
+  "paper": {
+    "title": "Neural MJD: Neural Non-Stationary Merton Jump Diffusion for Time Series Prediction",
+    "authors": "Yuanpei Gao, Qi Yan, Yan Leng, Renjie Liao",
+    "venue": "NeurIPS",
+    "year": 2025,
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/be86db1a7a293eec8d291edf9fcaa550-Abstract-Conference.html",
+    "pdf": "https://proceedings.neurips.cc/paper_files/paper/2025/file/be86db1a7a293eec8d291edf9fcaa550-Paper-Conference.pdf",
+    "code": "https://github.com/DSL-Lab/neural-MJD",
+    "system": "Appendix D.2 scalar Merton jump diffusion. Neural drift rate and neural diffusion rate of the time-inhomogeneous MJD, queried from the context log-returns and future time."
+  },
+  "data": {
+    "dt": 0.01,
+    "context_prices": 10,
+    "future_steps": 10,
+    "n_train": 256,
+    "n_val": 64,
+    "n_test": 64,
+    "n_law": 256,
+    "mu_range": [0.1, 0.5],
+    "sigma_range": [0.1, 0.5],
+    "lambda_range": [3.0, 10.0],
+    "nu_range": [-0.1, 0.1],
+    "gamma_range": [0.5, 1.0],
+    "log_radius": 12.0,
+    "jump_slots": 8,
+    "max_resample_rounds": 8
+  },
+  "model": {
+    "width": 64,
+    "depth": 2,
+    "epochs": 80,
+    "batch_size": 64,
+    "lr": 0.001,
+    "omega": 1.0,
+    "kappa": 5,
+    "grad_clip": 1.0,
+    "regularizer_log_clip": 4.0,
+    "activation": "silu"
+  },
+  "distill": {
+    "degrees": [1, 2, 3],
+    "thresholds": [0.0, 0.02, 0.05, 0.1, 0.2, 0.35],
+    "ridge": 0.0001,
+    "slice_r_low": -1.5,
+    "slice_r_high": 1.5,
+    "slice_size": 11,
+    "step_ratio_blind": 0.25,
+    "cross_partial_ratio_max": 0.5,
+    "amplification_factor": 2.0
+  },
+  "seeds": {
+    "data": 19,
+    "network": 19002,
+    "network_bs": 19003,
+    "probe": 19099,
+    "shuffle": 19011,
+    "sim": 19031,
+    "law_truth": 19021,
+    "law_noise": 19027,
+    "law_floor": 19022,
+    "law_teacher": 19023,
+    "law_symbolic": 19024,
+    "law_bs": 19025
+  },
+  "interpretation": {
+    "coefficients_are_closed_form": false,
+    "diffusion_teacher_is_neural": true,
+    "drift_teacher_is_neural": true,
+    "coordinate_is_gene_regulation": false,
+    "distillation_discovers_true_sde": false,
+    "pass_is_not_pathwise_mjd": true
+  },
+  "hypotheses": {
+    "H1_fields": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.25,
+      "teacher_vs_truth_test_nrmse_max": 0.3,
+      "symbolic_vs_truth_test_nrmse_max": 0.5,
+      "note": "Applied separately to the drift rate mu and the diffusion rate sigma. The constant-predictor floor on U(0.1,0.5) is 0.359, so 0.30 requires the history to move the field. A pass is not the latent MJD parameter."
+    },
+    "H2_diffusion": {
+      "symbolic_vs_teacher_test_nrmse_max": 0.25,
+      "fraction_nonpositive_max": 0.02,
+      "mean_relative_error_max": 0.2,
+      "grid_over_ontraj_factor": 5.0,
+      "note": "Mean-level gate uses |mean(teacher sigma) - 0.3| / 0.3. Pathwise recovery is H1. The slice factor flags a local shadow and is not itself the pass."
+    },
+    "H3_collinearity_gate": {
+      "vif_max": 10.0,
+      "note": "Degree-3 library, constant column removed. Inside the gate, coefficients are still not a closed form."
+    },
+    "H4_simulation": {
+      "failure_rate_max": 0.05,
+      "failure_gap_max": 0.02,
+      "path_rmse_symbolic_vs_teacher_max": 0.08,
+      "path_rmse_teacher_vs_truth_max": 0.1,
+      "terminal_var_symbolic_vs_teacher_max": 0.5,
+      "terminal_var_teacher_vs_truth_max": 0.6,
+      "field_teacher_vs_truth_max": 0.3,
+      "note": "Ten future steps, shared Wiener and shared exponential clocks. Log-price path RMSE. field gate is the max of mu and sigma teacher-vs-truth NRMSE. Failure outside the rate gate makes H4 indeterminate."
+    },
+    "H5_law": {
+      "failure_rate_max": 0.05,
+      "mean_path_rmse_teacher_max": 0.12,
+      "mean_path_rmse_symbolic_max": 0.15,
+      "terminal_var_teacher_max": 0.5,
+      "terminal_var_symbolic_max": 0.6,
+      "note": "Mean log-price path over fresh paths. If the truth-vs-truth floor exceeds the teacher threshold, H5 is indeterminate. A mean-path pass is not pathwise identification."
+    },
+    "H6_invariance": {
+      "shuffle_relative_rms_max": 0.2,
+      "time_reversal_relative_rms_max": 0.2,
+      "slice_sym_teacher_nrmse_max": 0.45,
+      "note": "Stationary MJD parameters do not depend on return order or on future time. Relative RMS is ||f(broken) - f|| / ||f||. The slice is r_1 by u with the other returns at 0, and is not used for selection."
+    },
+    "H7_discretization": {
+      "terminal_rmse_max": 0.2,
+      "min_retained_fraction": 0.95,
+      "note": "Same noise, teacher coefficients at the first future bin versus the ten-bin schedule. Probe truth gap is numerical zero because the latent rates are constant."
+    },
+    "H8_jump_versus_black_scholes": {
+      "sigma_nrmse_improvement_min": 0.05,
+      "mjd_sigma_nrmse_max": 0.45,
+      "note": "Neural BS uses the same MLP and loss with lambda fixed at 0. Improvement is BS sigma NRMSE minus MJD sigma NRMSE, both versus truth."
+    },
+    "H9_cross_partial": {
+      "cross_partial_ratio_max": 0.5,
+      "note": "RMS of d^2 mu / dr_1 dr_2 divided by RMS of teacher mu. Value NRMSE is not this ratio."
+    }
+  },
+  "threshold_basis": {
+    "probe_seed": 19099,
+    "constant_floor_mu_sigma": 0.359211,
+    "constant_floor_empirical_mu": 0.353674,
+    "uniform_mu_sigma": [0.1, 0.5],
+    "step_ratio_at_means": 0.1,
+    "step_ratio_probe": 0.116853,
+    "paired_constant_mu_sigma_rmse": 0.030102,
+    "floor_mean_probe": 0.069933,
+    "floor_var_probe": 0.106683,
+    "return_std_probe": 0.204987,
+    "return_max_abs_probe": 2.787675,
+    "vif_degree3_probe_saturated": true,
+    "note": "Probe seed 19099, 128 windows, before the seed-19 test run. The constant-predictor floor of Uniform(0.1, 0.5) is 0.359, and the empirical floor on the probe was 0.354. H1's 0.30 gate sits below that floor. The probe step ratio was 0.117, below the 0.25 blind gate. Replacing only mu and sigma by their probe means, with the latent jump rates left in place and the noise shared, moved log-price paths by RMSE 0.030. The truth-versus-truth mean-path floor was 0.070 and the terminal-variance floor was 0.107, both under the H5 gates, so H5 stays scorable. The degree-3 library on these heavy-tailed returns was numerically rank deficient and the VIF hit the 1e9 cap; the gate stays at 10."
+  }
+}

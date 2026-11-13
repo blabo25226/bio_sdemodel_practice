@@ -1,0 +1,325 @@
+{
+  "day": 6,
+  "date": "2026-10-31",
+  "paper": {
+    "authors": "Mari Dahl Eggen, Alise Danielle Midtfjord",
+    "experiment": "Sections 3 and 5.1: Delay-SDE-net, a neural SDDE with multiple delays (p = 4 lags) and diffusion split into aleatoric and epistemic nets, trained in three stages (drift by one-step MSE, aleatoric diffusion by residual matching, epistemic diffusion by ID/OOD classification). Simulation study Section 5.1.1 defines the 2D SDDE truth (Eqs. (23)-(24)); comparison study Section 5.1.3 compares Delay-SDE-net vs SDE-net vs VAR at Delta t = 1 on 110 paths over 365 days; case study Section 5.2 is stratospheric weather (not treated today).",
+    "journal": "arXiv:2303.08587 (2023)",
+    "title": "Delay-SDE-Net: A deep learning approach for time series modelling with memory and uncertainty estimates",
+    "url": "https://arxiv.org/pdf/2303.08587"
+  },
+  "split_sizes": {
+    "train": 640,
+    "validation": 192,
+    "test": 192
+  },
+  "state_stats_train": {
+    "x1": {
+      "mean": -1.3443318977200271,
+      "std": 7.766644561092171
+    },
+    "x2": {
+      "mean": 1.2408326595162775,
+      "std": 1.615356234423956
+    }
+  },
+  "collinearity": {
+    "max_abs_corr_current_vs_lags": 0.974612306230406,
+    "max_abs_corr_within_lags": 0.9498844935767575,
+    "vif": {
+      "x": 16.19608089739931,
+      "y": 102.49768918661876,
+      "x_{t-4}": 5.722797387265345,
+      "x_{t-3}": 13.157754821396896,
+      "x_{t-2}": 21.870375900215947,
+      "x_{t-1}": 31.296433479252283,
+      "y_{t-4}": 3.3668978525041218,
+      "y_{t-3}": 10.875353043188396,
+      "y_{t-2}": 25.014040004155067,
+      "y_{t-1}": 89.01821243730345
+    }
+  },
+  "teachers_vs_truth": {
+    "delay_two_stage": {
+      "drift_vs_truth": {
+        "nrmse": 0.08118726145356907,
+        "rms_error": 0.11930679334349732,
+        "ref_rms": 1.4695260217851882
+      },
+      "drift_x1_vs_truth": {
+        "nrmse": 0.06542808508459139,
+        "rms_error": 0.1294720059881483,
+        "ref_rms": 1.9788444950017274
+      },
+      "g_vs_truth": {
+        "nrmse": 0.023332357988244287,
+        "rms_error": 0.033022440774915195,
+        "ref_rms": 1.4153066223119473
+      },
+      "sigma_vs_truth": {
+        "nrmse": 0.03648922456789253,
+        "rms_error": 0.10315080273464983,
+        "ref_rms": 2.826883935084055
+      }
+    },
+    "markovian_two_stage": {
+      "drift_vs_truth": {
+        "nrmse": 0.2346663021233202,
+        "rms_error": 0.34484823740632387,
+        "ref_rms": 1.4695260217851882
+      },
+      "drift_x1_vs_truth": {
+        "nrmse": 0.20031808891078562,
+        "rms_error": 0.39639834749037467,
+        "ref_rms": 1.9788444950017274
+      },
+      "g_vs_truth": {
+        "nrmse": 0.018603633201945146,
+        "rms_error": 0.02632984526977538,
+        "ref_rms": 1.4153066223119473
+      },
+      "sigma_vs_truth": {
+        "nrmse": 0.02540908498343605,
+        "rms_error": 0.07182853414486087,
+        "ref_rms": 2.826883935084055
+      }
+    },
+    "em": {
+      "drift_vs_truth": {
+        "nrmse": 0.062233065140682046,
+        "rms_error": 0.09145310863968496,
+        "ref_rms": 1.4695260217851882
+      },
+      "drift_x1_vs_truth": {
+        "nrmse": 0.06421912736788982,
+        "rms_error": 0.12707966666576354,
+        "ref_rms": 1.9788444950017274
+      },
+      "g_vs_truth": {
+        "nrmse": 0.010658918071202374,
+        "rms_error": 0.015085637332853208,
+        "ref_rms": 1.4153066223119473
+      },
+      "sigma_vs_truth": {
+        "nrmse": 0.021061833801879436,
+        "rms_error": 0.05953935961794331,
+        "ref_rms": 2.826883935084055
+      }
+    },
+    "em_coarse_dt0.5": {
+      "drift_vs_truth": {
+        "nrmse": 0.11646481617334412,
+        "rms_error": 0.17114807798915763,
+        "ref_rms": 1.4695260217851882
+      },
+      "drift_x1_vs_truth": {
+        "nrmse": 0.11654523833253758,
+        "rms_error": 0.23062490329300628,
+        "ref_rms": 1.9788444950017274
+      },
+      "g_vs_truth": {
+        "nrmse": 0.04328696395072557,
+        "rms_error": 0.061264326739240434,
+        "ref_rms": 1.4153066223119473
+      },
+      "sigma_vs_truth": {
+        "nrmse": 0.06768561533022138,
+        "rms_error": 0.19133937861328187,
+        "ref_rms": 2.826883935084055
+      }
+    },
+    "em_fine_sub": {
+      "drift_vs_truth": {
+        "nrmse": 0.0981330956114178,
+        "rms_error": 0.1442091375993123,
+        "ref_rms": 1.4695260217851882
+      },
+      "drift_x1_vs_truth": {
+        "nrmse": 0.10080652130784394,
+        "rms_error": 0.1994804297503013,
+        "ref_rms": 1.9788444950017274
+      },
+      "g_vs_truth": {
+        "nrmse": 0.025789809337493162,
+        "rms_error": 0.03650048794351656,
+        "ref_rms": 1.4153066223119473
+      },
+      "sigma_vs_truth": {
+        "nrmse": 0.050503709719831966,
+        "rms_error": 0.14276812566914143,
+        "ref_rms": 2.826883935084055
+      }
+    }
+  },
+  "distillation": {
+    "drift_selection": {
+      "degree": 3,
+      "threshold": 0.02
+    },
+    "drift_validation_nrmse": 0.09001480231403547,
+    "diffusion_selection": {
+      "degree": 2,
+      "threshold": 0.02
+    },
+    "diffusion_validation_nrmse": 0.012859777148591885,
+    "drift_vs_teacher": {
+      "nrmse": 0.0826521722341024,
+      "rms_error": 0.12259531388507193,
+      "ref_rms": 1.4832678993340351
+    },
+    "g_vs_teacher": {
+      "nrmse": 0.015329811199223229,
+      "rms_error": 0.02148747955229414,
+      "ref_rms": 1.4016793340144285
+    },
+    "sigma_vs_teacher": {
+      "nrmse": 0.02988018603593165,
+      "rms_error": 0.08276727835005057,
+      "ref_rms": 2.7699719891476215
+    },
+    "drift_vs_truth": {
+      "nrmse": 0.10636512552831404,
+      "rms_error": 0.1563063197743055,
+      "ref_rms": 1.4695260217851882
+    },
+    "g_vs_truth": {
+      "nrmse": 0.017617084551071326,
+      "rms_error": 0.024933576430960742,
+      "ref_rms": 1.4153066223119473
+    },
+    "sigma_vs_truth": {
+      "nrmse": 0.022044028608655494,
+      "rms_error": 0.06231591033834153,
+      "ref_rms": 2.826883935084055
+    },
+    "oracle_drift_vs_truth": {
+      "nrmse": 0.07592415073469705,
+      "rms_error": 0.11157251518657833,
+      "ref_rms": 1.4695260217851882
+    },
+    "oracle_g_vs_truth": {
+      "nrmse": 0.00016082017299902276,
+      "rms_error": 0.00022760985584686992,
+      "ref_rms": 1.4153066223119473
+    },
+    "oracle_drift_selection": {
+      "degree": 3,
+      "threshold": 0.02
+    },
+    "oracle_diff_selection": {
+      "degree": 2,
+      "threshold": 0.05
+    },
+    "markovian_symbolic_vs_teacher": {
+      "nrmse": 0.0920356728019754,
+      "rms_error": 0.13734430955600885,
+      "ref_rms": 1.4922942960553984
+    },
+    "markovian_symbolic_vs_truth": {
+      "nrmse": 0.24739853846429613,
+      "rms_error": 0.363558590024907,
+      "ref_rms": 1.4695260217851882
+    },
+    "markovian_selection": {
+      "degree": 3,
+      "threshold": 0.02
+    }
+  },
+  "shuffled_lag": {
+    "symbolic_vs_teacher": {
+      "nrmse": 4.341954348876238,
+      "rms_error": 6.354179094504014,
+      "ref_rms": 1.4634375638123809
+    },
+    "symbolic_vs_truth": {
+      "nrmse": 4.333234305205768,
+      "rms_error": 6.367800569992137,
+      "ref_rms": 1.4695260217851882
+    },
+    "teacher_vs_truth": {
+      "nrmse": 0.08480161556602558,
+      "rms_error": 0.12461818076369846,
+      "ref_rms": 1.4695260217851882
+    }
+  },
+  "H5": {
+    "drift_x1": {
+      "mean": 0.14036864955850473,
+      "se": 0.0013542630448193926,
+      "rmse_a": 0.39639834749037467,
+      "rmse_b": 0.1294720059881483
+    },
+    "variance_x1": {
+      "mean": -0.0109590323557916,
+      "se": 0.00026647784443627935,
+      "rmse_a": 0.10139958638078261,
+      "rmse_b": 0.14574261035807404
+    },
+    "drift_x1_dt1_diagnostic": {
+      "mean": 0.1556877773813529,
+      "se": 0.0019050740393128536,
+      "rmse_a": 0.5103544918559733,
+      "rmse_b": 0.32368801333416075
+    },
+    "pass_drift": true,
+    "pass_variance": false,
+    "pass": false
+  },
+  "H6": {
+    "nrmse_em_fine_sub": 0.0981330956114178,
+    "nrmse_em_coarse": 0.11646481617334412,
+    "nrmse_em_fine_sub_near": 0.2636319390854374,
+    "nrmse_em_coarse_near": 0.24041892184053845,
+    "nrmse_em_fine_sub_satur": 0.06523503727384758,
+    "nrmse_em_coarse_satur": 0.06781730685422277,
+    "n_near": 19614,
+    "n_satur": 4926,
+    "sigma_nrmse_em_fine_sub": 0.050503709719831966,
+    "sigma_nrmse_em_coarse": 0.06768561533022138,
+    "degradation": 0.01833172056192632,
+    "degradation_near": -0.023213017244898965,
+    "degradation_satur": 0.0025822695803751905,
+    "regime_gap": 0.025795286825274155,
+    "pass_a": false,
+    "pass_b": true,
+    "pass": false
+  },
+  "H7": {
+    "mse_teacher": 0.2012337420388742,
+    "mse_symbolic": 0.2012901811562862,
+    "abs_diff": 5.643911741198826e-05,
+    "paired_se": 4.3426842211329195e-05,
+    "pass": true
+  },
+  "simulation": {
+    "teacher": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.0
+    },
+    "symbolic": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.0
+    },
+    "truth": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.0
+    },
+    "paired_rmse_median": 0.2961416822731303,
+    "paired_rmse_mean": 0.375710422881337,
+    "n_paired": 192
+  },
+  "verdicts": {
+    "H1_drift_distillation": true,
+    "H2_diffusion_distillation": true,
+    "H3_truth_recovery": true,
+    "H4_simulation": true,
+    "H5_paper_axis_delay_vs_markovian": false,
+    "H6_discretization_bias": false,
+    "H7_downstream_one_step": true
+  },
+  "runtime_seconds": 96.3,
+  "versions": {
+    "torch": "2.15.0+cpu",
+    "numpy": "2.5.4"
+  }
+}

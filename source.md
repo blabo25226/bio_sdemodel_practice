@@ -197,7 +197,131 @@ regularization is evaluated explicitly. No trajectory derivative API is forced
 onto direct teacher-function regression.
 Accessed: 2026-10-07.
 
-## 11. Direct stochastic sparse identification assumptions
+## 11. Day 11 paper (daily Neural SDE series)
+
+Title: SDE-Net: Equipping Deep Neural Networks with Uncertainty Estimates
+Authors: Lingkai Kong, Jimeng Sun, Chao Zhang
+Year: 2020
+URL: https://proceedings.mlr.press/v119/kong20b.html
+PDF: http://proceedings.mlr.press/v119/kong20b/kong20b.pdf
+Why relevant: Neural drift f(x_t, t) trained by a task loss and neural diffusion g(x_0) trained to be small on in-distribution inputs and large on Gaussian-perturbed inputs (ICML 2020, eq. 4 and eq. 7, Algorithm 1). Day 11 distills those two networks with a power-only SINDy library. The supplement's test-time sigma_max = 50 is not part of the distilled SDE; the training value sigma_max = 1 is.
+Accessed: 2026-11-04.
+
+## 12. Day 12 paper (daily Neural SDE series)
+
+Title: Efficient Training of Neural Stochastic Differential Equations by Matching Finite Dimensional Distributions
+Authors: Jianxin Zhang, Josh Viktorov, Doosan Jung, Emily Pitler
+Year: 2025
+URL: https://proceedings.iclr.cc/paper_files/paper/2025/hash/5acf5a0ee5c17d372bfe7fdaeffd6e33-Abstract-Conference.html
+PDF: https://proceedings.iclr.cc/paper_files/paper/2025/file/5acf5a0ee5c17d372bfe7fdaeffd6e33-Paper-Conference.pdf
+arXiv: https://arxiv.org/abs/2410.03973
+Code: https://github.com/Z-Jianxin/FDM
+Why relevant: ICLR 2025. Neural drift and neural diffusion are trained by a kernel scoring rule on two-time joints (Finite Dimensional Matching, Theorem 2, Algorithm 1). The released FDDiscriminator minimizes E[k(X,X')] - 2 E[k(X,Y)] on consecutive grid times with a Gaussian RBF of bandwidth 1. Day 12 distills that teacher on an observable 2D Markov diffusion. The paper's Dukascopy KS tables and the rough Bergomi experiment are outside the cut.
+Accessed: 2026-11-04.
+
+## 13. Day 13 paper (daily Neural SDE series)
+
+Title: SDE Matching: Scalable and Simulation-Free Training of Latent Stochastic Differential Equations
+Authors: Grigory Bartosh, Dmitry Vetrov, Christian A. Naesseth
+Year: 2025
+URL: https://proceedings.mlr.press/v267/bartosh25a.html
+PDF: https://raw.githubusercontent.com/mlresearch/v267/main/assets/bartosh25a/bartosh25a.pdf
+arXiv: https://arxiv.org/abs/2502.02472
+Code: https://github.com/GrigoryBartosh/sde_matching
+Why relevant: ICML 2025, PMLR 267:3054-3070. The prior Neural SDE has neural drift h_theta and neural diffusion g_theta (eq. 15). Training minimizes the latent-SDE variational bound without integrating the posterior SDE, by sampling z_t = mu_phi(X, t) + sigma_phi(X, t) epsilon (eq. 37) and converting that flow to a posterior drift with the probability-flow identity (eq. 19-20). Day 13 distills the state-dependent prior on an observable 2D stochastic Lotka-Volterra system (Appendix C.3, sigma = 0.15; drift coefficients from Course and Nair, NeurIPS 2023, Appendix G.1). Motion capture, pendulum video, and the 3D Lorenz experiment are outside the cut.
+Accessed: 2026-11-06.
+
+## 14. Day 14 paper (daily Neural SDE series)
+
+Title: Neural Stochastic Differential Equations for Uncertainty-Aware Offline RL
+Authors: Cevahir Koprulu, Franck Djeumou, Ufuk Topcu
+Year: 2025
+URL: https://proceedings.iclr.cc/paper_files/paper/2025/hash/0f25eb6e9dc26c933a5d7516abf1eb8c-Abstract-Conference.html
+PDF: https://proceedings.iclr.cc/paper_files/paper/2025/file/0f25eb6e9dc26c933a5d7516abf1eb8c-Paper-Conference.pdf
+Partial reimplementation: https://github.com/matthew-lowery/NSDE_ORL
+Why relevant: ICLR 2025. The dynamics model is a neural SDE (eq. 5) whose drift can use rigid-body structure (eq. 8: position rate equals velocity, velocity rate is G(v)a + H(s)v plus a penalized residual) and whose diagonal diffusion is aleatoric sigma_phi plus a bounded monotone function of a distance-aware eta (eq. 3-4, Appendix C.4). Day 14 distills that teacher on an observable controlled point mass with cubic drag. D4RL, NeoRL, MuJoCo, reward learning, and SAC policy optimization are outside the cut. Appendix D's aleatoric-only ablation (NUNO-al) is the H6 baseline.
+Accessed: 2026-11-07.
+
+## 15. Day 15 paper (daily Neural SDE series)
+
+Title: In-Context Learning of Stochastic Differential Equations with Foundation Inference Models
+Authors: Patrick Seifner, Kostadin Cvejoski, David Berghaus, César Ojeda, Ramsés J. Sánchez
+Year: 2025
+URL: https://proceedings.neurips.cc/paper_files/paper/2025/hash/dff573cecb50646083b5186b565e23a3-Abstract-Conference.html
+PDF: https://proceedings.neurips.cc/paper_files/paper/2025/file/dff573cecb50646083b5186b565e23a3-Paper-Conference.pdf
+Why relevant: NeurIPS 2025. A transformer recognition model maps a context of transitions (y, Δy, Δy², Δτ) to drift and diagonal diffusion at a query state, with a detached uncertainty head U (eqs. 7-10). Dense finetuning is the short-time Gaussian likelihood (eq. 34). The pretraining class is polynomial drift of degree at most 3 and a degree-at-most-2 polynomial inside the diffusion square root. Day 15 distills a miniature of that teacher on the paper's 2D synthetic system (Appendix G.1, eqs. 38-39). The 20M-parameter pretraining run, signature-kernel MMD, BISDE, SparseGP, Latent SDE, Lorenz, and the wind, oil, and equity series are outside the cut.
+Accessed: 2026-11-08.
+
+## 16. Day 16 paper (daily Neural SDE series)
+
+Title: LieStoNet: Learning Lie Symmetries from Spatiotemporal Data for Stochastic Dynamical Systems
+Authors: Shida Liu, Abhishek Gupta, Sumit Sinha, L. Mahadevan
+Year: 2026
+URL: https://proceedings.mlr.press/v306/liu26aq.html
+PDF: https://raw.githubusercontent.com/mlresearch/v306/main/assets/liu26aq/liu26aq.pdf
+arXiv: https://arxiv.org/abs/2608.01582
+Code: https://github.com/sumit-sinha-seas/LieStoNet_Final
+Why relevant: ICML 2026, PMLR 306:76384-76408. Stage 1 fits a neural drift and a neural Cholesky diffusion by the Euler-Gauss increment likelihood (Section 3.1, equation 8; Appendix P). Example 4 is the 2D Ito equation dx = (1/x) dt + dW1, dy = dt + dW2 (Table 2). The released notebook uses a2 = 0.5; Day 16 follows Table 2 and sets a2 = 1. Day 16 distills that stage-1 surrogate. Stage-2 generator training, the Lie-algebra sweep, principal angles, Fokker-Planck symmetries, the 10D Brownian motion, and BTC/USDT are outside the cut. The analytic scaling generator is used only as a probe of the learned drift.
+Accessed: 2026-11-08.
+
+## 17. Day 17 paper (daily Neural SDE series)
+
+Title: Neural Diffusion Intensity Models for Point Process Data
+Authors: Xinlong Du, Harsha Honnappa, Vinayak Rao
+Year: 2026
+URL: https://proceedings.mlr.press/v337/du26a.html
+PDF: https://raw.githubusercontent.com/mlresearch/v337/main/assets/du26a/du26a.pdf
+Why relevant: UAI 2026, PMLR 337:1448-1473. A Cox process is driven by a latent diffusion intensity. The prior drift is a neural network (equation 1); the diffusion coefficient in the experiments is the known CIR factor \(\sqrt{z}\), not a network. The variational posterior keeps that diffusion and adds a neural drift correction (equation 3, Theorem 2.1, Theorem 3.1). Day 17 distills the prior drift on Section 4.1, \(dZ=0.3(80-Z)\,dt+\sqrt{Z}\,dW\), and probes \(\sqrt{Z}\) with the power library. The remaining-count encoder is the paper's misspecified option in Section 3.3.1. Deep Sets, the hard constraint, MCMC, the U.S. bank calls, the Allen spike trains, and the multivariate CIR are outside the cut.
+Accessed: 2026-11-09.
+
+## 18. Day 18 paper (daily Neural SDE series)
+
+Title: Gradient-Flow SDEs Have Unique Transient Population Dynamics
+Authors: Vincent Guan, Joseph Janssen, Nicolas Lanzetti, Antonio Terpin, Geoffrey Schiebinger, Elina Robeva
+Year: 2026
+URL: https://proceedings.mlr.press/v300/guan26a.html
+PDF: https://raw.githubusercontent.com/mlresearch/v300/main/assets/guan26a/guan26a.pdf
+arXiv: https://arxiv.org/abs/2505.21770
+Code: https://github.com/guanton/identifying-gradient-flow-sdes
+Why relevant: AISTATS 2026, PMLR 300:2449-2457. nn-APPEX alternates a multi-marginal Schrödinger bridge, a neural drift MLE, and a closed-form isotropic diffusivity MLE (Section 4, Algorithm 1, equations 16-17). The released fitter uses a SiLU potential MLP and sets the drift to minus its gradient (`models/nn_APPEX.py`, `utils/MLE_parameter_estimation.py`, `conservative=True`). Day 18 distills that drift on the Section 5.1 Styblinski-Tang gradient flow, \(\sigma^{2}=0.2\), three marginals at spacing 0.01. The scalar diffusivity is not a network. The hESC experiment, the other four potentials, JKOnet*, and WOT are outside the cut.
+Accessed: 2026-11-10.
+
+## 19. Day 19 paper (daily Neural SDE series)
+
+Title: Neural MJD: Neural Non-Stationary Merton Jump Diffusion for Time Series Prediction
+Authors: Yuanpei Gao, Qi Yan, Yan Leng, Renjie Liao
+Year: 2025
+URL: https://proceedings.neurips.cc/paper_files/paper/2025/hash/be86db1a7a293eec8d291edf9fcaa550-Abstract-Conference.html
+PDF: https://proceedings.neurips.cc/paper_files/paper/2025/file/be86db1a7a293eec8d291edf9fcaa550-Paper-Conference.pdf
+Code: https://github.com/DSL-Lab/neural-MJD
+Why relevant: NeurIPS 2025. A network maps a price history and future time to the time-inhomogeneous Merton rates (equation 8). Training is the jump-truncated transition likelihood (equation 12, Theorem 4.1, kappa = 5) plus a conditional-mean price penalty (equation 13, Algorithm 1, omega = 1). Day 19 distills those neural rates on the Appendix D.2 scalar Merton jump diffusion. The likelihood bin is the Euler step 0.01 so that the published rate ranges stay in the simulation clock. The Transformer, the stride-1 windows, SafeGraph, S&P 500, and the restart solver are outside the cut.
+Accessed: 2026-11-11.
+
+## 21. Day 20 paper (daily Neural SDE series)
+
+Title: Control Consistency Losses for Diffusion Bridges
+Authors: Samuel Howard, Nikolas Nüsken, Jakiw Pidstrigach
+Year: 2026
+URL: https://proceedings.mlr.press/v306/howard26b.html
+PDF: https://raw.githubusercontent.com/mlresearch/v306/main/assets/howard26b/howard26b.pdf
+arXiv: https://arxiv.org/abs/2512.05070
+Code: https://github.com/samuel-howard/control_consistency_bridges
+Why relevant: ICML 2026, PMLR 306:44330-44367. A neural adjustment eta is added to a Brownian-bridge guide (equation 16, Appendix B.1). For a reference drift that is not a gradient, the controlled drift keeps that drift. Training uses the self-consistency property (4.1) and the average schedule (equation 49, Algorithm 1). Day 20 distills eta on the normal cell-differentiation bridge in Appendix E.4 (Wang et al. 2011 drift, sigma = 0.1, x0 = (0.1, -0.1), xT = (2, -0.1), T = 4). The diffusion coefficient is the constant 0.1, not a network. The rare and multimodal cell events, OU, CIR, Müller-Brown, and the chemistry bridges are outside the cut.
+Accessed: 2026-11-12.
+
+## 22. Day 21 paper (daily Neural SDE series)
+
+Title: Neural Structure Learning with Stochastic Differential Equations
+Authors: Benjie Wang, Joel Jennings, Wenbo Gong
+Year: 2024
+URL: https://proceedings.iclr.cc/paper_files/paper/2024/hash/6ce9d51dded7dac82b3b4d3dbb1d73bc-Abstract-Conference.html
+PDF: https://proceedings.iclr.cc/paper_files/paper/2024/file/6ce9d51dded7dac82b3b4d3dbb1d73bc-Paper-Conference.pdf
+arXiv: https://arxiv.org/abs/2311.03309
+Code: https://github.com/microsoft/causica/tree/main/research_experiments/scotch
+Why relevant: ICLR 2024. SCOTCH places neural networks on both the drift and the diagonal diffusion of an Ito diffusion, gated by a signature graph (Appendix B, equation 33). Day 21 distills those two fields on a 3D cubic chain in that observational class. Lorenz-96, glycolysis, the latent ELBO, and the graph posterior are outside the cut.
+Accessed: 2026-11-14.
+
+## 20. Direct stochastic sparse identification assumptions
 
 Title: Sparse learning of stochastic dynamical equations
 Authors: Lorenzo Boninsegna, Feliks Nüske, Cecilia Clementi

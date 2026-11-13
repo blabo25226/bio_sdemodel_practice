@@ -1,0 +1,136 @@
+{
+  "teacher_dsm_loss_final200": 0.24354482114315032,
+  "vif_max_degree3": 7.144943852540789,
+  "drift_selection": {
+    "degree": 3,
+    "threshold": 0.02,
+    "active_terms": 4
+  },
+  "g_selection": {
+    "degree": 3,
+    "threshold": 0.02,
+    "active_terms": 4
+  },
+  "drift_test_nrmse_vs_teacher": 0.3957082352853705,
+  "drift_test_nrmse_vs_truth": 0.3903601296339187,
+  "teacher_drift_test_nrmse_vs_truth": 0.09440390335231298,
+  "g_test_nrmse_vs_teacher": 0.008365781280906441,
+  "g_test_nrmse_vs_truth": 0.008365781280906441,
+  "sigma_test_nrmse_vs_teacher": 0.010401170029191213,
+  "oracle_drift_test_nrmse_vs_truth": 0.3891902351075605,
+  "query_ranges": {
+    "x": [
+      -4.469517413941885,
+      4.4621887739010635
+    ],
+    "tau": [
+      1.3439329175635173e-05,
+      0.9799775923557611
+    ]
+  },
+  "g_x_spread_by_tau": {
+    "0.25": 1.1510302065316826e-16,
+    "0.5": 1.391462745262435e-16,
+    "0.75": 0.0
+  },
+  "g_x_spread_max": 1.391462745262435e-16,
+  "teacher_drift_nrmse_vs_truth_near_linear_tau_lt_0.3": 0.06874632938195477,
+  "per_step_snr_near_linear_tau_lt_0.3": 0.16625526343708086,
+  "teacher_drift_nrmse_vs_truth_nonlinear_tau_gt_0.7": 0.13461403335741784,
+  "per_step_snr_nonlinear_tau_gt_0.7": 0.22788249933503874,
+  "grid": {
+    "symbolic_vs_teacher_drift": 0.8028759218850758,
+    "teacher_vs_truth_drift": 0.17981029842727453,
+    "symbolic_vs_truth_drift": 0.5552067704277586,
+    "symbolic_vs_teacher_drift_rms": 10.548855274558953,
+    "teacher_vs_truth_drift_rms": 2.691630481066783,
+    "symbolic_vs_teacher_g": 0.007027988648052752,
+    "teacher_vs_truth_g": 0.0,
+    "tau_0.05_symbolic_vs_teacher_drift": 0.8434986229989877,
+    "tau_0.05_teacher_vs_truth_drift": 0.17744035249798398,
+    "tau_0.25_symbolic_vs_teacher_drift": 0.7789048772728943,
+    "tau_0.25_teacher_vs_truth_drift": 0.20030547397898574,
+    "tau_0.5_symbolic_vs_teacher_drift": 0.9185495425211154,
+    "tau_0.5_teacher_vs_truth_drift": 0.14642230083487576,
+    "tau_0.75_symbolic_vs_teacher_drift": 0.7138612691210929,
+    "tau_0.75_teacher_vs_truth_drift": 0.14016292858745244,
+    "tau_0.95_symbolic_vs_teacher_drift": 0.5482596234063272,
+    "tau_0.95_teacher_vs_truth_drift": 0.1722719815315357
+  },
+  "sampling": {
+    "teacher": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.0,
+      "failure_class_counts": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "w1_vs_truth_samples": 0.08733389133553891,
+      "mode_mass_gt1": 0.9975,
+      "mean": 0.038161766195913105,
+      "std": 2.0445753213925664
+    },
+    "symbolic": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.0,
+      "failure_class_counts": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "w1_vs_truth_samples": 0.46681514380323924,
+      "mode_mass_gt1": 0.77,
+      "mean": 0.005549915925160392,
+      "std": 1.863224051386298
+    },
+    "noscore": {
+      "failure_rate": 0.8965,
+      "excursion_rate": 0.9735,
+      "failure_class_counts": {
+        "non_finite": 0,
+        "outside_radius": 1793
+      },
+      "w1_vs_truth_samples": 15.216628997826097,
+      "mode_mass_gt1": 0.966183574879227,
+      "mean": -1.4158601715250867,
+      "std": 17.696043974901013
+    },
+    "truth_sde": {
+      "failure_rate": 0.0,
+      "excursion_rate": 0.0,
+      "failure_class_counts": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "w1_vs_truth_samples": 0.028403694976507757,
+      "mode_mass_gt1": 1.0,
+      "mean": -0.015455457891103482,
+      "std": 2.027399407827372
+    },
+    "pfode_teacher": {
+      "w1_vs_truth_samples": 0.18119344510222243,
+      "mode_mass_gt1": 0.9895,
+      "mean": 0.12280687191492436,
+      "std": 2.517799664489091
+    },
+    "truth_samples": {
+      "w1_vs_truth_samples": 0.0,
+      "mode_mass_gt1": 1.0,
+      "mean": -0.028316338649865016,
+      "std": 2.029082471084038
+    },
+    "paired_final_rmse_symbolic_vs_teacher": 0.9913945096378006
+  },
+  "h6": {
+    "w1_fine": 0.08733389133553891,
+    "w1_coarse": 0.11474473542398246,
+    "coarse_failure_rate": 0.0,
+    "w1_degradation": 0.027410844088443548
+  },
+  "h7": {
+    "mse_teacher": 0.10539950573445302,
+    "mse_symbolic": 0.10549029483096321,
+    "mse_abs_diff": 9.078909651019651e-05,
+    "paired_se": 0.00021572092986078662
+  },
+  "elapsed_seconds": 28.7060649394989
+}

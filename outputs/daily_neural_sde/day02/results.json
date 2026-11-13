@@ -1,0 +1,600 @@
+{
+  "day": 2,
+  "date": "2026-10-27",
+  "paper": {
+    "arxiv": "2102.03657",
+    "authors": "Patrick Kidger, James Foster, Xuechen Li, Terry J. Lyons",
+    "code": "https://github.com/google-research/torchsde (neural SDE example code referenced by the paper)",
+    "experiment": "Section 4.1: synthetic example, time-dependent one-dimensional Ornstein-Uhlenbeck process",
+    "title": "Neural SDEs as Infinite-Dimensional GANs",
+    "url": "https://proceedings.mlr.press/v139/kidger21b.html",
+    "venue": "ICML 2021 (PMLR 139:5453-5463)"
+  },
+  "config_path": "configs/daily_neural_sde_day02.json",
+  "data": {
+    "shape": [
+      8192,
+      64
+    ],
+    "state_mean": 4.631457417054574,
+    "state_std": 3.439377970487305,
+    "min_state": -3.899421730054339,
+    "max_state": 14.301810162982301,
+    "split_sizes": {
+      "train": 5120,
+      "validation": 1536,
+      "test": 1536
+    },
+    "note": "Paper Section 4.1: time-dependent Ornstein-Uhlenbeck process dz = (mu*t - theta*z) dt + sigma o dW, mu = 0.02, theta = 0.1, sigma = 0.4, 8192 samples from t = 0 to t = 63 sampled at every integer. Data are regenerated here (the paper does not publish the generated dataset itself). No observation noise is added: the paper samples the SDE itself, not a noisy observation of it.",
+    "initial_law": "z_0 ~ N(0, 1) (declared cut: the paper's main text states 8192 samples on t = 0..63 at integer times but does not state the initial law; N(0, 1) is chosen here and recorded)"
+  },
+  "collinearity": {
+    "corr_t_z_train": 0.9611179467749422,
+    "vif_t_z_train": 13.11435982702236,
+    "max_pairwise_abs_corr_degree2_features_train": 0.9897119617834634,
+    "coefficient_thresholds_apply": false,
+    "note": "corr(t, z) is high by construction: the ramp forcing mu*t drives the OU mean upward over the horizon, so t and z move together on trajectories. This gates H3 (see config)."
+  },
+  "estimator_comparison": {
+    "em": {
+      "training": {
+        "estimator": "em",
+        "best_epoch": 86,
+        "best_validation_nll": 0.45411986112594604,
+        "test_nll_at_best_checkpoint": 0.45622095465660095,
+        "epochs": 120,
+        "n_train_transitions": 322560,
+        "torch_version": "2.14.1+cpu"
+      },
+      "vs_truth_test": {
+        "drift": 0.029352345220422862,
+        "diffusion": 0.05041699983416108
+      },
+      "diffusion_mean_on_validation_states": 0.37996579772998657,
+      "diffusion_std_on_validation_states": 0.0022753731287087756,
+      "diffusion_mean_by_t_tercile_validation": {
+        "t_lt_21": 0.3774562593318819,
+        "t_21_42": 0.37999906527538246,
+        "t_gt_42": 0.38244048441386697
+      }
+    },
+    "local_linearization": {
+      "training": {
+        "estimator": "local_linearization",
+        "best_epoch": 86,
+        "best_validation_nll": 0.4541102945804596,
+        "test_nll_at_best_checkpoint": 0.4562004506587982,
+        "epochs": 120,
+        "n_train_transitions": 322560,
+        "torch_version": "2.14.1+cpu"
+      },
+      "vs_truth_test": {
+        "drift": 0.06362125565562499,
+        "diffusion": 0.007591948206590468
+      },
+      "diffusion_mean_on_validation_states": 0.40199863956950255,
+      "diffusion_std_on_validation_states": 0.002283563387568976,
+      "diffusion_mean_by_t_tercile_validation": {
+        "t_lt_21": 0.3993080507845276,
+        "t_21_42": 0.4022820390292203,
+        "t_gt_42": 0.4043923336823923
+      }
+    },
+    "local_linearization_exp": {
+      "training": {
+        "estimator": "local_linearization_exp",
+        "best_epoch": 86,
+        "best_validation_nll": 0.45410987734794617,
+        "test_nll_at_best_checkpoint": 0.4562004804611206,
+        "epochs": 120,
+        "n_train_transitions": 322560,
+        "torch_version": "2.14.1+cpu"
+      },
+      "vs_truth_test": {
+        "drift": 0.06148281065593607,
+        "diffusion": 0.0057864677272997135
+      },
+      "diffusion_mean_on_validation_states": 0.40047957623979125,
+      "diffusion_std_on_validation_states": 0.0022578563401052395,
+      "diffusion_mean_by_t_tercile_validation": {
+        "t_lt_21": 0.3978172753601124,
+        "t_21_42": 0.40072619934429926,
+        "t_gt_42": 0.4028835100576042
+      }
+    },
+    "substep_moments": {
+      "training": {
+        "estimator": "substep_moments",
+        "best_epoch": 45,
+        "best_validation_nll": 0.45414620637893677,
+        "test_nll_at_best_checkpoint": 0.45612677931785583,
+        "epochs": 80,
+        "n_train_transitions": 322560,
+        "torch_version": "2.14.1+cpu"
+      },
+      "vs_truth_test": {
+        "drift": 0.022619173257680286,
+        "diffusion": 0.0036023129269404093
+      },
+      "diffusion_mean_on_validation_states": 0.3989012693418456,
+      "diffusion_std_on_validation_states": 0.0009109170086945997,
+      "diffusion_mean_by_t_tercile_validation": {
+        "t_lt_21": 0.3983453799245454,
+        "t_21_42": 0.39928157490100336,
+        "t_gt_42": 0.3990587434114567
+      }
+    }
+  },
+  "teacher_training": {
+    "estimator": "substep_moments",
+    "best_epoch": 45,
+    "best_validation_nll": 0.45414620637893677,
+    "test_nll_at_best_checkpoint": 0.45612677931785583,
+    "epochs": 80,
+    "n_train_transitions": 322560,
+    "torch_version": "2.14.1+cpu"
+  },
+  "teacher_deviation": "The paper trains a neural SDE generator against a neural CDE discriminator with a Wasserstein GAN loss, so that the model matches distributions on path space without any density. Reproducing that GAN (neural CDE discriminator, gradient penalty, double backward) is out of CPU scope for one day, and its latent/hidden coordinates are not identifiable for a symbolic equation in any case. This study therefore estimates a neural SDE directly in the observed 1D coordinate, with drift and diffusion as separate MLPs of (t, z), trained by Gaussian transition likelihoods. This is a declared scope cut, not the paper's model: the paper's claim (marginal/path-distribution recovery) is NOT re-tested here; what is tested is the field-level content of such a neural SDE (drift/diffusion as functions of (t, z)) and its polynomial distillability. The paper's SDE is Stratonovich; the likelihoods here use the Ito convention, which coincides with Stratonovich for the constant true diffusion and is diagnosed for the fitted teacher via the 0.5*g*g' correction size.",
+  "teacher_vs_truth_test": {
+    "drift": 0.022619173257680286,
+    "diffusion": 0.0036023129269404093
+  },
+  "candidates": {
+    "drift": [
+      {
+        "degree": 1,
+        "threshold": 0.02,
+        "active_terms": 3,
+        "library_size": 3,
+        "validation_nrmse": 0.022417098878047412,
+        "train_nrmse": 0.02248560096735637
+      },
+      {
+        "degree": 1,
+        "threshold": 0.05,
+        "active_terms": 3,
+        "library_size": 3,
+        "validation_nrmse": 0.022417098878047412,
+        "train_nrmse": 0.02248560096735637
+      },
+      {
+        "degree": 1,
+        "threshold": 0.1,
+        "active_terms": 3,
+        "library_size": 3,
+        "validation_nrmse": 0.022417098878047412,
+        "train_nrmse": 0.02248560096735637
+      },
+      {
+        "degree": 1,
+        "threshold": 0.2,
+        "active_terms": 3,
+        "library_size": 3,
+        "validation_nrmse": 0.022417098878047412,
+        "train_nrmse": 0.02248560096735637
+      },
+      {
+        "degree": 1,
+        "threshold": 0.35,
+        "active_terms": 3,
+        "library_size": 3,
+        "validation_nrmse": 0.022417098878047412,
+        "train_nrmse": 0.02248560096735637
+      },
+      {
+        "degree": 2,
+        "threshold": 0.02,
+        "active_terms": 6,
+        "library_size": 6,
+        "validation_nrmse": 0.0016677427737548736,
+        "train_nrmse": 0.0016626274612198827
+      },
+      {
+        "degree": 2,
+        "threshold": 0.05,
+        "active_terms": 6,
+        "library_size": 6,
+        "validation_nrmse": 0.0016677427737548736,
+        "train_nrmse": 0.0016626274612198827
+      },
+      {
+        "degree": 2,
+        "threshold": 0.1,
+        "active_terms": 6,
+        "library_size": 6,
+        "validation_nrmse": 0.0016677427737548736,
+        "train_nrmse": 0.0016626274612198827
+      },
+      {
+        "degree": 2,
+        "threshold": 0.2,
+        "active_terms": 6,
+        "library_size": 6,
+        "validation_nrmse": 0.0016677427737548736,
+        "train_nrmse": 0.0016626274612198827
+      },
+      {
+        "degree": 2,
+        "threshold": 0.35,
+        "active_terms": 3,
+        "library_size": 6,
+        "validation_nrmse": 0.022417098878047412,
+        "train_nrmse": 0.02248560096735637
+      },
+      {
+        "degree": 3,
+        "threshold": 0.02,
+        "active_terms": 6,
+        "library_size": 10,
+        "validation_nrmse": 0.001667742773754868,
+        "train_nrmse": 0.0016626274612198781
+      },
+      {
+        "degree": 3,
+        "threshold": 0.05,
+        "active_terms": 6,
+        "library_size": 10,
+        "validation_nrmse": 0.001667742773754868,
+        "train_nrmse": 0.0016626274612198781
+      },
+      {
+        "degree": 3,
+        "threshold": 0.1,
+        "active_terms": 6,
+        "library_size": 10,
+        "validation_nrmse": 0.001667742773754868,
+        "train_nrmse": 0.0016626274612198781
+      },
+      {
+        "degree": 3,
+        "threshold": 0.2,
+        "active_terms": 6,
+        "library_size": 10,
+        "validation_nrmse": 0.001667742773754868,
+        "train_nrmse": 0.0016626274612198781
+      },
+      {
+        "degree": 3,
+        "threshold": 0.35,
+        "active_terms": 3,
+        "library_size": 10,
+        "validation_nrmse": 0.022417098878047412,
+        "train_nrmse": 0.02248560096735637
+      }
+    ],
+    "diffusion": [
+      {
+        "degree": 0,
+        "threshold": 0.02,
+        "active_terms": 1,
+        "library_size": 1,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 0,
+        "threshold": 0.05,
+        "active_terms": 1,
+        "library_size": 1,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 0,
+        "threshold": 0.1,
+        "active_terms": 1,
+        "library_size": 1,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 0,
+        "threshold": 0.2,
+        "active_terms": 1,
+        "library_size": 1,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 0,
+        "threshold": 0.35,
+        "active_terms": 1,
+        "library_size": 1,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 1,
+        "threshold": 0.02,
+        "active_terms": 1,
+        "library_size": 3,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 1,
+        "threshold": 0.05,
+        "active_terms": 1,
+        "library_size": 3,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 1,
+        "threshold": 0.1,
+        "active_terms": 1,
+        "library_size": 3,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 1,
+        "threshold": 0.2,
+        "active_terms": 1,
+        "library_size": 3,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 1,
+        "threshold": 0.35,
+        "active_terms": 1,
+        "library_size": 3,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 2,
+        "threshold": 0.02,
+        "active_terms": 1,
+        "library_size": 6,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 2,
+        "threshold": 0.05,
+        "active_terms": 1,
+        "library_size": 6,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 2,
+        "threshold": 0.1,
+        "active_terms": 1,
+        "library_size": 6,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 2,
+        "threshold": 0.2,
+        "active_terms": 1,
+        "library_size": 6,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      },
+      {
+        "degree": 2,
+        "threshold": 0.35,
+        "active_terms": 1,
+        "library_size": 6,
+        "validation_nrmse": 0.0022838937545626736,
+        "train_nrmse": 0.002304309608709771
+      }
+    ]
+  },
+  "per_degree_test_vs_teacher": {
+    "drift": {
+      "1": 0.022276328639748197,
+      "2": 0.001648185745040365,
+      "3": 0.0016481857450403603
+    },
+    "diffusion": {
+      "0": 0.0023104226860433366,
+      "1": 0.0023104226860433366,
+      "2": 0.0023104226860433366
+    }
+  },
+  "symbolic_vs_teacher_test": {
+    "drift": 0.0016481857450403603,
+    "diffusion": 0.0023104226860433366
+  },
+  "symbolic_vs_truth_test": {
+    "drift": 0.022586059503915377,
+    "diffusion": 0.0027858141693387624
+  },
+  "oracle_sindy": {
+    "drift": {
+      "selection": {
+        "degree": 2,
+        "threshold": 0.02,
+        "active_terms": 3,
+        "library_size": 6,
+        "validation_nrmse": 1.3868790686114545e-15,
+        "train_nrmse": 1.3992521629064355e-15
+      },
+      "test_nrmse_vs_truth": 1.3947519602554648e-15
+    },
+    "diffusion": {
+      "selection": {
+        "degree": 0,
+        "threshold": 0.02,
+        "active_terms": 1,
+        "library_size": 1,
+        "validation_nrmse": 6.10622663543836e-15,
+        "train_nrmse": 6.10622663543836e-15
+      },
+      "test_nrmse_vs_truth": 6.10622663543836e-15
+    }
+  },
+  "recovery": {
+    "monomials": [
+      {
+        "power": [
+          1,
+          0
+        ],
+        "truth": 0.02,
+        "fitted": 0.018546802266695923,
+        "relative_error": 0.07265988666520384,
+        "sign_match": true
+      },
+      {
+        "power": [
+          0,
+          1
+        ],
+        "truth": -0.1,
+        "fitted": -0.09182900001759364,
+        "relative_error": 0.08170999982406363,
+        "sign_match": true
+      }
+    ],
+    "spurious_rms_fraction_test": 0.05815363986169069,
+    "diffusion_nonconstant_rms_fraction_test": 0.0,
+    "drift_expanded": [
+      {
+        "(0, 0)": 0.0009765630874881692,
+        "(1, 0)": 0.018546802266695923,
+        "(0, 1)": -0.09182900001759364,
+        "(2, 0)": 0.00011251093422775976,
+        "(1, 1)": -0.0012267025268544384,
+        "(0, 2)": 0.003315962708764914
+      }
+    ],
+    "diffusion_expanded": [
+      {
+        "(0, 0)": 0.3988856743322645
+      }
+    ],
+    "stratonovich_correction_mean_abs_over_g_mean_test": 0.00031938743680473336,
+    "stratonovich_correction_max_abs_test": 0.000426516821374186,
+    "off_manifold_grid": {
+      "n_points": 75,
+      "symbolic_vs_teacher_drift_nrmse": 0.06553778115243844,
+      "symbolic_vs_truth_drift_nrmse": 0.2843450415252585,
+      "teacher_vs_truth_drift_nrmse": 0.22008774522218225,
+      "symbolic_vs_teacher_diffusion_nrmse": 0.025576462039930713
+    }
+  },
+  "simulation": {
+    "neural": {
+      "failure_rate": 0.0,
+      "failure_classes": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "endpoint_mean_finishers": 10.624880027980376,
+      "endpoint_std_finishers": 0.8849928504108546,
+      "n_finishers": 1536,
+      "marginals_finishers": {
+        "6": {
+          "mean": 0.31143555338668855,
+          "std": 0.9612363301740245
+        },
+        "19": {
+          "mean": 2.1123196187956457,
+          "std": 0.9121765887419231
+        },
+        "32": {
+          "mean": 4.491246974603262,
+          "std": 0.8892536930612956
+        },
+        "44": {
+          "mean": 6.830905846534564,
+          "std": 0.9080650951207447
+        },
+        "57": {
+          "mean": 9.397042810330605,
+          "std": 0.8848880156379433
+        }
+      }
+    },
+    "symbolic": {
+      "failure_rate": 0.0,
+      "failure_classes": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "endpoint_mean_finishers": 10.624259876833165,
+      "endpoint_std_finishers": 0.8846499239164466,
+      "n_finishers": 1536,
+      "marginals_finishers": {
+        "6": {
+          "mean": 0.31264485638722866,
+          "std": 0.9625448392758904
+        },
+        "19": {
+          "mean": 2.1114628772314634,
+          "std": 0.9118214600798016
+        },
+        "32": {
+          "mean": 4.4896395641852545,
+          "std": 0.8887221333585447
+        },
+        "44": {
+          "mean": 6.83157422873894,
+          "std": 0.9077867964355947
+        },
+        "57": {
+          "mean": 9.399112950331899,
+          "std": 0.8846056460578186
+        }
+      }
+    },
+    "truth": {
+      "failure_rate": 0.0,
+      "failure_classes": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "endpoint_mean_finishers": 10.634618924304272,
+      "endpoint_std_finishers": 0.8820516345730567,
+      "n_finishers": 1536,
+      "marginals_finishers": {
+        "6": {
+          "mean": 0.30669190664096285,
+          "std": 0.9472188643846022
+        },
+        "19": {
+          "mean": 2.1145964512465483,
+          "std": 0.9149241024543024
+        },
+        "32": {
+          "mean": 4.492855636264636,
+          "std": 0.8956917928808791
+        },
+        "44": {
+          "mean": 6.83594535057886,
+          "std": 0.912725610365646
+        },
+        "57": {
+          "mean": 9.407543119488567,
+          "std": 0.8857694883866207
+        }
+      }
+    },
+    "paired_rmse_median": {
+      "symbolic_vs_neural": 0.0019389124904143494,
+      "symbolic_vs_truth": 0.018018530802926362,
+      "neural_vs_truth": 0.017657525677320048,
+      "n_pairs_symbolic_neural": 1536
+    }
+  },
+  "hypothesis_verdicts": {
+    "H1_drift_distillation": false,
+    "H2_diffusion_distillation": true,
+    "H3_truth_recovery": true,
+    "H4_simulation": true,
+    "H5_estimator_bias": true
+  },
+  "H3_coefficient_clause_applied": false,
+  "best_validation_nrmse_by_drift_degree": {
+    "1": 0.022417098878047412,
+    "2": 0.0016677427737548736,
+    "3": 0.001667742773754868
+  },
+  "symbolic_sde_tex": "%% Symbolic SDE distilled on Day 2 (Kidger et al. 2021 OU teacher, variables (t, z))\n%% drift\n\\begin{aligned}\n\\hat f &= 0.0009766 - 0.09183\\,z + 0.01855\\,t + 0.003316\\,z^{2} - 0.001227\\,t z + 0.0001125\\,t^{2} \\\\\n\\end{aligned}\n%% diffusion\n\\begin{aligned}\n\\hat g &= 0.3989 \\\\\n\\end{aligned}\n"
+}

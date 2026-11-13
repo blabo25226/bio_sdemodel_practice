@@ -1,0 +1,459 @@
+{
+  "day": 14,
+  "paper": "Neural Stochastic Differential Equations for Uncertainty-Aware Offline RL",
+  "venue": "ICLR 2025",
+  "seed": 14,
+  "git_head": "cd95ed6a61039e76cc7b0cd863b5150992d7c6ac",
+  "python": "3.12.3",
+  "torch": "2.15.0+cpu",
+  "numpy": "1.26.4",
+  "cuda": false,
+  "elapsed_sec": 6.931779384613037,
+  "probe": {
+    "q": [
+      8
+    ],
+    "v": [
+      8
+    ],
+    "u": [
+      8
+    ],
+    "drift": [
+      8,
+      2
+    ],
+    "diffusion": [
+      8
+    ],
+    "eta": [
+      8,
+      1
+    ],
+    "numpy_torch_max_abs": 4.440892098500626e-16
+  },
+  "normalization_mean": [
+    0.02702385682287766,
+    -0.06802341970820422,
+    0.03635470416137095
+  ],
+  "normalization_std": [
+    0.470071545578974,
+    0.32792262509018866,
+    0.713378112818232
+  ],
+  "train_log": {
+    "best_step": 440,
+    "best_val_nll": -2.8905617679610813,
+    "history_tail": [
+      {
+        "step": 720,
+        "train_loss": -2.917221141554935,
+        "val_nll": -2.887300493737308,
+        "data": -2.937260723362255,
+        "res": 0.018841161848750454,
+        "sc": 0.1269749298938689,
+        "grad": 3.1945064405336855e-06,
+        "mu": 1.331081756921072
+      },
+      {
+        "step": 760,
+        "train_loss": -2.8698599497616213,
+        "val_nll": -2.8792195113815295,
+        "data": -2.8897177792042195,
+        "res": 0.017196874004407905,
+        "sc": 0.125329710747853,
+        "grad": 6.198698023510728e-06,
+        "mu": 1.3241207727093809
+      },
+      {
+        "step": 799,
+        "train_loss": -3.0167461999287286,
+        "val_nll": -2.8819874795609244,
+        "data": -3.0368242328666066,
+        "res": 0.02013474571298851,
+        "sc": 0.12929351285439633,
+        "grad": 2.4007293136184603e-06,
+        "mu": 1.3208261651585034
+      }
+    ],
+    "n_windows": 1856
+  },
+  "aleatoric_log": {
+    "best_step": 440,
+    "best_val_nll": -2.890476188229014,
+    "history_tail": [
+      {
+        "step": 720,
+        "train_loss": -2.936777524960603,
+        "val_nll": -2.8872585659988164,
+        "data": -2.9371325167188864,
+        "res": 0.017749587914167104,
+        "sc": 0.0,
+        "grad": 0.0,
+        "mu": 0.0
+      },
+      {
+        "step": 760,
+        "train_loss": -2.8890869077015964,
+        "val_nll": -2.8789060992782924,
+        "data": -2.88943923084129,
+        "res": 0.01761615698467963,
+        "sc": 0.0,
+        "grad": 0.0,
+        "mu": 0.0
+      },
+      {
+        "step": 799,
+        "train_loss": -3.036669336606614,
+        "val_nll": -2.881976979167022,
+        "data": -3.037079868337374,
+        "res": 0.020526586538005334,
+        "sc": 0.0,
+        "grad": 0.0,
+        "mu": 0.0
+      }
+    ],
+    "n_windows": 1856
+  },
+  "loss_snapshot": {
+    "data": -2.920279408333273,
+    "res": 0.030808302185451795,
+    "sc": 0.1386961512387136,
+    "grad": 6.060844023811772e-08,
+    "mu": 1.3138049399627736,
+    "total": -2.8995903247195605,
+    "n_windows": 128.0
+  },
+  "drift_selection": {
+    "degree": 2,
+    "threshold": 0.02,
+    "validation_nrmse": 0.0018396091785234175,
+    "active_terms": 9,
+    "library_size": 10,
+    "candidates": [
+      {
+        "degree": 1,
+        "threshold": 0.02,
+        "validation_nrmse": 0.04673628997056201,
+        "active_terms": 6
+      },
+      {
+        "degree": 1,
+        "threshold": 0.05,
+        "validation_nrmse": 0.05856979601278977,
+        "active_terms": 5
+      },
+      {
+        "degree": 1,
+        "threshold": 0.1,
+        "validation_nrmse": 0.10595330485598933,
+        "active_terms": 4
+      },
+      {
+        "degree": 1,
+        "threshold": 0.2,
+        "validation_nrmse": 0.10595330485598933,
+        "active_terms": 4
+      },
+      {
+        "degree": 1,
+        "threshold": 0.35,
+        "validation_nrmse": 0.2157362708318659,
+        "active_terms": 2
+      },
+      {
+        "degree": 2,
+        "threshold": 0.02,
+        "validation_nrmse": 0.0018396091785234175,
+        "active_terms": 9
+      },
+      {
+        "degree": 2,
+        "threshold": 0.05,
+        "validation_nrmse": 0.05856979601278977,
+        "active_terms": 5
+      },
+      {
+        "degree": 2,
+        "threshold": 0.1,
+        "validation_nrmse": 0.10595330485598933,
+        "active_terms": 4
+      },
+      {
+        "degree": 2,
+        "threshold": 0.2,
+        "validation_nrmse": 0.10595330485598933,
+        "active_terms": 4
+      },
+      {
+        "degree": 2,
+        "threshold": 0.35,
+        "validation_nrmse": 0.2157362708318659,
+        "active_terms": 2
+      },
+      {
+        "degree": 3,
+        "threshold": 0.02,
+        "validation_nrmse": 0.0018396091785234175,
+        "active_terms": 9
+      },
+      {
+        "degree": 3,
+        "threshold": 0.05,
+        "validation_nrmse": 0.05856979601278977,
+        "active_terms": 5
+      },
+      {
+        "degree": 3,
+        "threshold": 0.1,
+        "validation_nrmse": 0.10595330485598933,
+        "active_terms": 4
+      },
+      {
+        "degree": 3,
+        "threshold": 0.2,
+        "validation_nrmse": 0.10595330485598933,
+        "active_terms": 4
+      },
+      {
+        "degree": 3,
+        "threshold": 0.35,
+        "validation_nrmse": 0.2157362708318659,
+        "active_terms": 2
+      }
+    ]
+  },
+  "diffusion_selection": {
+    "degree": 1,
+    "threshold": 0.02,
+    "validation_nrmse": 0.006612868948934555,
+    "active_terms": 2,
+    "library_size": 4,
+    "candidates": [
+      {
+        "degree": 1,
+        "threshold": 0.02,
+        "validation_nrmse": 0.006612868948934555,
+        "active_terms": 2
+      },
+      {
+        "degree": 1,
+        "threshold": 0.05,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      },
+      {
+        "degree": 1,
+        "threshold": 0.1,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      },
+      {
+        "degree": 1,
+        "threshold": 0.2,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      },
+      {
+        "degree": 1,
+        "threshold": 0.35,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      },
+      {
+        "degree": 2,
+        "threshold": 0.02,
+        "validation_nrmse": 0.006612868948934555,
+        "active_terms": 2
+      },
+      {
+        "degree": 2,
+        "threshold": 0.05,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      },
+      {
+        "degree": 2,
+        "threshold": 0.1,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      },
+      {
+        "degree": 2,
+        "threshold": 0.2,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      },
+      {
+        "degree": 2,
+        "threshold": 0.35,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      },
+      {
+        "degree": 3,
+        "threshold": 0.02,
+        "validation_nrmse": 0.006612868948934555,
+        "active_terms": 2
+      },
+      {
+        "degree": 3,
+        "threshold": 0.05,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      },
+      {
+        "degree": 3,
+        "threshold": 0.1,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      },
+      {
+        "degree": 3,
+        "threshold": 0.2,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      },
+      {
+        "degree": 3,
+        "threshold": 0.35,
+        "validation_nrmse": 0.03561681674047679,
+        "active_terms": 1
+      }
+    ]
+  },
+  "test": {
+    "drift_velocity_nrmse": {
+      "symbolic_vs_teacher": 0.0020382043099041775,
+      "teacher_vs_truth": 0.07689502665091116,
+      "symbolic_vs_truth": 0.07635890132660181,
+      "residual_rms_symbolic_vs_teacher": 0.0015183110981081115,
+      "residual_rms_teacher_vs_truth": 0.05772365337242195,
+      "residual_rms_symbolic_vs_truth": 0.057321194153243785,
+      "teacher_rms": 0.7449258598513572,
+      "truth_rms": 0.7506812324089097
+    },
+    "drift_position_nrmse": {
+      "symbolic_vs_teacher": 1.7014986039137474e-15,
+      "teacher_vs_truth": 0.0,
+      "symbolic_vs_truth": 1.7014986039137474e-15
+    },
+    "diffusion_nrmse": {
+      "symbolic_vs_teacher": 0.006183168455691344,
+      "teacher_vs_truth": 0.03570394764194134,
+      "symbolic_vs_truth": 0.035541716264708485,
+      "sigma_symbolic_vs_teacher": 0.012380186467027175,
+      "residual_rms_symbolic_vs_teacher": 0.0009229053203554,
+      "residual_rms_teacher_vs_truth": 0.0053555921462912015,
+      "residual_rms_symbolic_vs_truth": 0.005331257439706273,
+      "teacher_rms": 0.14926090514417487,
+      "truth_rms": 0.15000000000000002,
+      "fraction_symbolic_nonpositive": 0.0
+    },
+    "one_step_scale": {
+      "mean_abs_drift_increment": 0.031251333341276076,
+      "mean_abs_diffusion_increment": 0.0333547816133161,
+      "diffusion_over_drift": 1.0673074729026628
+    },
+    "dropped_rows": {
+      "train": 0,
+      "validation": 0,
+      "test": 0
+    }
+  },
+  "oracle": {
+    "velocity_drift_test_nrmse": 3.3795556145438243e-15,
+    "diffusion_test_nrmse": 7.137414363448673e-15,
+    "attribute_truth_failure_to_teacher": true,
+    "ceiling_velocity_drift_test_nrmse": 0.00010126026730029879,
+    "ceiling_diffusion_test_nrmse": 3.85453661377876e-06
+  },
+  "grid": {
+    "drift_velocity_rms_symbolic_vs_teacher": 0.029417013162255295,
+    "drift_velocity_rms_teacher_vs_truth": 0.551763744220638,
+    "drift_velocity_rms_symbolic_vs_truth": 0.5388935937125371,
+    "drift_velocity_nrmse_symbolic_vs_teacher": 0.016945111341747345,
+    "diffusion_rms_symbolic_vs_teacher": 0.0179693835316337,
+    "diffusion_rms_teacher_vs_truth": 0.012889587421366587,
+    "diffusion_rms_symbolic_vs_truth": 0.01250457419845427
+  },
+  "uncertainty": {
+    "mean_h_id": 0.008424182050444939,
+    "mean_h_ood": 0.008424541552539678,
+    "mean_eta_id": -0.0002476994754239507,
+    "mean_eta_ood": -0.0002225427548189032,
+    "mean_g_id": 0.14916711812406985,
+    "mean_g_ood": 0.15399857490822058,
+    "mean_g_aleatoric_id": 0.14913516225555987,
+    "mean_g_aleatoric_ood": 0.1539597956932904,
+    "h_ood_minus_id": 3.595020947391725e-07,
+    "g_lift_full": 0.004831456784150728,
+    "g_lift_aleatoric": 0.004824633437730541
+  },
+  "vif_degree3": 7.551051755255591,
+  "simulation": {
+    "failure_rate": {
+      "truth": 0.0,
+      "teacher": 0.0,
+      "symbolic": 0.0
+    },
+    "failure_class": {
+      "truth": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "teacher": {
+        "non_finite": 0,
+        "outside_radius": 0
+      },
+      "symbolic": {
+        "non_finite": 0,
+        "outside_radius": 0
+      }
+    },
+    "paired_mean_rmse": {
+      "symbolic_vs_teacher": 0.00010461354940002375,
+      "teacher_vs_truth": 0.004997308824777007
+    },
+    "terminal_cov_rel_frob": {
+      "symbolic_vs_teacher": 0.0012053556709755947,
+      "teacher_vs_truth": 0.031196717311443044
+    },
+    "discretization": {
+      "terminal_rmse": 0.005082191284445034,
+      "retained_fraction": 1.0
+    }
+  },
+  "law": {
+    "failure_rate": {
+      "truth": 0.0,
+      "teacher": 0.0,
+      "symbolic": 0.0
+    },
+    "mean_rmse": {
+      "teacher_vs_observed": 0.046079617292211765,
+      "symbolic_vs_observed": 0.12457649055745755,
+      "floor": 0.04902550453436974
+    },
+    "terminal_cov_rel_frob": {
+      "teacher_vs_observed": 0.31677784397722203,
+      "symbolic_vs_observed": 0.29296064999738936,
+      "floor": 0.33981757980253646
+    }
+  },
+  "verdicts": {
+    "H1": "pass",
+    "H2": "pass",
+    "H2c": "pass",
+    "H3": "pass",
+    "H4_failure": "pass",
+    "H4_path_match_without_field_recovery": false,
+    "H4": "pass",
+    "H7": "pass",
+    "H5": "pass",
+    "H6": "fail",
+    "H6_shared_floor": false
+  },
+  "symbolic_tex": "\\begin{aligned}\n\\dot q &= v \\\\\n\\dot v &= - 0.03634 + 0.9909\\,u - 0.5276\\,v + 0.05264\\,q - 0.08952\\,v u + 0.2038\\,v^{2} + 0.1026\\,q v \\\\\ng_v &= 0.1491 + 0.00735\\,u \\\\\ng_q &= 0\n\\end{aligned}"
+}

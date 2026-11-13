@@ -1,0 +1,1509 @@
+{
+  "git_head": "7ac0542cdea0ffeadb2994cc0ecd7b258fabdf5f",
+  "seconds": 19.100610457000016,
+  "python": "3.12.3",
+  "torch": "2.15.0+cpu",
+  "numpy": "2.5.4",
+  "cuda": false,
+  "query_failure_rate": 0.0,
+  "n_finite_trajectories": 200,
+  "n_train_rows": 5832,
+  "n_val_rows": 1944,
+  "n_test_rows": 1944,
+  "train_loss_first": -1.1890772842042052,
+  "train_loss_last": -1.2566600002259747,
+  "shifted_nll_teacher": -1.2584379754578197,
+  "shifted_nll_truth_euler": -1.2561180601441948,
+  "shifted_nll_zero_drift": -1.2099328942555991,
+  "shifted_nll_omits_half_log_2pi": true,
+  "train_transitions": 1600,
+  "train_path_abs_max": 2.1569244607463443,
+  "selection": {
+    "f1": {
+      "name": "f1",
+      "degree": 3,
+      "threshold": 0.0,
+      "score": 0.02046464671204512,
+      "active": 20
+    },
+    "parent_f1": {
+      "name": "parent_f1",
+      "degree": 3,
+      "threshold": 0.0,
+      "score": 0.021673854443103407,
+      "active": 10
+    },
+    "f2": {
+      "name": "f2",
+      "degree": 3,
+      "threshold": 0.02,
+      "score": 0.030049082135848722,
+      "active": 10
+    },
+    "parent_f2": {
+      "name": "parent_f2",
+      "degree": 3,
+      "threshold": 0.0,
+      "score": 0.030049082135848653,
+      "active": 10
+    },
+    "f3": {
+      "name": "f3",
+      "degree": 3,
+      "threshold": 0.0,
+      "score": 0.019346434524898364,
+      "active": 20
+    },
+    "parent_f3": {
+      "name": "parent_f3",
+      "degree": 3,
+      "threshold": 0.0,
+      "score": 0.01940011330916655,
+      "active": 10
+    },
+    "g1": {
+      "name": "g1",
+      "degree": 3,
+      "threshold": 0.0,
+      "score": 0.0006528678332874176,
+      "active": 20
+    },
+    "g2": {
+      "name": "g2",
+      "degree": 3,
+      "threshold": 0.0,
+      "score": 5.8984300779544415e-05,
+      "active": 20
+    },
+    "g3": {
+      "name": "g3",
+      "degree": 3,
+      "threshold": 0.0,
+      "score": 0.00025546212278014003,
+      "active": 20
+    }
+  },
+  "selection_candidates": {
+    "f1": [
+      {
+        "name": "f1",
+        "degree": 1,
+        "threshold": 0.0,
+        "score": 0.12081122698226877,
+        "active": 4
+      },
+      {
+        "name": "f1",
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.12030661288266603,
+        "active": 3
+      },
+      {
+        "name": "f1",
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.12030661288266603,
+        "active": 3
+      },
+      {
+        "name": "f1",
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.12944319319989317,
+        "active": 2
+      },
+      {
+        "name": "f1",
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.12944319319989317,
+        "active": 2
+      },
+      {
+        "name": "f1",
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.12944319319989317,
+        "active": 2
+      },
+      {
+        "name": "f1",
+        "degree": 2,
+        "threshold": 0.0,
+        "score": 0.0823973717092951,
+        "active": 10
+      },
+      {
+        "name": "f1",
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.08538428629623512,
+        "active": 5
+      },
+      {
+        "name": "f1",
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.08538428629623512,
+        "active": 5
+      },
+      {
+        "name": "f1",
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.08538428629623512,
+        "active": 5
+      },
+      {
+        "name": "f1",
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.12944319319989317,
+        "active": 2
+      },
+      {
+        "name": "f1",
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.12944319319989317,
+        "active": 2
+      },
+      {
+        "name": "f1",
+        "degree": 3,
+        "threshold": 0.0,
+        "score": 0.02046464671204512,
+        "active": 20
+      },
+      {
+        "name": "f1",
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.021791304733931174,
+        "active": 9
+      },
+      {
+        "name": "f1",
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.021791304733931174,
+        "active": 9
+      },
+      {
+        "name": "f1",
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.033240344294823296,
+        "active": 6
+      },
+      {
+        "name": "f1",
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.12944319319989317,
+        "active": 2
+      },
+      {
+        "name": "f1",
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.12944319319989317,
+        "active": 2
+      }
+    ],
+    "parent_f1": [
+      {
+        "name": "parent_f1",
+        "degree": 1,
+        "threshold": 0.0,
+        "score": 0.120306612882666,
+        "active": 3
+      },
+      {
+        "name": "parent_f1",
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.120306612882666,
+        "active": 3
+      },
+      {
+        "name": "parent_f1",
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.120306612882666,
+        "active": 3
+      },
+      {
+        "name": "parent_f1",
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.12944319319989306,
+        "active": 2
+      },
+      {
+        "name": "parent_f1",
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.12944319319989306,
+        "active": 2
+      },
+      {
+        "name": "parent_f1",
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.12944319319989306,
+        "active": 2
+      },
+      {
+        "name": "parent_f1",
+        "degree": 2,
+        "threshold": 0.0,
+        "score": 0.08261262294262654,
+        "active": 6
+      },
+      {
+        "name": "parent_f1",
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.08538428629623515,
+        "active": 5
+      },
+      {
+        "name": "parent_f1",
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.08538428629623515,
+        "active": 5
+      },
+      {
+        "name": "parent_f1",
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.08538428629623515,
+        "active": 5
+      },
+      {
+        "name": "parent_f1",
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.12944319319989306,
+        "active": 2
+      },
+      {
+        "name": "parent_f1",
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.12944319319989306,
+        "active": 2
+      },
+      {
+        "name": "parent_f1",
+        "degree": 3,
+        "threshold": 0.0,
+        "score": 0.021673854443103407,
+        "active": 10
+      },
+      {
+        "name": "parent_f1",
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.021791304733930927,
+        "active": 9
+      },
+      {
+        "name": "parent_f1",
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.021791304733930927,
+        "active": 9
+      },
+      {
+        "name": "parent_f1",
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.033240344294823636,
+        "active": 6
+      },
+      {
+        "name": "parent_f1",
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.12944319319989306,
+        "active": 2
+      },
+      {
+        "name": "parent_f1",
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.12944319319989306,
+        "active": 2
+      }
+    ],
+    "f2": [
+      {
+        "name": "f2",
+        "degree": 1,
+        "threshold": 0.0,
+        "score": 0.26061571149409535,
+        "active": 4
+      },
+      {
+        "name": "f2",
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.26061571149409535,
+        "active": 4
+      },
+      {
+        "name": "f2",
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.2621391003790036,
+        "active": 3
+      },
+      {
+        "name": "f2",
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.2611459442187136,
+        "active": 2
+      },
+      {
+        "name": "f2",
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.2611459442187136,
+        "active": 2
+      },
+      {
+        "name": "f2",
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.2611459442187136,
+        "active": 2
+      },
+      {
+        "name": "f2",
+        "degree": 2,
+        "threshold": 0.0,
+        "score": 0.09388393044166447,
+        "active": 10
+      },
+      {
+        "name": "f2",
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.09473238765496521,
+        "active": 6
+      },
+      {
+        "name": "f2",
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.10918674723090332,
+        "active": 5
+      },
+      {
+        "name": "f2",
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.10918674723090332,
+        "active": 5
+      },
+      {
+        "name": "f2",
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.16777000723705712,
+        "active": 3
+      },
+      {
+        "name": "f2",
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.2611459442187136,
+        "active": 2
+      },
+      {
+        "name": "f2",
+        "degree": 3,
+        "threshold": 0.0,
+        "score": 0.030401340680353345,
+        "active": 20
+      },
+      {
+        "name": "f2",
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.030049082135848722,
+        "active": 10
+      },
+      {
+        "name": "f2",
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.04987793208425042,
+        "active": 8
+      },
+      {
+        "name": "f2",
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.04987793208425042,
+        "active": 8
+      },
+      {
+        "name": "f2",
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.1677700072370571,
+        "active": 3
+      },
+      {
+        "name": "f2",
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.2611459442187136,
+        "active": 2
+      }
+    ],
+    "parent_f2": [
+      {
+        "name": "parent_f2",
+        "degree": 1,
+        "threshold": 0.0,
+        "score": 0.26213910037900395,
+        "active": 3
+      },
+      {
+        "name": "parent_f2",
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.26213910037900395,
+        "active": 3
+      },
+      {
+        "name": "parent_f2",
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.26213910037900395,
+        "active": 3
+      },
+      {
+        "name": "parent_f2",
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.26114594421871373,
+        "active": 2
+      },
+      {
+        "name": "parent_f2",
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.26114594421871373,
+        "active": 2
+      },
+      {
+        "name": "parent_f2",
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.26114594421871373,
+        "active": 2
+      },
+      {
+        "name": "parent_f2",
+        "degree": 2,
+        "threshold": 0.0,
+        "score": 0.09473238765496535,
+        "active": 6
+      },
+      {
+        "name": "parent_f2",
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.09473238765496535,
+        "active": 6
+      },
+      {
+        "name": "parent_f2",
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.10918674723090378,
+        "active": 5
+      },
+      {
+        "name": "parent_f2",
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.10918674723090378,
+        "active": 5
+      },
+      {
+        "name": "parent_f2",
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.16777000723705765,
+        "active": 3
+      },
+      {
+        "name": "parent_f2",
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.26114594421871373,
+        "active": 2
+      },
+      {
+        "name": "parent_f2",
+        "degree": 3,
+        "threshold": 0.0,
+        "score": 0.030049082135848653,
+        "active": 10
+      },
+      {
+        "name": "parent_f2",
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.030049082135848653,
+        "active": 10
+      },
+      {
+        "name": "parent_f2",
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.049877932084250585,
+        "active": 8
+      },
+      {
+        "name": "parent_f2",
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.049877932084250585,
+        "active": 8
+      },
+      {
+        "name": "parent_f2",
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.16777000723705765,
+        "active": 3
+      },
+      {
+        "name": "parent_f2",
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.26114594421871373,
+        "active": 2
+      }
+    ],
+    "f3": [
+      {
+        "name": "f3",
+        "degree": 1,
+        "threshold": 0.0,
+        "score": 0.1081160072779413,
+        "active": 4
+      },
+      {
+        "name": "f3",
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.1081160072779413,
+        "active": 4
+      },
+      {
+        "name": "f3",
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.101334648980585,
+        "active": 3
+      },
+      {
+        "name": "f3",
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.101334648980585,
+        "active": 3
+      },
+      {
+        "name": "f3",
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.24431329753712294,
+        "active": 2
+      },
+      {
+        "name": "f3",
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.24431329753712294,
+        "active": 2
+      },
+      {
+        "name": "f3",
+        "degree": 2,
+        "threshold": 0.0,
+        "score": 0.08495201728755733,
+        "active": 10
+      },
+      {
+        "name": "f3",
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.08647606934615258,
+        "active": 8
+      },
+      {
+        "name": "f3",
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.07202414283379162,
+        "active": 4
+      },
+      {
+        "name": "f3",
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.101334648980585,
+        "active": 3
+      },
+      {
+        "name": "f3",
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.24431329753712294,
+        "active": 2
+      },
+      {
+        "name": "f3",
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.24431329753712294,
+        "active": 2
+      },
+      {
+        "name": "f3",
+        "degree": 3,
+        "threshold": 0.0,
+        "score": 0.019346434524898364,
+        "active": 20
+      },
+      {
+        "name": "f3",
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.022577321775221416,
+        "active": 8
+      },
+      {
+        "name": "f3",
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.034747021507150457,
+        "active": 5
+      },
+      {
+        "name": "f3",
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.07484213344397524,
+        "active": 4
+      },
+      {
+        "name": "f3",
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.24431329753712294,
+        "active": 2
+      },
+      {
+        "name": "f3",
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.24431329753712294,
+        "active": 2
+      }
+    ],
+    "parent_f3": [
+      {
+        "name": "parent_f3",
+        "degree": 1,
+        "threshold": 0.0,
+        "score": 0.10133464898058506,
+        "active": 3
+      },
+      {
+        "name": "parent_f3",
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.10133464898058506,
+        "active": 3
+      },
+      {
+        "name": "parent_f3",
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.10133464898058506,
+        "active": 3
+      },
+      {
+        "name": "parent_f3",
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.10133464898058506,
+        "active": 3
+      },
+      {
+        "name": "parent_f3",
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.24431329753712297,
+        "active": 2
+      },
+      {
+        "name": "parent_f3",
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.24431329753712297,
+        "active": 2
+      },
+      {
+        "name": "parent_f3",
+        "degree": 2,
+        "threshold": 0.0,
+        "score": 0.08072070943238578,
+        "active": 6
+      },
+      {
+        "name": "parent_f3",
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.08270478075705755,
+        "active": 5
+      },
+      {
+        "name": "parent_f3",
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.08270478075705755,
+        "active": 5
+      },
+      {
+        "name": "parent_f3",
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.10133464898058506,
+        "active": 3
+      },
+      {
+        "name": "parent_f3",
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.24431329753712297,
+        "active": 2
+      },
+      {
+        "name": "parent_f3",
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.24431329753712297,
+        "active": 2
+      },
+      {
+        "name": "parent_f3",
+        "degree": 3,
+        "threshold": 0.0,
+        "score": 0.01940011330916655,
+        "active": 10
+      },
+      {
+        "name": "parent_f3",
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.02257732177522094,
+        "active": 8
+      },
+      {
+        "name": "parent_f3",
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.03474702150715033,
+        "active": 5
+      },
+      {
+        "name": "parent_f3",
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.07484213344397521,
+        "active": 4
+      },
+      {
+        "name": "parent_f3",
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.24431329753712297,
+        "active": 2
+      },
+      {
+        "name": "parent_f3",
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.24431329753712297,
+        "active": 2
+      }
+    ],
+    "g1": [
+      {
+        "name": "g1",
+        "degree": 1,
+        "threshold": 0.0,
+        "score": 0.014627192298315902,
+        "active": 4
+      },
+      {
+        "name": "g1",
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 2,
+        "threshold": 0.0,
+        "score": 0.0018745395375984715,
+        "active": 10
+      },
+      {
+        "name": "g1",
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 3,
+        "threshold": 0.0,
+        "score": 0.0006528678332874176,
+        "active": 20
+      },
+      {
+        "name": "g1",
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.014313334411645454,
+        "active": 1
+      },
+      {
+        "name": "g1",
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.014313334411645454,
+        "active": 1
+      }
+    ],
+    "g2": [
+      {
+        "name": "g2",
+        "degree": 1,
+        "threshold": 0.0,
+        "score": 0.006446355281219305,
+        "active": 4
+      },
+      {
+        "name": "g2",
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 2,
+        "threshold": 0.0,
+        "score": 0.000857677549324728,
+        "active": 10
+      },
+      {
+        "name": "g2",
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 3,
+        "threshold": 0.0,
+        "score": 5.8984300779544415e-05,
+        "active": 20
+      },
+      {
+        "name": "g2",
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.011932428235818048,
+        "active": 1
+      },
+      {
+        "name": "g2",
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.011932428235818048,
+        "active": 1
+      }
+    ],
+    "g3": [
+      {
+        "name": "g3",
+        "degree": 1,
+        "threshold": 0.0,
+        "score": 0.00974167945069406,
+        "active": 4
+      },
+      {
+        "name": "g3",
+        "degree": 1,
+        "threshold": 0.02,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 1,
+        "threshold": 0.05,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 1,
+        "threshold": 0.1,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 1,
+        "threshold": 0.2,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 1,
+        "threshold": 0.35,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 2,
+        "threshold": 0.0,
+        "score": 0.0006453553532560206,
+        "active": 10
+      },
+      {
+        "name": "g3",
+        "degree": 2,
+        "threshold": 0.02,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 2,
+        "threshold": 0.05,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 2,
+        "threshold": 0.1,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 2,
+        "threshold": 0.2,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 2,
+        "threshold": 0.35,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 3,
+        "threshold": 0.0,
+        "score": 0.00025546212278014003,
+        "active": 20
+      },
+      {
+        "name": "g3",
+        "degree": 3,
+        "threshold": 0.02,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 3,
+        "threshold": 0.05,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 3,
+        "threshold": 0.1,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 3,
+        "threshold": 0.2,
+        "score": 0.013321004382362202,
+        "active": 1
+      },
+      {
+        "name": "g3",
+        "degree": 3,
+        "threshold": 0.35,
+        "score": 0.013321004382362202,
+        "active": 1
+      }
+    ]
+  },
+  "bootstrap_frequency": {
+    "f1": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "f2": [
+      1.0,
+      0.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      0.875
+    ],
+    "f3": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "g1": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "g2": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "g3": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "metrics": {
+    "drift": [
+      {
+        "nrmse": 0.022680348745845274,
+        "residual_rms": 0.006675486889852242,
+        "teacher_rms": 0.29432911127855116,
+        "floor": 0.9816874349360241,
+        "ceiling": 0.022680348745845274,
+        "degree": 3,
+        "threshold": 0.0,
+        "active": 20,
+        "matches_ceiling": true,
+        "parent_nrmse": 0.023952696681839497
+      },
+      {
+        "nrmse": 0.029724755146649354,
+        "residual_rms": 0.0060079614894487645,
+        "teacher_rms": 0.2021197974485585,
+        "floor": 0.9934206189994486,
+        "ceiling": 0.030697356118983804,
+        "degree": 3,
+        "threshold": 0.02,
+        "active": 10,
+        "matches_ceiling": false,
+        "parent_nrmse": 0.02972475514664945
+      },
+      {
+        "nrmse": 0.023212260354416526,
+        "residual_rms": 0.006461561914275667,
+        "teacher_rms": 0.27836849215101295,
+        "floor": 1.0193906182980546,
+        "ceiling": 0.023212260354416526,
+        "degree": 3,
+        "threshold": 0.0,
+        "active": 20,
+        "matches_ceiling": true,
+        "parent_nrmse": 0.022651501583900478
+      }
+    ],
+    "diffusion": [
+      {
+        "nrmse": 0.0007149055797037728,
+        "residual_rms": 0.00027317603274610425,
+        "teacher_rms": 0.3821148421576134,
+        "floor": 0.016259019259777536,
+        "ceiling": 0.0007149055797037728,
+        "degree": 3,
+        "threshold": 0.0,
+        "active": 20,
+        "matches_ceiling": true
+      },
+      {
+        "nrmse": 8.438950054855852e-05,
+        "residual_rms": 3.3120659233125345e-05,
+        "teacher_rms": 0.3924736965834678,
+        "floor": 0.009215400227519974,
+        "ceiling": 8.438950054855852e-05,
+        "degree": 3,
+        "threshold": 0.0,
+        "active": 20,
+        "matches_ceiling": true
+      },
+      {
+        "nrmse": 0.0002845959700759884,
+        "residual_rms": 0.00011139417826735908,
+        "teacher_rms": 0.3914116501284833,
+        "floor": 0.011671571295465514,
+        "ceiling": 0.0002845959700759884,
+        "degree": 3,
+        "threshold": 0.0,
+        "active": 20,
+        "matches_ceiling": true
+      }
+    ],
+    "diffusion_nonpositive_fraction": 0.0,
+    "vif": 61.835505431778145,
+    "library_rank": 20.0,
+    "library_condition": 38.40493353433767,
+    "library_terms": 20.0,
+    "fail_teacher": 0.0,
+    "fail_symbolic": 0.0,
+    "path_rmse": 0.005912463163311644,
+    "path_retained": 1.0,
+    "fail_classes_teacher": {
+      "non_finite": 0,
+      "outside_radius": 0,
+      "nonpositive_diffusion": 0
+    },
+    "fail_classes_symbolic": {
+      "non_finite": 0,
+      "outside_radius": 0,
+      "nonpositive_diffusion": 0
+    },
+    "law_floor": 0.0725293302645866,
+    "law_symbolic": 0.049685815145773846,
+    "law_fail_teacher": 0.0,
+    "law_fail_symbolic": 0.0,
+    "law_fail_floor": 0.0,
+    "grid_nrmse": 0.14063653253592667,
+    "grid_residual_rms": 0.09786655334847837,
+    "path_residual_rms": 0.006387735875548456,
+    "teacher_nonparent_rms": 0.0,
+    "teacher_parent_rms": 0.45027168581673804,
+    "symbolic_nonparent_rms": 0.01751631829019967,
+    "symbolic_parent_rms": 0.4878549599872569,
+    "symbolic_relative_nonparent": 0.03590476622530846,
+    "full_library_nrmse": 0.025205788082303716,
+    "parent_library_nrmse": 0.025442984470796473,
+    "teacher_vs_truth_drift": 0.302263142728073,
+    "symbolic_vs_truth_drift": 0.30332259407460155,
+    "teacher_vs_truth_diffusion": 0.033062322522245446,
+    "symbolic_vs_truth_diffusion": 0.03290292741693591,
+    "step_ratio": 0.15037033122505455,
+    "test_drift_rms": 0.2613879974859192,
+    "test_diffusion_rms": 0.3886945823151008,
+    "truth_linear_rms": 0.25628953996416076,
+    "truth_cubic_rms": 0.08656263756564005,
+    "parent_vif": [
+      51.82649008733603,
+      22.39309630566874,
+      8.98979859614825
+    ],
+    "amplified": true,
+    "verdicts": {
+      "H1": "pass",
+      "H2": "pass",
+      "H3": "indeterminate",
+      "H4": "pass",
+      "H5": "pass",
+      "H6": "pass",
+      "H7": "pass",
+      "H8": "pass",
+      "H9": "pass"
+    }
+  }
+}
